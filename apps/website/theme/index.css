@@ -139,6 +139,17 @@ body {
   grid-column: 1 / -1;
 }
 
+.rp-doc.rspress-doc > p:has(> a > img[src^="https://img.shields.io/badge/"][src*="style=for-the-badge"]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.rp-doc.rspress-doc > p > a:has(> img[src^="https://img.shields.io/badge/"][src*="style=for-the-badge"])::after {
+  content: none;
+}
+
 .rp-doc.rspress-doc > h1:first-child {
   grid-column: 1;
   grid-row: 1;

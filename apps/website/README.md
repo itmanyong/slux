@@ -39,6 +39,8 @@ GitHub Pages 由仓库根目录的 `.github/workflows/docs.yml` 在 `main` 推�
 
 README 原文页读取当前工作区文件，因此本地未提交的 README 修改也会反映在本地文档构建中；CI 构建则使用检出版本。渲染时会去掉包导航同步用的 HTML 标记，并将 README 中指向仓库其他文件的相对链接解析为 GitHub 源文件链接，以免 Rspress 将其误判为站内文档。新包加入后，需另写使用指南与对应示例项目，并将包加入 `docs/packages/_meta.json`、`docs/examples/_meta.json`、`docs/_nav.json` 对应分类的 `activeMatch` 与包索引。
 
+README 介绍下的 Shields 按钮独占一行，窄屏允许换行；按钮隐藏外链箭头，普通外链保留箭头。
+
 站点已注册阅读时间、Mermaid、Preview 和 Playground 插件。[交互式示例](docs/guide/interactive.mdx) 使用 Preview 和 Playground；[状态范式选择](docs/guide/choose.mdx) 使用 Mermaid。阅读时间显示在普通文档页顶部。
 
 ### iframe 加载状态
