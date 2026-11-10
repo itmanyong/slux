@@ -1,6 +1,6 @@
 {
   "name": "@slux/devtools",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "slux Store 的 Redux DevTools、日志和检查工具",
   "sideEffects": false,
   "keywords": [

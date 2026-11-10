@@ -1,3 +1,13 @@
+## 0.2.4
+
+### Document 📖
+
+- docs(atom): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+
+### Other Changes 🔧
+
+- chore(atom): 更新本包内部依赖：@slux/core（0.2.3 → 0.2.4）、@slux/shared（0.2.3 → 0.2.4）。
+
 ## 0.2.3
 
 ### Other Changes 🔧

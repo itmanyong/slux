@@ -1,3 +1,13 @@
+## 0.2.4
+
+### Document 📖
+
+- docs(viewfly): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+
+### Other Changes 🔧
+
+- chore(viewfly): 同步 8 项本包内部依赖范围。
+
 ## 0.2.3
 
 ### Other Changes 🔧

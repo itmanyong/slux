@@ -1,3 +1,54 @@
+## v0.2.4
+
+### Bug Fixes 🐞
+
+- fix(website): 让 README 顶部跳转按钮在文档站内同行排列，窄屏可换行，并仅移除按钮自带的外链箭头。
+
+<details>
+<summary>相关提交（1）</summary>
+
+- fix(website): keep README navigation buttons on one row ([e319ca6](https://github.com/itmanyong/slux/commit/e319ca6c5601e68902d0bf4710d64c668cddd467))
+
+</details>
+
+### Document 📖
+
+- docs(repo): 根 README 顶部按钮通过 color 查询参数使用绿色 GITHUB、蓝色在线文档背景。
+- docs(actview): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(angular): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(atom): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(core): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(devtools): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(flux): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(history): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(inferno): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(octane): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(preact): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(proxy): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(react): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(ripple): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(rxjs): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(shared): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(solid): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(state-machine): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(storage): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(store): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(svelte): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(tab-sync): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(telemetry): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(viewfly): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(vitarx): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+- docs(vue): README 顶部按钮通过 color 查询参数统一使用绿色 GITHUB、橙色 NPM、蓝色在线文档背景。
+
+<details>
+<summary>相关提交（1）</summary>
+
+- docs(packages): color README navigation buttons ([62a92d7](https://github.com/itmanyong/slux/commit/62a92d774ec09efecef826566bdb09f474667505))
+
+</details>
+
+**Full Changelog**: [release/v0.2.3...release/v0.2.4](https://github.com/itmanyong/slux/compare/release/v0.2.3...release/v0.2.4)
+
 ## v0.2.3
 
 ### Document 📖
