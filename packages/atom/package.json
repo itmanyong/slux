@@ -1,6 +1,6 @@
 {
   "name": "@slux/atom",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "基于 @slux/core 的原子状态范式",
   "sideEffects": false,
   "keywords": [
