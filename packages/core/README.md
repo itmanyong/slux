@@ -2,7 +2,7 @@
 
 ⚡ 框架无关的响应式核心库，构建于 [limu](https://github.com/tnfe/limu) 的不可变状态容器之上。所有信号写入统一通过 `set`，提供惰性计算、同步副作用、批处理合并与可隔离的作用域。
 
-[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/core) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/core) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/core/)
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white&color=green)](https://github.com/itmanyong/slux/tree/main/packages/core) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white&color=orange)](https://www.npmjs.com/package/@slux/core) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge&color=blue)](https://itmanyong.github.io/slux/packages/core/)
 
 - 零框架依赖：可单独用于 Node、浏览器或任意 UI 框架的底层状态层。
 - 不可变更新：基于 limu 的 draft 提交，天然结构共享，未修改的分支保留原引用。

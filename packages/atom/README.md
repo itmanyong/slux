@@ -2,7 +2,7 @@
 
 ⚛️ 基于 `@slux/core` 的原子状态范式：用小型 atom 组合状态、`derived` 表达派生、`writableAtom` 自定义写入、`atomFamily` 参数化缓存、`createAtomScope` 隔离取值。
 
-[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/atom) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/atom) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/atom/)
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white&color=green)](https://github.com/itmanyong/slux/tree/main/packages/atom) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white&color=orange)](https://www.npmjs.com/package/@slux/atom) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge&color=blue)](https://itmanyong.github.io/slux/packages/atom/)
 
 atom 对象本身只是「配置描述 + 默认作用域的代理」：真正的响应式节点由每个作用域按需创建的 core `signal` / `computed` 承载，因此 atom 可被 core 的 `computed`、`effect`、`batch` 直接读取。六个范式包共享 core 运行时，可放在同一个依赖图中使用。
 

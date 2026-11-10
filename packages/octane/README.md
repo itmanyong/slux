@@ -2,7 +2,7 @@
 
 🔌 为独立的 Octane UI 框架（npm 包 `octane`，peer 为 `^0.16.7`）提供基于**编译器 slot hooks** 的原生绑定。读取绑定通过 `useSyncExternalStore` **直接返回值 `T`**（不是 ref、Accessor 或 `.value`），写入仍走原实例。与其余框架适配包最根本的不同：本包 `exports` 全部指向 **`./src/*.ts` TypeScript 源码**，不是预编译产物，且**不提供 CommonJS 入口**。
 
-[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/octane) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/octane) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/octane/)
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white&color=green)](https://github.com/itmanyong/slux/tree/main/packages/octane) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white&color=orange)](https://www.npmjs.com/package/@slux/octane) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge&color=blue)](https://itmanyong.github.io/slux/packages/octane/)
 
 > 💡 **前置条件（务必先读）**：消费端必须接入 Octane 官方编译器 / 构建插件（配合 `package.json` 的 `octane.hookSlots.manual: ["src"]`）来编译本包与调用方组件，编译器为每个 hook 调用点分配 slot。**不支持**把这些源文件直接交给普通 JSX/TS 编译器后运行。详见「前置条件与编译产物」。
 

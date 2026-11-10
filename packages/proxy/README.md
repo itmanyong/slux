@@ -2,7 +2,7 @@
 
 🪞 基于 `@slux/core` 的可变对象范式。`observable` 用 `Proxy` 包装普通对象 / 数组，属性赋值、删除与数组操作直接触发 core 的依赖通知；`observe` 按读取的属性自动追踪；`snapshot` 产出冻结、缓存、结构共享的只读快照；`ref` 用于把不想被代理的值按原引用嵌入状态。
 
-[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/proxy) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/proxy) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/proxy/)
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white&color=green)](https://github.com/itmanyong/slux/tree/main/packages/proxy) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white&color=orange)](https://www.npmjs.com/package/@slux/proxy) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge&color=blue)](https://itmanyong.github.io/slux/packages/proxy/)
 
 代理不是 `Signal` 或 `Subscribable`：它没有 `get()` / `set()`，但读取属性会登记到 core 的依赖图，因此可以和 `@slux/core` 的 `computed`、`effect`、`batch` 混用。
 

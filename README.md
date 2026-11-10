@@ -2,7 +2,7 @@
 
 ⚡ slux 是一组以**框架无关的响应式核心**为基础的 TypeScript 状态管理包，按五层组织：核心层（运行时与工具）、范式层（六种状态组织方式）、中间件层（Store 横切能力）、框架层（十二个框架绑定）、插件层（构建时集成，规划中）。
 
-[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/)
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white&color=green)](https://github.com/itmanyong/slux) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge&logoColor=white&color=blue)](https://itmanyong.github.io/slux/)
 
 **`slux` = `signal(信号)` + `limu(结构共享)` + `luxury(精致统一)`**
 

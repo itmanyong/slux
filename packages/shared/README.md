@@ -2,7 +2,7 @@
 
 🧰 全仓库复用的纯工具库，运行时**零依赖**，只做两件事：按迭代顺序执行全部同步任务并汇总错误（`runAll`），以及生成 `unplugin-auto-import` 的自动导入配置（`createAutoImports` / `generateBatchAutoImports`）。
 
-[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/shared) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/shared) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/shared/)
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white&color=green)](https://github.com/itmanyong/slux/tree/main/packages/shared) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white&color=orange)](https://www.npmjs.com/package/@slux/shared) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge&color=blue)](https://itmanyong.github.io/slux/packages/shared/)
 
 它**不包含**响应式节点、依赖追踪、调度状态、作用域或框架适配逻辑，这些能力属于 `@slux/core` 与各范式包。与各包的关系：`@slux/core` 用 `runAll` 保证单个通知 / effect 抛错不阻断其余任务；各包公开的 `createAutoImportApis(prefix?)` 都基于本包的 `generateBatchAutoImports` 拼装。
 
