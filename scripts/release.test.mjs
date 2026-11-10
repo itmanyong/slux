@@ -7,13 +7,15 @@ import test from "node:test";
 
 const script = resolve(import.meta.dirname, "release.mjs");
 
-test("帮助命令说明必需的 AI 配置，不触发发布", () => {
+test("帮助命令说明人工 Changeset 和暂存发布，不触发发布", () => {
   const result = spawnSync(process.execPath, [script, "--help"], { encoding: "utf8" });
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /RELEASE_AI_API_KEY/);
+  assert.match(result.stdout, /Changeset/);
+  assert.match(result.stdout, /暂存/);
+  assert.doesNotMatch(result.stdout, /RELEASE_AI_API_KEY/);
 });
 
-test("工作区有未提交内容时在调用 AI 和版本工具前终止", () => {
+test("工作区有未提交内容时在升级版本前终止", () => {
   const dir = mkdtempSync(resolve(tmpdir(), "slux-release-"));
   try {
     spawnSync("git", ["init", "-q", dir], { encoding: "utf8" });

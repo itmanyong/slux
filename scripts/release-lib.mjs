@@ -38,38 +38,8 @@ export function parseChangesetPackages(content, packageNames) {
     .filter((name) => names.has(name));
 }
 
-export function parseAiDraft(content) {
-  const json = content
-    .trim()
-    .replace(/^```(?:json)?\s*\n?/, "")
-    .replace(/\n?```$/, "");
-  const draft = JSON.parse(json);
-  if (typeof draft.summary !== "string" || !draft.summary.trim()) throw new Error("AI 没有生成可用的摘要");
-  if (
-    !Array.isArray(draft.highlights) ||
-    !draft.highlights.length ||
-    draft.highlights.some((item) => typeof item !== "string" || !item.trim())
-  ) {
-    throw new Error("AI 没有生成可用的变更亮点");
-  }
-  if (!Array.isArray(draft.migration) || draft.migration.some((item) => typeof item !== "string" || !item.trim())) {
-    throw new Error("AI 返回的升级提示格式不正确");
-  }
-  return {
-    summary: draft.summary.trim(),
-    highlights: draft.highlights.map((item) => item.trim()),
-    migration: draft.migration.map((item) => item.trim()),
-  };
-}
-
-export function renderChangeset(packages, bump, summary) {
-  if (!packages.length) throw new Error("没有需要发布的包");
-  if (!["patch", "minor", "major"].includes(bump)) throw new Error("版本级别无效");
-  return `---\n${packages.map((name) => `"${name}": ${bump}`).join("\n")}\n---\n\n${summary.trim()}\n`;
-}
-
-export function renderReleaseNotes(version, draft) {
-  const highlights = draft.highlights.map((item) => `- ${item}`).join("\n");
-  const migration = draft.migration.length ? `\n## 升级提示\n${draft.migration.map((item) => `- ${item}`).join("\n")}\n` : "";
-  return `# v${version}\n\n${draft.summary}\n\n## 主要变更\n${highlights}\n${migration}`;
+export function renderReleaseNotes(version, changesets) {
+  const notes = changesets.map((content) => content.replace(/^---\r?\n[\s\S]*?\r?\n---\s*/, "").trim()).filter(Boolean);
+  if (!notes.length) throw new Error("Changeset 缺少变更说明");
+  return `# v${version}\n\n## 变更说明\n\n${notes.join("\n\n")}\n`;
 }

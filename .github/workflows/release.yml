@@ -7,20 +7,23 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "需要重试的发布标签，例如 release/v0.1.0"
+        description: "需要重试的发布标签，例如 release/v0.2.0"
         required: true
         type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: npm-release
   cancel-in-progress: false
 
 jobs:
-  publish:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.pack.outputs.packages }}
+      version: ${{ steps.pack.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +36,6 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-          registry-url: https://registry.npmjs.org
       - name: Check release tag and notes
         env:
           RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
@@ -47,20 +49,59 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
-      - name: Publish to npm
-        run: |
-          test -n "$NODE_AUTH_TOKEN" || { echo "缺少 NPM_TOKEN secret"; exit 1; }
-          pnpm release:ci
+      - name: Pack release tarballs
+        id: pack
+        run: node scripts/pack-release.mjs "$RUNNER_TEMP/slux-release-tarballs"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-tarballs
+          path: ${{ runner.temp }}/slux-release-tarballs/*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  stage:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.prepare.outputs.packages) }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-tarballs
+          path: release-tarballs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install npm with staged publishing
+        run: npm install -g npm@11.20.0
+      - name: Stage package through trusted publishing
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Create or update GitHub Release
+          PACKAGE: ${{ matrix.package }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: npm stage publish "release-tarballs/slux-${PACKAGE}-${VERSION}.tgz" --access public --tag latest --provenance
+
+  release:
+    needs: [prepare, stage]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+      - name: Create or update draft GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+          VERSION: ${{ needs.prepare.outputs.version }}
         run: |
-          version="${RELEASE_TAG#release/v}"
           if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
-            gh release edit "$RELEASE_TAG" --notes-file "releases/v${version}.md"
+            gh release edit "$RELEASE_TAG" --notes-file "releases/v${VERSION}.md"
           else
-            gh release create "$RELEASE_TAG" --verify-tag --title "v${version}" --notes-file "releases/v${version}.md"
+            gh release create "$RELEASE_TAG" --verify-tag --draft --title "v${VERSION}" --notes-file "releases/v${VERSION}.md"
           fi

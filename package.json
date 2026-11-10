@@ -21,7 +21,6 @@
     "clean": "turbo run clean && rm -rf node_modules",
     "version:packages": "changeset version",
     "release": "node scripts/release.mjs",
-    "release:ci": "changeset publish",
     "test:release": "node --test scripts/release-lib.test.mjs scripts/release.test.mjs",
     "docs:dev": "turbo run docs:dev",
     "docs:build": "turbo run docs:build",

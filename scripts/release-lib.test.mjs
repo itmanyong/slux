@@ -4,14 +4,7 @@ import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSy
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import test from "node:test";
-import {
-  parseAiDraft,
-  parseChangesetPackages,
-  renderChangeset,
-  renderReleaseNotes,
-  selectChangedPackages,
-  selectLatestReleaseTag,
-} from "./release-lib.mjs";
+import { parseChangesetPackages, renderReleaseNotes, selectChangedPackages, selectLatestReleaseTag } from "./release-lib.mjs";
 
 const packages = ["@slux/core", "@slux/react", "@slux/shared"];
 
@@ -38,24 +31,13 @@ test("已有 Changeset 的包会被识别，README 文本不会冒充变更", ()
   assert.deepEqual(parseChangesetPackages("# Changesets\n@slux/core: major", packages), []);
 });
 
-test("AI 返回的说明必须有可用摘要和亮点", () => {
-  assert.deepEqual(parseAiDraft('```json\n{"summary":"修复订阅清理","highlights":["修复卸载后的重复通知"],"migration":[]}\n```'), {
-    summary: "修复订阅清理",
-    highlights: ["修复卸载后的重复通知"],
-    migration: [],
-  });
-  assert.throws(() => parseAiDraft('{"summary":"","highlights":[],"migration":[]}'), /摘要/);
-});
-
-test("Changeset 写入所选包，发行说明包含版本和迁移提示", () => {
-  assert.match(renderChangeset(["@slux/core", "@slux/react"], "minor", "新增订阅 API"), /"@slux\/core": minor\n"@slux\/react": minor/);
-  const notes = renderReleaseNotes("0.1.0", {
-    summary: "新增订阅 API",
-    highlights: ["支持组件卸载时清理订阅"],
-    migration: ["升级后检查自定义订阅包装器"],
-  });
-  assert.match(notes, /^# v0\.1\.0\n/);
-  assert.match(notes, /## 升级提示\n- 升级后检查自定义订阅包装器/);
+test("发行说明从人工核对的 Changeset 正文生成", () => {
+  const notes = renderReleaseNotes("0.2.0", ['---\n"@slux/core": minor\n---\n\n新增订阅 API\n\n- 支持组件卸载时清理订阅\n']);
+  assert.doesNotMatch(notes, /"@slux\/core": minor/);
+  assert.match(notes, /新增订阅 API/);
+  assert.match(notes, /支持组件卸载时清理订阅/);
+  assert.throws(() => renderReleaseNotes("0.2.0", ['---\n"@slux/core": minor\n---\n']), /缺少变更说明/);
+  assert.match(notes, /^# v0\.2\.0\n/);
 });
 
 test("Changesets 固定分组会把所有 @slux 包纳入同一次升级", () => {
@@ -75,7 +57,7 @@ test("Changesets 固定分组会把所有 @slux 包纳入同一次升级", () =>
       resolve(dir, "packages", "example", "package.json"),
       JSON.stringify({ name: "@slux/example", version: "0.0.1", private: true }),
     );
-    writeFileSync(resolve(dir, ".changeset", "sample.md"), renderChangeset(["@slux/a"], "minor", "新增能力"));
+    writeFileSync(resolve(dir, ".changeset", "sample.md"), '---\n"@slux/a": minor\n---\n\n新增能力\n');
     spawnSync("git", ["init", "-q", "-b", "main", dir], { encoding: "utf8" });
     spawnSync("git", ["-C", dir, "add", "."], { encoding: "utf8" });
     spawnSync("git", ["-C", dir, "-c", "user.name=Release Test", "-c", "user.email=release@example.com", "commit", "-qm", "fixture"], {

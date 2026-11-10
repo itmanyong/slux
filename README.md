@@ -4,7 +4,7 @@ slux 是一组以**框架无关的响应式核心**为基础的 TypeScript 状�
 
 **`slux` = `signal(信号)` + `limu(不可变流)` + `luxury(精致)`**
 
-## 包索引
+## 包导航
 
 ### 核心层
 
@@ -132,7 +132,7 @@ stop();
 
 ### 本地开发
 
-面向仓库贡献者：Node.js 24+、pnpm 12.15.0，根目录 `pnpm install` 后使用 `package.json` 的 `build` / `test` / `typecheck` / `lint` 脚本，单包验证用 `pnpm --filter @slux/<包名> <脚本>`。安装时 `prepare` 会通过 `simple-git-hooks` 设置 `pre-commit` 钩子；提交时 `lint-staged` 只检查暂存的受支持文件，并自动应用 Rstack lint 与格式化修复。修改钩子配置后可运行 `pnpm run prepare` 重新安装钩子。发布命令、AI 环境变量、npm 凭据及 GitHub Actions 部署步骤见[发布与文档部署](./docs/releasing.md)。
+面向仓库贡献者：Node.js 24+、pnpm 12.15.0，根目录 `pnpm install` 后使用 `package.json` 的 `build` / `test` / `typecheck` / `lint` 脚本，单包验证用 `pnpm --filter @slux/<包名> <脚本>`。安装时 `prepare` 会通过 `simple-git-hooks` 设置 `pre-commit` 钩子；提交时 `lint-staged` 只检查暂存的受支持文件，并自动应用 Rstack lint 与格式化修复。修改钩子配置后可运行 `pnpm run prepare` 重新安装钩子。发布命令、Changeset 编写、npm 授信配置及 GitHub Actions 部署步骤见[发布与文档部署](./docs/releasing.md)。
 
 ## 资源
 
