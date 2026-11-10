@@ -1,7 +1,7 @@
 {
   "name": "@slux/rxjs",
   "version": "0.2.4",
-  "description": "slux RxJS bridges",
+  "description": "slux 与 RxJS 的双向桥接",
   "keywords": [
     "slux",
     "rxjs",
@@ -11,26 +11,37 @@
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
+  "homepage": "https://github.com/itmanyong/slux/tree/main/packages/rxjs#readme",
   "author": "itmanyong <itmanyong@gmail.com>",
+  "contributors": [
+    "itmanyong <itmanyong@gmail.com>"
+  ],
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=24"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itmanyong/slux.git",
     "directory": "packages/rxjs"
   },
+  "bugs": {
+    "url": "https://github.com/itmanyong/slux/issues"
+  },
   "files": [
     "dist",
     "README.md",
     "CHANGELOG.md",
-    "package.json"
+    "LICENSE"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -49,7 +60,7 @@
     "lint": "rs lint",
     "fmt": "rs fmt",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist node_modules .turbo"
+    "clean": "node -e \"for(const p of ['dist','.turbo'])require('node:fs').rmSync(p,{recursive:true,force:true})\""
   },
   "dependencies": {
     "@slux/core": "workspace:*",

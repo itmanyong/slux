@@ -6,7 +6,7 @@
 
 | 💡 项        | 值                                                                     | 来源                          |
 | ------------ | ---------------------------------------------------------------------- | ----------------------------- |
-| 包名 / 版本  | `@slux/store` `0.1.0`                                                  | `package.json`                |
+| 包名 / 版本  | `@slux/store` `0.2.4`                                                  | `package.json`                |
 | 模块格式     | ESM（`dist/index.js`）+ CJS（`dist/index.cjs`），带 `.d.ts` / `.d.cts` | `package.json` `exports`      |
 | 运行时依赖   | `@slux/core`、`@slux/shared`                                           | `package.json` `dependencies` |
 | 许可 / 仓库  | MIT / `github.com/itmanyong/slux`（`packages/store`）                  | `package.json`                |
@@ -345,7 +345,7 @@ A：做不到，见「作用域边界」；请按请求建独立 Store。
 
 ## 版本、许可与贡献
 
-- 版本：`0.1.0`（`package.json`）；发布日期与 npm 上的可用版本无法从源码确认。
+- 版本：`0.2.4`（`package.json`）；发布日期与 npm 上的可用版本无法从源码确认。
 - 许可：MIT，见仓库根 [LICENSE](../../LICENSE)。
 - 问题反馈：[GitHub Issues](https://github.com/itmanyong/slux/issues)。
 - 贡献：按仓库根流程走（`changeset` + PR），本地改动提交前需通过 `lint` / `fmt` / `typecheck` / `test`；根 `package.json` 配置了 `lint-staged` 与 `simple-git-hooks`。

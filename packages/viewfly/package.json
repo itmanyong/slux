@@ -1,7 +1,7 @@
 {
   "name": "@slux/viewfly",
   "version": "0.2.4",
-  "description": "slux viewfly bindings",
+  "description": "为 Viewfly 提供的 slux 框架绑定",
   "keywords": [
     "slux",
     "viewfly",
@@ -11,26 +11,37 @@
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
+  "homepage": "https://github.com/itmanyong/slux/tree/main/packages/viewfly#readme",
   "author": "itmanyong <itmanyong@gmail.com>",
+  "contributors": [
+    "itmanyong <itmanyong@gmail.com>"
+  ],
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=24"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itmanyong/slux.git",
     "directory": "packages/viewfly"
   },
+  "bugs": {
+    "url": "https://github.com/itmanyong/slux/issues"
+  },
   "files": [
     "dist",
     "README.md",
     "CHANGELOG.md",
-    "package.json"
+    "LICENSE"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -41,6 +52,7 @@
       }
     },
     "./atom": {
+      "types": "./dist/atom.d.ts",
       "import": {
         "types": "./dist/atom.d.ts",
         "default": "./dist/atom.js"
@@ -51,6 +63,7 @@
       }
     },
     "./store": {
+      "types": "./dist/store.d.ts",
       "import": {
         "types": "./dist/store.d.ts",
         "default": "./dist/store.js"
@@ -61,6 +74,7 @@
       }
     },
     "./proxy": {
+      "types": "./dist/proxy.d.ts",
       "import": {
         "types": "./dist/proxy.d.ts",
         "default": "./dist/proxy.js"
@@ -72,33 +86,36 @@
     },
     "./package.json": "./package.json",
     "./flux": {
-      "require": {
-        "types": "./dist/flux.d.cts",
-        "default": "./dist/flux.cjs"
-      },
+      "types": "./dist/flux.d.ts",
       "import": {
         "types": "./dist/flux.d.ts",
         "default": "./dist/flux.js"
+      },
+      "require": {
+        "types": "./dist/flux.d.cts",
+        "default": "./dist/flux.cjs"
       }
     },
     "./state-machine": {
-      "require": {
-        "types": "./dist/state-machine.d.cts",
-        "default": "./dist/state-machine.cjs"
-      },
+      "types": "./dist/state-machine.d.ts",
       "import": {
         "types": "./dist/state-machine.d.ts",
         "default": "./dist/state-machine.js"
+      },
+      "require": {
+        "types": "./dist/state-machine.d.cts",
+        "default": "./dist/state-machine.cjs"
       }
     },
     "./rxjs": {
-      "require": {
-        "types": "./dist/rxjs.d.cts",
-        "default": "./dist/rxjs.cjs"
-      },
+      "types": "./dist/rxjs.d.ts",
       "import": {
         "types": "./dist/rxjs.d.ts",
         "default": "./dist/rxjs.js"
+      },
+      "require": {
+        "types": "./dist/rxjs.d.cts",
+        "default": "./dist/rxjs.cjs"
       }
     }
   },
@@ -109,7 +126,7 @@
     "lint": "rs lint",
     "fmt": "rs fmt",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist node_modules .turbo"
+    "clean": "node -e \"for(const p of ['dist','.turbo'])require('node:fs').rmSync(p,{recursive:true,force:true})\""
   },
   "peerDependencies": {
     "@slux/atom": "workspace:^",

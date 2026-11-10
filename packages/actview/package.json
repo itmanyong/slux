@@ -1,7 +1,7 @@
 {
   "name": "@slux/actview",
   "version": "0.2.4",
-  "description": "slux actview bindings",
+  "description": "为 ActView 提供的 slux 框架绑定",
   "keywords": [
     "slux",
     "actview",
@@ -11,20 +11,30 @@
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
+  "homepage": "https://github.com/itmanyong/slux/tree/main/packages/actview#readme",
   "author": "itmanyong <itmanyong@gmail.com>",
+  "contributors": [
+    "itmanyong <itmanyong@gmail.com>"
+  ],
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=24"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itmanyong/slux.git",
     "directory": "packages/actview"
   },
+  "bugs": {
+    "url": "https://github.com/itmanyong/slux/issues"
+  },
   "files": [
     "dist",
     "README.md",
     "CHANGELOG.md",
-    "package.json"
+    "LICENSE"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -81,7 +91,7 @@
     "lint": "rs lint",
     "fmt": "rs fmt",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist node_modules .turbo"
+    "clean": "node -e \"for(const p of ['dist','.turbo'])require('node:fs').rmSync(p,{recursive:true,force:true})\""
   },
   "peerDependencies": {
     "@slux/atom": "workspace:^",

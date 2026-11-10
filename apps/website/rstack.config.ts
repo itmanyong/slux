@@ -42,6 +42,9 @@ define.doc({
   description: "框架无关的响应式状态管理工具与框架绑定",
   lang: "zh",
   base: "/slux/",
+  mediumZoom: {
+    selector: '.rspress-doc img:not([src^="https://img.shields.io/badge/"][src*="style=for-the-badge"])',
+  },
   logo: "/logo.svg",
   logoText: "slux",
   icon: "/favicon.svg",

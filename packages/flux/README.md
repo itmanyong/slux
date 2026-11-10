@@ -22,7 +22,7 @@ pnpm add @slux/flux
 
 | 📦 项              | 值                                                                     | 来源                     |
 | ------------------ | ---------------------------------------------------------------------- | ------------------------ |
-| 版本               | `0.1.0`                                                                | `package.json`           |
+| 版本               | `0.2.4`                                                                | `package.json`           |
 | `dependencies`     | `@slux/core` `workspace:*`、`@slux/shared` `workspace:*`               | `package.json`           |
 | `peerDependencies` | 无                                                                     | `package.json`           |
 | 模块格式           | ESM（`dist/index.js`）+ CJS（`dist/index.cjs`），带 `.d.ts` / `.d.cts` | `package.json` `exports` |
@@ -159,7 +159,7 @@ export default {
 
 ## 版本、许可与反馈
 
-- 版本：`0.1.0`（`package.json`）。
+- 版本：`0.2.4`（`package.json`）。
 - 许可：MIT，见仓库根 [LICENSE](../../LICENSE)。
 - 问题反馈：[GitHub Issues](https://github.com/itmanyong/slux/issues)（`package.json` `bugs.url`）。
 

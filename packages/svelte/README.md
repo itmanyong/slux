@@ -210,7 +210,7 @@ export default { plugins: [AutoImport({ imports: [createAutoImportApis()] })] };
 
 ## 版本、许可与反馈
 
-- 版本 `0.1.0`（`package.json`）· 许可 [MIT](../../LICENSE) © itmanyong · 仓库 `github.com/itmanyong/slux`（`packages/svelte`）。
+- 版本 `0.2.4`（`package.json`）· 许可 [MIT](../../LICENSE) © itmanyong · 仓库 `github.com/itmanyong/slux`（`packages/svelte`）。
 - 问题反馈：[GitHub Issues](https://github.com/itmanyong/slux/issues)。
 
 <!-- package-navigation:start -->

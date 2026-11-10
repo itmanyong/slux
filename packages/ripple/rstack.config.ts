@@ -23,6 +23,7 @@ define.lib({
   source: {
     entry: {
       index: "./src/index.ts",
+      root: "./src/root.ts",
       server: "./src/server.ts",
       atom: "./src/atom.ts",
       store: "./src/store.ts",

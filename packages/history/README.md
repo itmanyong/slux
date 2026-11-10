@@ -130,7 +130,7 @@ export default {
 
 | 项       | 值                                                        | 来源                                      |
 | -------- | --------------------------------------------------------- | ----------------------------------------- |
-| 版本     | `0.1.0`                                                   | `package.json`                            |
+| 版本     | `0.2.4`                                                   | `package.json`                            |
 | 许可     | MIT                                                       | `package.json` / [LICENSE](../../LICENSE) |
 | 问题反馈 | [GitHub Issues](https://github.com/itmanyong/slux/issues) | `package.json` `bugs`                     |
 

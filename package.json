@@ -1,12 +1,25 @@
 {
   "name": "slux",
+  "description": "slux 是一组以框架无关的响应式核心为基础的 TypeScript 状态管理包",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itmanyong/slux.git"
+  },
+  "homepage": "https://github.com/itmanyong/slux#readme",
+  "bugs": {
+    "url": "https://github.com/itmanyong/slux/issues"
+  },
+  "author": "itmanyong <itmanyong@gmail.com>",
+  "keywords": [
+    "slux",
+    "state-management",
+    "reactive",
+    "signals",
+    "typescript"
+  ],
   "private": true,
   "type": "module",
-  "workspaces": [
-    "packages/*",
-    "apps/*",
-    "examples/*"
-  ],
   "scripts": {
     "dev": "turbo run dev --concurrency=32",
     "build": "turbo run build",
@@ -18,7 +31,7 @@
     "typecheck": "turbo run typecheck",
     "prepare": "simple-git-hooks",
     "changeset": "changeset",
-    "clean": "turbo run clean && rm -rf node_modules",
+    "clean": "turbo run clean && node -e \"require('node:fs').rmSync('node_modules',{recursive:true,force:true})\"",
     "version:packages": "node scripts/version-packages.mjs",
     "changelog:generate": "node scripts/generate-changelogs.mjs",
     "release": "node scripts/release.mjs",

@@ -47,7 +47,7 @@ pnpm release
 
 根和各包 CHANGELOG 都直接以版本记录开头，不再添加包名、项目标题或生成说明。随后发布命令更新锁文件，继续执行其余检查。尚未升版时修改 `.changeset/*.md`；修订已经发布的历史文案时修改 `releases/sources/vX.Y.Z.md` 后重生成，不直接修改生成输出。
 
-随后运行 `pnpm generate:apis` 同步各包自动导入 API 清单，再运行 `pnpm sync:package-navigation` 同步包导航，最后运行发布脚本测试、lint、完整构建、类型检查、项目测试及文档构建。发行说明会先于文档构建生成，确保新版本可进入文档站。
+随后运行 `pnpm generate:apis` 同步各包自动导入 API 清单，再运行 `pnpm sync:package-navigation` 同步包导航与各包 README 版本号，最后运行发布脚本测试、lint、完整构建、类型检查、项目测试及文档构建。发行说明会先于文档构建生成，确保新版本可进入文档站。
 
 最后一次确认后，脚本提交 `chore(release): vX.Y.Z`，创建 `release/vX.Y.Z` 标签，并原子推送 `main` 和标签。确认前取消或检查失败时，生成的版本文件留在工作区供检查。如果本地提交和标签已创建但推送失败，解决问题后运行 `git push --atomic origin main release/vX.Y.Z`，不要重新升版。
 

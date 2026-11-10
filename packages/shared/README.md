@@ -8,7 +8,7 @@
 
 | 💡 项            | 值                                                                | 来源                     |
 | ---------------- | ----------------------------------------------------------------- | ------------------------ |
-| 包名 / 版本      | `@slux/shared` `0.1.0`                                            | `package.json`           |
+| 包名 / 版本      | `@slux/shared` `0.2.4`                                            | `package.json`           |
 | 运行时依赖       | 无（没有 `dependencies` 字段）                                    | `package.json`           |
 | peer / 可选 peer | 无                                                                | `package.json`           |
 | 子入口           | 无，只有 `.` 与 `./package.json`                                  | `package.json` `exports` |
@@ -240,7 +240,7 @@ export default {
 
 ## 版本、许可与反馈
 
-- 📚 版本：`0.1.0`（`package.json`）。
+- 📚 版本：`0.2.4`（`package.json`）。
 - 许可：MIT，见仓库根 [LICENSE](../../LICENSE)。
 - 问题反馈：[GitHub Issues](https://github.com/itmanyong/slux/issues)（`package.json` `bugs.url`）。
 

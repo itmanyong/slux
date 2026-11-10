@@ -213,7 +213,7 @@ export default {
 
 ## 版本、许可与反馈
 
-- 版本：`0.1.0`（`package.json`）；许可：[MIT](../../LICENSE) © itmanyong。
+- 版本：`0.2.4`（`package.json`）；许可：[MIT](../../LICENSE) © itmanyong。
 - 问题反馈：[GitHub Issues](https://github.com/itmanyong/slux/issues)。
 - 通用约定与本地开发命令见 [仓库根 README](../../README.md)。
 

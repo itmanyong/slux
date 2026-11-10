@@ -1,7 +1,7 @@
 {
   "name": "@slux/state-machine",
   "version": "0.2.4",
-  "description": "基于 slux core 的轻量平面有限状态机",
+  "description": "基于 @slux/core 的轻量平面有限状态机",
   "sideEffects": false,
   "keywords": [
     "slux",
@@ -17,8 +17,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=24"
+  },
   "license": "MIT",
-  "homepage": "https://www.npmjs.com/package/@slux/state-machine",
+  "homepage": "https://github.com/itmanyong/slux/tree/main/packages/state-machine#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itmanyong/slux.git",
@@ -32,13 +35,14 @@
     "dist",
     "README.md",
     "CHANGELOG.md",
-    "package.json"
+    "LICENSE"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -57,7 +61,7 @@
     "lint": "rs lint",
     "fmt": "rs fmt",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist node_modules .turbo"
+    "clean": "node -e \"for(const p of ['dist','.turbo'])require('node:fs').rmSync(p,{recursive:true,force:true})\""
   },
   "dependencies": {
     "@slux/core": "workspace:*",

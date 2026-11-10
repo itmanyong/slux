@@ -17,8 +17,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=24"
+  },
   "license": "MIT",
-  "homepage": "https://www.npmjs.com/package/@slux/storage",
+  "homepage": "https://github.com/itmanyong/slux/tree/main/packages/storage#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itmanyong/slux.git",
@@ -32,13 +35,14 @@
     "dist",
     "README.md",
     "CHANGELOG.md",
-    "package.json"
+    "LICENSE"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -57,7 +61,7 @@
     "lint": "rs lint",
     "fmt": "rs fmt",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist node_modules .turbo"
+    "clean": "node -e \"for(const p of ['dist','.turbo'])require('node:fs').rmSync(p,{recursive:true,force:true})\""
   },
   "dependencies": {
     "@slux/store": "workspace:*",

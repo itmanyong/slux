@@ -8,7 +8,7 @@ atom 对象本身只是「配置描述 + 默认作用域的代理」：真正的
 
 | 💡 项            | 值                                                                | 来源                          |
 | ---------------- | ----------------------------------------------------------------- | ----------------------------- |
-| 包名 / 版本      | `@slux/atom` `0.1.0`                                              | `package.json`                |
+| 包名 / 版本      | `@slux/atom` `0.2.4`                                              | `package.json`                |
 | 运行时依赖       | `@slux/core`、`@slux/shared`（`workspace:*`）                     | `package.json` `dependencies` |
 | peer / 可选 peer | 无                                                                | `package.json`                |
 | 子入口           | 无，只有 `.` 与 `./package.json`                                  | `package.json` `exports`      |
@@ -271,7 +271,7 @@ const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "deriv
 
 ## 版本、许可与反馈
 
-- 版本：`0.1.0`（`package.json`）。
+- 版本：`0.2.4`（`package.json`）。
 - 许可：MIT，见仓库根 [LICENSE](../../LICENSE)。
 - 问题反馈：[GitHub Issues](https://github.com/itmanyong/slux/issues)（`package.json` `bugs.url`）。
 

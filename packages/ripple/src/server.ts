@@ -10,3 +10,6 @@ export function useSignal<T>(source: Subscribable<T>): Derived<T> {
   const scope = useScopeContext();
   return track(() => (scope ? scope.get(source) : source.get()));
 }
+
+// 与客户端入口保持相同的导出集合，否则 exports["."] 的合并类型会多出运行时不存在的 API。
+export { createAutoImportApis } from "./auto-import-api.js";

@@ -182,7 +182,7 @@ export default {
 
 ## 版本、许可与反馈
 
-- 版本：`0.1.0`（`package.json`）。
+- 版本：`0.2.4`（`package.json`）。
 - 许可：MIT，见仓库根 [LICENSE](../../LICENSE)。
 - 问题反馈：通过 [issues](https://github.com/itmanyong/slux/issues) 提交（`package.json` `repository`）。
 - 通用约定（子入口分布、写入方式、桥接生命周期、Scope、SSR）与本地开发命令见仓库根 [README](../../README.md) 的「框架适配 · 通用约定」与「本地开发」，本文不重复。
