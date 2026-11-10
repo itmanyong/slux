@@ -16,6 +16,7 @@
       "outputs": ["dist/**"]
     },
     "@slux/kit-example#build": {
+      "dependsOn": ["^build"],
       "outputs": []
     },
     "@slux/shell-example#build": {
