@@ -45,7 +45,7 @@
   "lint-staged": {
     "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}": [
       "rs lint --fix",
-      "rs fmt --write"
+      "rs fmt --write --ignore-path examples/vue-rsbuild-ts/.gitignore --ignore-path examples/svelte-rsbuild-ts/.gitignore --no-error-on-unmatched-pattern"
     ],
     "*.{css,html,vue,json,md,mdx,yml,yaml}": [
       "rs fmt --write"
