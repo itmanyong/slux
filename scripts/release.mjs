@@ -1,11 +1,12 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { createInterface } from "node:readline/promises";
-import { parseChangesetPackages, renderReleaseNotes, selectChangedPackages, selectLatestReleaseTag } from "./release-lib.mjs";
+import { parseChangesetPackages, selectChangedPackages, selectLatestReleaseTag } from "./release-lib.mjs";
+import { collectReleaseHistory, writeReleaseNotes } from "./release-notes.mjs";
 
 const root = resolve(import.meta.dirname, "..");
-const help = `用法：pnpm release\n\n请先自行撰写并提交 Changeset。脚本确认变更日志后，升级统一版本、生成自动导入 API 清单、同步包导航、验证、提交并推送发布标签。GitHub Actions 会直接发布 npm 包。\n`;
+const help = `用法：pnpm release\n\n请先自行撰写并提交 Changeset。脚本确认变更日志后，升级统一版本、生成分类发行说明和根 CHANGELOG、生成自动导入 API 清单、同步包导航、验证、提交并推送发布标签。GitHub Actions 会直接发布 npm 包、公开 GitHub Release 并上传版本包和校验清单。\n`;
 
 function output(command, args, cwd = root) {
   return execFileSync(command, args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 32 * 1024 * 1024 }).trim();
@@ -76,6 +77,10 @@ async function main() {
     if (versions.size !== 1 || !versions.has(version) || previousVersions.has(version))
       throw new Error("Changesets 没有将所有发布包升级到同一新版本");
 
+    const tag = `release/v${version}`;
+    if (output("git", ["tag", "--list", tag])) throw new Error(`${tag} 标签已存在`);
+    const { commits } = collectReleaseHistory(root, previousTag);
+    writeReleaseNotes(root, version, pendingChangesets, { commits, previousTag, tag });
     run("pnpm", ["generate:apis"]);
     run("pnpm", ["sync:package-navigation"]);
     run("pnpm", ["test:release"]);
@@ -83,17 +88,8 @@ async function main() {
     run("pnpm", ["build"]);
     run("pnpm", ["typecheck"]);
     run("pnpm", ["test"]);
-    const tag = `release/v${version}`;
-    if (output("git", ["tag", "--list", tag])) throw new Error(`${tag} 标签已存在`);
-    mkdirSync(resolve(root, "releases"), { recursive: true });
-    writeFileSync(
-      resolve(root, "releases", `v${version}.md`),
-      renderReleaseNotes(
-        version,
-        pendingChangesets.map(({ content }) => content),
-      ),
-    );
-    run("git", ["add", "--", ".changeset", "packages", "pnpm-lock.yaml", "releases"]);
+    run("pnpm", ["docs:build"]);
+    run("git", ["add", "--", ".changeset", "packages", "pnpm-lock.yaml", "releases", "CHANGELOG.md"]);
     console.log(`\n准备提交 ${tag}：\n${output("git", ["diff", "--cached", "--stat"])}`);
     if (!(await confirm(rl, "提交、打标签并推送 main 和标签"))) {
       console.log("已取消推送。版本文件和发行说明留在工作区，供你检查。");

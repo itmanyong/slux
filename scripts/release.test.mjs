@@ -35,6 +35,7 @@ test("没有可用的 origin/main 时停止在版本修改之前", () => {
     mkdirSync(resolve(dir, "scripts"));
     copyFileSync(script, resolve(dir, "scripts/release.mjs"));
     copyFileSync(resolve(import.meta.dirname, "release-lib.mjs"), resolve(dir, "scripts/release-lib.mjs"));
+    copyFileSync(resolve(import.meta.dirname, "release-notes.mjs"), resolve(dir, "scripts/release-notes.mjs"));
     writeFileSync(resolve(dir, "README.md"), "fixture\n");
     spawnSync("git", ["-C", dir, "add", "."], { encoding: "utf8" });
     spawnSync("git", ["-C", dir, "-c", "user.name=Release Test", "-c", "user.email=release@example.com", "commit", "-qm", "fixture"], {
