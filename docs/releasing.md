@@ -21,7 +21,7 @@
 pnpm release
 ```
 
-脚本先检查 Git 工作区和远端版本，再列出本次改动包及待发布 Changeset。确认变更日志已经写好后，脚本执行 `changeset status` 和 `changeset version`，更新锁文件，运行 `pnpm generate:apis` 同步各包自动导入 API 清单，再运行发布脚本测试、lint、类型检查、项目测试和构建。发行说明直接取自已核对的 Changeset 正文，保存在 `releases/vX.Y.Z.md`；各包 `CHANGELOG.md` 由 Changesets 生成。
+脚本先检查 Git 工作区和远端版本，再列出本次改动包及待发布 Changeset。确认变更日志已经写好后，脚本执行 `changeset status` 和 `changeset version`，更新锁文件，运行 `pnpm generate:apis` 同步各包自动导入 API 清单，再运行 `pnpm sync:package-navigation` 将根 README 的包导航同步到各包 README 末尾，随后运行发布脚本测试、lint、类型检查、项目测试和构建。发行说明直接取自已核对的 Changeset 正文，保存在 `releases/vX.Y.Z.md`；各包 `CHANGELOG.md` 由 Changesets 生成。
 
 最后一次确认后，脚本提交 `chore(release): vX.Y.Z`，创建 `release/vX.Y.Z` 标签，并原子推送 `main` 和标签。确认前取消或检查失败时，生成的版本文件留在工作区供检查。如果本地提交和标签已创建但推送失败，解决问题后运行 `git push --atomic origin main release/vX.Y.Z`，不要重新升版。
 
