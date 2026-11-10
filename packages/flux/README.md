@@ -2,6 +2,8 @@
 
 🔄 基于 `@slux/core` 的 reducer + dispatch 状态范式层。内部只持有一个 core `Signal<State>` 作为状态与通知源：`dispatch(action)` 同步经过中间件链与 reducer，把 reducer 返回的完整新状态写入该 signal；依赖追踪、批处理与相等性判定全部复用 core。**不依赖 Redux，也不是 Redux 的兼容实现**。
 
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/flux) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/flux) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/flux/)
+
 ## 特性与适用场景
 
 | 🧭 场景                                                    | 是否适合 | 说明                                                                       |

@@ -2,6 +2,8 @@
 
 🔌 把 `@slux/core` 及 6 个范式包的状态接入 **Vitarx 4.1**（peer 为 `vitarx ^4.1.2`）。读取绑定统一以**只读浅 Ref**（`Readonly<ShallowRef<T>>`，用 `.value` 读取）暴露，写入始终走原实例，绑定不提供 setter 也不创建副本。与 ActView 版的关键差别在桥接实现：Vitarx 版在 `isSSR()` 为真时直接返回快照 Ref、不订阅；客户端要求存在 `getActiveScope()`，并**立即订阅**后交给 `onScopeDispose` 清理。本包提供 **ESM + CJS** 双入口。
 
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/vitarx) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/vitarx) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/vitarx/)
+
 ## 特性与适用场景
 
 | 🧭 场景                                                                   | 是否适用 | 说明                                           |

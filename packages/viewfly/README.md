@@ -2,6 +2,8 @@
 
 🔌 把 `@slux/core` 及 6 个范式包的状态接入 **Viewfly 3**（peer 为 `@viewfly/core ^3.0.6`）。读取绑定统一以 **Accessor**（`Accessor<T> = () => T`，**调用函数**读取）暴露，写入始终走原实例，绑定不提供 setter 也不创建副本。与其它同构适配包的关键差别：Viewfly 版基于 `@viewfly/core` 的 `createSignal`，在 `onMounted` 的**下一微任务**才建立订阅以避开挂载阶段重置更新标记，且不要求原生 effect scope。本包提供 **ESM + CJS** 双入口。
 
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/viewfly) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/viewfly) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/viewfly/)
+
 ## 特性与适用场景
 
 | 🧭 场景                                                                  | 是否适用 | 说明                                         |

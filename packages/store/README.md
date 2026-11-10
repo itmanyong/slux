@@ -2,6 +2,8 @@
 
 🗃️ 把**关联状态与 action 放在同一个对象**里管理。读写、批处理与派生依赖复用 `@slux/core` 的响应式运行时，本包只提供 Store 范式层：一个 `createStore`、一组类型、一条可选中间件链。
 
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/store) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/store) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/store/)
+
 | 💡 项        | 值                                                                     | 来源                          |
 | ------------ | ---------------------------------------------------------------------- | ----------------------------- |
 | 包名 / 版本  | `@slux/store` `0.1.0`                                                  | `package.json`                |

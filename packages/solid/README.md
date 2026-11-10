@@ -2,6 +2,8 @@
 
 🔌 把 `@slux/core` 的响应式状态接入 Solid 1.9 的细粒度响应式系统。核心绑定 `useSignal` 返回 Solid 原生 `Accessor<T>`（内部由 `createSignal` 提供），在 JSX 或响应式计算里调用 `value()` 读取；主入口另提供 core `Scope` 的 Context 封装与 `createAutoImportApis`。六个范式各通过独立子入口提供同样返回 `Accessor` 的绑定。
 
+[![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/itmanyong/slux/tree/main/packages/solid) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@slux/solid) [![在线文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge)](https://itmanyong.github.io/slux/packages/solid/)
+
 跨框架一致的子入口划分、Flux / 状态机 / RxJS 的写入与桥接生命周期、Scope 显式覆盖语义与 SSR 通用约束见仓库根 [README](../../README.md) 的「框架适配 · 通用约定」；仓库内构建与验证命令见「本地开发」，本文不再重复。
 
 ## 特性与适用场景

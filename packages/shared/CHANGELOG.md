@@ -1,3 +1,9 @@
+## 0.2.2
+
+### Document 📖
+
+- docs(shared): 按本包范围重建历史更新日志，修正分类标题与条目前缀，并为 README 补充语义 Emoji；在介绍下添加 GITHUB、NPM 和在线文档按钮。
+
 ## 0.2.1
 
 ### Other Changes 🔧
