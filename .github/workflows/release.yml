@@ -44,6 +44,11 @@ jobs:
           test "$(node -p 'require("./packages/core/package.json").version')" = "${RELEASE_TAG#release/v}"
           test -f "releases/v${RELEASE_TAG#release/v}.md"
       - run: pnpm install --frozen-lockfile
+      - run: pnpm generate:apis
+      - name: Check generated API lists are committed
+        run: |
+          git status --short -- packages
+          test -z "$(git status --porcelain -- packages)"
       - run: pnpm test:release
       - run: pnpm lint
       - run: pnpm typecheck

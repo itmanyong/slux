@@ -5,7 +5,7 @@ import { createInterface } from "node:readline/promises";
 import { parseChangesetPackages, renderReleaseNotes, selectChangedPackages, selectLatestReleaseTag } from "./release-lib.mjs";
 
 const root = resolve(import.meta.dirname, "..");
-const help = `用法：pnpm release\n\n请先自行撰写并提交 Changeset。脚本确认变更日志后，升级统一版本、验证、提交并推送发布标签。GitHub Actions 会直接发布 npm 包。\n`;
+const help = `用法：pnpm release\n\n请先自行撰写并提交 Changeset。脚本确认变更日志后，升级统一版本、生成自动导入 API 清单、验证、提交并推送发布标签。GitHub Actions 会直接发布 npm 包。\n`;
 
 function output(command, args, cwd = root) {
   return execFileSync(command, args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 32 * 1024 * 1024 }).trim();
@@ -76,6 +76,7 @@ async function main() {
     if (versions.size !== 1 || !versions.has(version) || previousVersions.has(version))
       throw new Error("Changesets 没有将所有发布包升级到同一新版本");
 
+    run("pnpm", ["generate:apis"]);
     run("pnpm", ["test:release"]);
     run("pnpm", ["lint"]);
     run("pnpm", ["typecheck"]);

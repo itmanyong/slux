@@ -1,6 +1,6 @@
 import { generateBatchAutoImports } from "@slux/shared";
 
-const allImportApis: string[] = ["ScopeProvider", "SLUX_SCOPE", "useScope", "useSignal"];
+const allImportApis: string[] = ["SLUX_SCOPE", "ScopeProvider", "useScope", "useSignal"];
 
 export const createAutoImportApis = (prefix: string = "") => {
   return generateBatchAutoImports([

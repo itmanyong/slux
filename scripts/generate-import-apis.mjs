@@ -81,6 +81,8 @@ function collectRuntimeExports(api, program, fileName, visited = new Set()) {
   }
   // 默认导出没有可用于命名自动导入的名称。
   names.delete("default");
+  // 生成清单的工厂函数需要由使用者显式导入，不能登记为自动导入 API。
+  names.delete("createAutoImportApis");
   return [...names].sort();
 }
 
