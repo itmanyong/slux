@@ -1,2 +1,34 @@
 ---
+"@slux/actview": patch
+"@slux/angular": patch
+"@slux/atom": patch
+"@slux/core": patch
+"@slux/devtools": patch
+"@slux/flux": patch
+"@slux/history": patch
+"@slux/inferno": patch
+"@slux/octane": patch
+"@slux/preact": patch
+"@slux/proxy": patch
+"@slux/react": patch
+"@slux/ripple": patch
+"@slux/rxjs": patch
+"@slux/shared": patch
+"@slux/solid": patch
+"@slux/state-machine": patch
+"@slux/storage": patch
+"@slux/store": patch
+"@slux/svelte": patch
+"@slux/tab-sync": patch
+"@slux/telemetry": patch
+"@slux/viewfly": patch
+"@slux/vitarx": patch
+"@slux/vue": patch
 ---
+
+基于 `v0.1.0` 之后的改动，完善包文档、交互示例和发布流程。
+
+- 为 25 个包的 README 补充统一导航；文档站增加各包更新日志、版本发行说明和可在站内体验的示例入口。
+- 整理示例应用的共享外壳与主题交互，并将示例图标替换为透明背景的 SVG。
+- 修正自动导入 API 清单生成规则，排除需要显式调用的 `createAutoImportApis` 工厂函数，并统一 Viewfly 清单顺序。
+- 发布工作流改为 GitHub OIDC 授信发布：预先打包各包、独立执行发布任务，并在发布成功后创建 GitHub Release 草稿。
