@@ -6,12 +6,14 @@
   "description": "示例页面外壳：报头、分组索引、瀑布流卡片、日志/源码面板与主题，供全部示例复用",
   "exports": {
     ".": "./src/index.ts",
+    "./theme": "./src/theme.ts",
     "./styles.css": "./src/styles.css"
   },
   "scripts": {
     "build": "tsc --noEmit",
     "lint": "rs lint",
     "fmt": "rs fmt",
+    "test": "rs test",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

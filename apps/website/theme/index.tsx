@@ -5,10 +5,14 @@ import { usePage } from "@rspress/core/runtime";
 import { Layout as OriginalLayout, Link } from "@rspress/core/theme-original";
 
 export * from "@rspress/core/theme-original";
+export { ExampleFrame } from "./ExampleFrame";
+export { RemoteMarkdown } from "./RemoteMarkdown";
 
 function PackageLines() {
   const { page } = usePage();
-  const match = /^\/packages\/(?!(?:auto-import|overview-[^/]+)(?:\/|$))([^/]+)(?:\/(api|types|readme|demo))?\/?$/.exec(page.routePath);
+  const match = /^\/packages\/(?!(?:auto-import|overview-[^/]+)(?:\/|$))([^/]+)(?:\/(api|types|readme|demo|changelog))?\/?$/.exec(
+    page.routePath,
+  );
   const originalRef = useRef<HTMLElement>(null);
   const [floating, setFloating] = useState(false);
   const [floatingPosition, setFloatingPosition] = useState({ left: 0, top: 0 });
@@ -69,6 +73,7 @@ function PackageLines() {
     { id: "types", label: "类型定义", href: `/packages/${name}/types` },
     { id: "readme", label: "README 原文", href: `/packages/${name}/readme` },
     { id: "demo", label: "演示示例", href: `/packages/${name}/demo` },
+    { id: "changelog", label: "更新日志", href: `/packages/${name}/changelog` },
   ];
 
   return (

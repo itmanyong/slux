@@ -4,7 +4,7 @@
 
 `limu@4.2.1.patch` 修复 `getMayProxiedVal` 中的 `inputKey || ''`：Map 使用真实键，其他容器维持原有行为。原实现将 `0`、`false`、`null`、`undefined`、`NaN` 错当成空字符串键，导致提交时写错位置、覆盖空字符串键的值，或留下已撤销代理。补丁同时保留键的类型。
 
-补丁通过 `pnpm-workspace.yaml` 的 `patchedDependencies` 固定到 limu 4.2.1，本仓库安装时自动应用。`core` 将 `limu` 声明为 peer 依赖，ESM/CJS 产物不会包含 limu 源码；使用方若需保证 `Map` 假值键行为，应在自身项目应用本补丁。pnpm 项目可复制补丁文件，并在 `pnpm-workspace.yaml` 中配置相同的 `patchedDependencies` 条目。
+补丁通过 `pnpm-workspace.yaml` 的 `patchedDependencies` 固定到 limu 4.2.1，本仓库安装时自动应用。补丁不会随 `@slux/core` 传播；使用方若需保证 `Map` 假值键行为，应在自身项目应用本补丁。pnpm 项目可复制补丁文件，并在 `pnpm-workspace.yaml` 中配置相同的 `patchedDependencies` 条目。
 
 ### 重建补丁
 

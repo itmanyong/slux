@@ -110,3 +110,28 @@ rs build              # vite 系为 vite build
 - 已定稿的 Chakra-teal 视觉全部由外壳提供，demo.css 只写演示组件自身（读数大数字用 `--font-mono`，按钮 `.fd-btn` / `.fd-btn.is-primary`）。
 - 可用 CSS 变量见 `examples/_shell/src/styles/tokens.css`（--accent/--ink/--panel/--line/--radius-md/--font-mono 等）。
 - 不修改 `_shell`、`core-rsbuild-ts`、`react-rsbuild-ts` 及其他示例目录——只动自己名下的目录。
+
+## 8. iframe 主题桥（所有示例共用，禁止各自复制实现）
+
+上下层 iframe 交互只有一份实现：`@slux/shell-example/theme`（也可从 `@slux/shell-example` 引入同名导出）。
+
+- 24 个走 `createExamplePage` 的示例：外壳内部自动调用 `initTheme()`。
+- `core-rsbuild-ts`（自带外壳 UI）：入口显式 `import { initTheme } from "@slux/shell-example/theme"` 并调用。
+- 自建外壳的页面也必须调用 `initTheme()` 或 `createThemeBridge()`（后者返回卸载函数，便于测试）。
+
+协议常量同样从该模块导出，总览页 `_gallery` 复用，避免多处硬编码：
+
+| 通道 | 值                                                                 | 作用                                                                                                                                          |
+| ---- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| URL  | `?theme=light\|dark`                                               | 指定首次加载的主题；非 iframe 场景下切换主题后也会写回该参数（嵌入态由父页面掌管，自身不写）                                                  |
+| URL  | `?embed=1`                                                         | 嵌入总览时隐藏示例自身顶栏                                                                                                                    |
+| 消息 | `{ type: "THEME_CHANGED", payload: { theme: "light" \| "dark" } }` | ① 文档、总览、示例之间双向同步主题；② 同源多标签页经 `BroadcastChannel("slux-theme-sync")` 互相同步（只比对 `type` 对得上即应用，不校验来源） |
+| 消息 | `slux-example-theme-request`                                       | 下层加载后向上层索取当前主题                                                                                                                  |
+| 事件 | `slux-theme-change`                                                | 主题变化后刷新示例按钮文案                                                                                                                    |
+
+- 初始主题优先级：`?theme=` > localStorage > `prefers-color-scheme`。
+- **非 iframe 场景（独立运行）切换主题**：更新 `data-theme`、写回 `?theme=` 地址栏（刷新后保持）、并广播给同来源其他标签页；**嵌入场景（在总览 iframe 内）**：地址栏由父页面掌管，只把主题回传给父页面，不写自身 URL。
+- **同源多标签页同步**：通过 `BroadcastChannel("slux-theme-sync")`。任一标签页本地切换主题即广播 `THEME_CHANGED`；其余标签页收到后只要 `type` 对得上就应用（不依赖来源），并同样写回各自的 `?theme=`；收到方不再二次转发，避免回环。总览（:9000）与示例（:90xx）各按来源独立成网，互不干扰。
+- 接收消息时先校验主题值；主题相同则不更新，也不回传 / 不重广播。
+- 站内切换调用 `toggleTheme()` / `setTheme()`，嵌入时向父页面发送相同的 `THEME_CHANGED` 消息；父页面负责继续转发。
+- 测试：`examples/_shell/__tests__/theme.test.ts` 覆盖初始参数、双向消息、站内切换（含写回地址栏）与同源多标签页同步。

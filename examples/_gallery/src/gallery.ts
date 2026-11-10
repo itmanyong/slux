@@ -5,11 +5,16 @@
  *   两者共用同一个 <select>，展开后下拉框依旧可用，切换只改变高度，不重置位置。
  * - 浮层在收起 / 展开两种状态下都能拖拽；右侧按钮用上下箭头切换，没有「×」这类关闭语义。
  * - 选中项在主区域以 iframe 全局渲染；iframe 地址带 embed=1（隐藏示例自身顶栏）与 theme。
- * - 主题由总览顶栏统一控制，通过 ?theme= 与 postMessage 同步给不同端口的 iframe。
+ * - 总览本身被嵌入文档站时（?embed=1 或处于 iframe 中），同样隐藏自己的顶部栏，由外层接管。
+ * - URL 的 ?theme= 决定初始主题；独立运行时切换主题会写回该参数（刷新后保持），并通过 BroadcastChannel 与同源其他标签页互相同步；嵌入文档站时由外层接管。
  * - 开发时展示端口；嵌入文档站时使用同级静态路径，并隐藏开发端口。
  *
  * manifest.json 是端口的唯一事实源，与根 scripts/run-examples.mjs 共享。
+ * iframe 协议常量与示例共用 @slux/shell-example/theme，避免两份硬编码。
  */
+
+import { EMBED_FLAG, EMBED_PARAM, isEmbedded, REQUEST_MESSAGE, SYNC_MESSAGE, THEME_CHANNEL, THEME_PARAM } from "@slux/shell-example/theme";
+import type { Theme } from "@slux/shell-example/theme";
 
 export interface ManifestExample {
   dir: string;
@@ -25,11 +30,9 @@ export interface Manifest {
   examples: ManifestExample[];
 }
 
-export type Theme = "light" | "dark";
+export type { Theme } from "@slux/shell-example/theme";
 
 const THEME_KEY = "slux-gallery-theme";
-/** 与 example-shell / core 的 theme.ts 约定一致，跨端口 iframe 用 postMessage 同步。 */
-const SYNC_MESSAGE = "slux-example-theme";
 const DEFAULT_LABEL = "core";
 
 /** 文档站把总览与各示例放在同一 examples 目录；独立开发时仍使用各自的端口。 */
@@ -47,12 +50,12 @@ export function exampleUrl(example: ManifestExample, galleryHref = window.locati
 
 /** 嵌在总览里：隐藏示例自己的顶部操作栏，并指定初始主题。 */
 export function embedUrl(example: ManifestExample, theme: Theme, galleryHref = window.location.href): string {
-  return `${exampleUrl(example, galleryHref)}?embed=1&theme=${theme}`;
+  return `${exampleUrl(example, galleryHref)}?${EMBED_PARAM}=${EMBED_FLAG}&${THEME_PARAM}=${theme}`;
 }
 
 /** 新窗口打开：完整示例页（含自身顶栏），仅带上主题参数。 */
 export function externalUrl(example: ManifestExample, theme: Theme, galleryHref = window.location.href): string {
-  return `${exampleUrl(example, galleryHref)}?theme=${theme}`;
+  return `${exampleUrl(example, galleryHref)}?${THEME_PARAM}=${theme}`;
 }
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, text?: string): HTMLElementTagNameMap[K] {
@@ -180,20 +183,47 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
   let dark = false;
   let current: ManifestExample | null = null;
 
+  /** 同源多标签页广播通道（与示例共用 THEME_CHANNEL，各标签页独立成网）。 */
+  let themeChannel: BroadcastChannel | null = null;
+  try {
+    themeChannel = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(THEME_CHANNEL) : null;
+  } catch {
+    themeChannel = null;
+  }
+
   const themeName = (): Theme => (dark ? "dark" : "light");
   const isCollapsed = (): boolean => app.classList.contains("collapsed");
 
-  /** 把当前主题推给 iframe（不同端口属跨域，postMessage 可跨源投递）。 */
-  function broadcastTheme(): void {
+  /** 切换主题与示例加载完成时都发消息；由接收方判断是否需要应用。 */
+  function syncFrameTheme(): void {
+    const win = frame.contentWindow;
+    if (!win) return;
+    win.postMessage({ type: SYNC_MESSAGE, payload: { theme: themeName() } }, "*");
+  }
+  frame.addEventListener("load", syncFrameTheme);
+
+  /** 独立运行时把主题写回地址栏，刷新后保持。 */
+  function syncGalleryUrl(): void {
     try {
-      frame.contentWindow?.postMessage({ type: SYNC_MESSAGE, theme: themeName() }, "*");
+      const url = new URL(window.location.href);
+      url.searchParams.set(THEME_PARAM, themeName());
+      window.history.replaceState(null, "", url);
     } catch {
-      // iframe 尚未加载或已被卸载，忽略即可。
+      /* 地址不可写时忽略 */
     }
   }
-  frame.addEventListener("load", broadcastTheme);
 
-  function applyTheme(nextDark: boolean, persist = true): void {
+  interface ThemeApplyOptions {
+    persist?: boolean;
+    fromFrame?: boolean;
+    fromParent?: boolean;
+    local?: boolean;
+    writeUrl?: boolean;
+  }
+
+  function applyTheme(nextDark: boolean, opts: ThemeApplyOptions = {}): void {
+    const { persist = true, fromFrame = false, fromParent = false, local = false, writeUrl = false } = opts;
+    if (dark === nextDark && document.documentElement.dataset.theme === themeName()) return;
     dark = nextDark;
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     themeBtn.textContent = dark ? "浅色" : "深色";
@@ -204,10 +234,58 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
         /* 隐私模式等场景忽略 */
       }
     }
-    broadcastTheme();
+    // 来自示例自身的消息不再回灌，避免震荡；其余情况推给当前示例 iframe。
+    if (!fromFrame) syncFrameTheme();
+    // 嵌入文档站时把主题通知外层父页（来自父页的消息不再回传）。
+    if (!fromParent && window.parent !== window) {
+      window.parent.postMessage({ type: SYNC_MESSAGE, payload: { theme: themeName() } }, "*");
+    }
+    // 独立运行时写回地址栏（本地切换或收到其他标签页广播都对齐，刷新后保持）；
+    // 本地切换才广播给同源其他标签页，远程消息不二次转发。
+    if ((local || writeUrl) && window.parent === window) syncGalleryUrl();
+    if (local) broadcastTheme();
     if (current) openLink.href = externalUrl(current, themeName());
   }
-  themeBtn.addEventListener("click", () => applyTheme(!dark));
+
+  /** 向其他同源标签页广播当前主题（只比对 type）。 */
+  function broadcastTheme(): void {
+    if (!themeChannel) return;
+    themeChannel.postMessage({ type: SYNC_MESSAGE, payload: { theme: themeName() } });
+  }
+
+  themeBtn.addEventListener("click", () => applyTheme(!dark, { local: true }));
+
+  /** 只接收文档父页或当前示例的消息。 */
+  window.addEventListener("message", (event: MessageEvent) => {
+    if (!root.isConnected) return;
+    if (event.source !== frame.contentWindow && (window.parent === window || event.source !== window.parent)) return;
+    const data: unknown = event.data;
+    if (typeof data !== "object" || data === null) return;
+    const message = data as { type?: unknown; payload?: { theme?: unknown } };
+    if (message.type === REQUEST_MESSAGE && event.source === frame.contentWindow) {
+      syncFrameTheme();
+    } else if (message.type === SYNC_MESSAGE && (message.payload?.theme === "light" || message.payload?.theme === "dark")) {
+      applyTheme(message.payload.theme === "dark", {
+        persist: true,
+        fromFrame: event.source === frame.contentWindow,
+        fromParent: event.source === window.parent,
+      });
+    }
+  });
+
+  /** 来自其他同源标签页的主题广播：type 对得上即应用，不再向外转发。 */
+  const onThemeChannel = (event: MessageEvent): void => {
+    if (!root.isConnected) return;
+    const data: unknown = event.data;
+    if (typeof data !== "object" || data === null) return;
+    const message = data as { type?: unknown; payload?: { theme?: unknown } };
+    if (message.type !== SYNC_MESSAGE) return;
+    const theme = message.payload?.theme;
+    if (theme !== "light" && theme !== "dark") return;
+    // 远程标签页变更：应用并对齐地址栏，但不再广播，避免回环。
+    applyTheme(theme === "dark", { persist: true, writeUrl: window.parent === window });
+  };
+  if (themeChannel) themeChannel.addEventListener("message", onThemeChannel);
 
   function select(dir: string, updateHash = true): boolean {
     const item = manifest.examples.find((x) => x.dir === dir);
@@ -355,11 +433,17 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
   /* ── 初始状态 ─────────────────────────────────────── */
   let initialDark = false;
   try {
-    initialDark = localStorage.getItem(THEME_KEY) === "dark";
+    const requestedTheme = new URLSearchParams(window.location.search).get(THEME_PARAM);
+    initialDark = requestedTheme === "dark" || (requestedTheme !== "light" && localStorage.getItem(THEME_KEY) === "dark");
   } catch {
     /* ignore */
   }
-  applyTheme(initialDark, false);
+  applyTheme(initialDark, { persist: false });
+  // 总览本身被嵌入文档站（?embed=1 或处于 iframe 中）时，隐藏自己的顶部栏，由外层接管。
+  if (isEmbedded()) {
+    document.documentElement.dataset.embed = EMBED_FLAG;
+  }
+  if (window.parent !== window) window.parent.postMessage({ type: REQUEST_MESSAGE }, "*");
   setCollapsed(true);
 
   const requested = window.location.hash.slice(1);

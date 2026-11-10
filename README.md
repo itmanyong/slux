@@ -2,7 +2,7 @@
 
 slux 是一组以**框架无关的响应式核心**为基础的 TypeScript 状态管理包，按五层组织：核心层（运行时与工具）、范式层（六种状态组织方式）、中间件层（Store 横切能力）、框架层（十二个框架绑定）、插件层（构建时集成，规划中）。
 
-**`slux` = `signal(信号)` + `limu(不可变流)` + `luxury(精致)`**
+**`slux` = `signal(信号)` + `limu(结构共享)` + `luxury(精致统一)`**
 
 ## 包导航
 
@@ -139,7 +139,7 @@ stop();
 ## 资源
 
 - **各包 API 与专属边界**：仓库内 `packages/<包名>/README.md`；在线文档见上表「在线文档」列。
-- **示例应用**：[`examples/`](./examples/)——25 个包各对应一页「报头 + 分组索引 + 瀑布流卡片 + 日志/源码对照」的演示站，页面外壳统一来自 [`examples/_shell`](./examples/_shell/)（`@slux/shell-example`），与框架无关的演示逻辑沉淀在 [`examples/_kit`](./examples/_kit/)（`@slux/kit-example`）。命名约定：可运行示例为 `@slux/example-*`，`_` 开头的基础设施包为 `@slux/*-example`（只构建、不参与 dev）；端口写死在各包 dev 脚本，从 9000 起逐一递加。根目录 `pnpm examples:dev` 先构建基础设施包，再用一条 `pnpm --filter "@slux/example-*" --parallel run dev` 并发启动全部示例；构建与启动日志照常显示，等 26 个端口全部就绪后停止转发后续日志并统一打印访问链接（总览在最后一行），保证链接不被日志覆盖；dev 异常退出时完整日志写入系统临时文件。总览站 [`examples/_gallery`](./examples/_gallery/)（`@slux/gallery-example`，端口 9000）默认以右上角下拉框选中 core；同一个浮层收起 / 展开都可拖拽、切换不重置位置，右侧上下箭头切换，支持主题同步与「在新窗口打开」。分层入口：
+- **示例应用**：[`examples/`](./examples/)——25 个包各对应一页「报头 + 分组索引 + 瀑布流卡片 + 日志/源码对照」的演示站，页面外壳统一来自 [`examples/_shell`](./examples/_shell/)（`@slux/shell-example`），与框架无关的演示逻辑沉淀在 [`examples/_kit`](./examples/_kit/)（`@slux/kit-example`）。命名约定：可运行示例为 `@slux/example-*`，`_` 开头的基础设施包为 `@slux/*-example`（只构建、不参与 dev）；端口写死在各包 dev 脚本，从 9000 起逐一递加。根目录 `pnpm examples:dev` 先构建基础设施包，再用一条 `pnpm --filter "@slux/example-*" --parallel run dev` 并发启动全部示例；构建与启动日志照常显示，等 26 个端口全部就绪后停止转发后续日志并统一打印访问链接（总览在最后一行），保证链接不被日志覆盖；dev 异常退出时完整日志写入系统临时文件。总览站 [`examples/_gallery`](./examples/_gallery/)（`@slux/gallery-example`，端口 9000）默认以右上角下拉框选中 core；同一个浮层收起 / 展开都可拖拽、切换不重置位置，右侧上下箭头切换，支持主题同步与「在新窗口打开」。全部示例共用 [`@slux/shell-example/theme`](./examples/_shell/src/theme.ts) 的 iframe 主题桥：`?theme=light/dark` 决定根节点 `data-theme`，并监听自身 URL 参数变化（`pushState` / `replaceState` / `popstate`）；总览切主题时同步自身 URL、iframe URL 参数与跨端口 `postMessage`，示例把参数写回自身 URL 完成同步，全程不重载 iframe。分层入口：
   - **核心层**：[examples/core-rsbuild-ts](./examples/core-rsbuild-ts/README.md)
   - **原语层**（atom / flux / proxy / store / history / storage / state-machine / rxjs）：`examples/<包名>-rsbuild-ts`
   - **中间件层**（shared / telemetry / devtools / tab-sync）：`examples/<包名>-rsbuild-ts`

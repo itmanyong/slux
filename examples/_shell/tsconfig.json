@@ -14,5 +14,5 @@
     "types": ["node"],
     "noEmit": true
   },
-  "include": ["src", "rstack.config.ts"]
+  "include": ["src", "__tests__", "rstack.config.ts"]
 }

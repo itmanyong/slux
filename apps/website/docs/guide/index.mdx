@@ -10,7 +10,7 @@ slux 把响应式核心、状态范式、框架绑定和 Store 中间件拆成�
 ## 安装核心
 
 ```sh
-pnpm add @slux/core limu
+pnpm add @slux/core
 ```
 
 ## 创建第一个状态
@@ -28,7 +28,7 @@ stop();
 
 `signal` 保存可写值；`computed` 根据读取的状态惰性计算；`effect` 订阅依赖并返回清理函数。
 
-`limu` 是 `@slux/core` 的必需 peer。涉及 `Map` 假值键的 draft 更新时，还需按[仓库补丁说明](https://github.com/itmanyong/slux/blob/main/patches/README.md)处理。
+涉及 `Map` 假值键的 draft 更新时，还需按[仓库补丁说明](https://github.com/itmanyong/slux/blob/main/patches/README.md)处理。
 
 ## 下一步
 

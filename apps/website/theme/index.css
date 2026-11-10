@@ -8,6 +8,8 @@
   --rp-content-max-width: 1080px;
   --rp-sidebar-width: 282px;
   --rp-outline-width: 242px;
+  --slux-scrollbar-thumb: #8e8078;
+  --slux-scrollbar-thumb-hover: #72635b;
 }
 
 .dark {
@@ -15,6 +17,36 @@
   --rp-c-brand-light: #ff9957;
   --rp-c-brand-dark: #ff7836;
   --rp-c-brand-tint: #ff78361c;
+  --slux-scrollbar-thumb: #817975;
+  --slux-scrollbar-thumb-hover: #a2968e;
+}
+
+* {
+  scrollbar-color: var(--slux-scrollbar-thumb) transparent;
+  scrollbar-width: thin;
+}
+
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: var(--slux-scrollbar-thumb) padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--slux-scrollbar-thumb-hover);
+  }
 }
 
 html,
@@ -81,6 +113,14 @@ body {
 
 .rp-doc-layout__doc-container {
   line-height: 1.75;
+}
+
+@media (min-width: 1280px) {
+  /* Rspress 的正文滚动容器会裁切越过右侧目录的弹层。 */
+  .rp-doc-layout__container > .rp-doc-layout__doc {
+    z-index: calc(var(--rp-z-index-aside) + 1);
+    overflow: visible;
+  }
 }
 
 .rp-doc-layout__doc-container h1,
@@ -218,6 +258,9 @@ body {
   border-color: var(--rp-c-brand);
   background: var(--rp-c-brand-tint);
 }
+.example-action > p {
+  margin: 0;
+}
 
 .example-action--primary {
   border-color: var(--rp-c-brand);
@@ -238,6 +281,10 @@ body {
   border: 1px solid var(--rp-c-divider-light);
   border-radius: 12px;
   background: #fff;
+}
+
+.remote-markdown-status {
+  color: var(--rp-c-text-2);
 }
 
 .slux-home {
@@ -283,7 +330,7 @@ body {
 
 .home-wordmark {
   width: fit-content;
-  margin: 0 auto 28px;
+  margin: 0 auto 12px;
   background: linear-gradient(100deg, #ff5030, #ff9d06);
   background-clip: text;
   color: transparent;
@@ -291,6 +338,17 @@ body {
   font-weight: 750;
   line-height: 1.1;
   letter-spacing: -0.075em;
+}
+
+.home-formula {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 28px;
+  background: linear-gradient(100deg, var(--rp-c-brand-light), var(--rp-c-brand));
+  background-clip: text;
+  color: transparent;
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.6;
 }
 
 .home-hero h1 {
@@ -440,8 +498,8 @@ body {
 .home-feature-icon {
   position: relative;
   align-self: center;
-  width: 32px;
-  height: 32px;
+  width: 56px;
+  height: 56px;
   margin-bottom: auto;
   color: #ff8a34;
   stroke: currentColor;
@@ -797,7 +855,7 @@ body {
   }
 
   .home-wordmark {
-    margin-bottom: 22px;
+    margin-bottom: 10px;
   }
 
   .home-actions {

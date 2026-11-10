@@ -2,7 +2,7 @@
 
 框架无关的响应式核心库，构建于 [limu](https://github.com/tnfe/limu) 的不可变状态容器之上。所有信号写入统一通过 `set`，提供惰性计算、同步副作用、批处理合并与可隔离的作用域。
 
-- 零框架依赖：运行时使用 `@slux/shared` 与 `limu`，可单独用于 Node、浏览器或任意 UI 框架的底层状态层。
+- 零框架依赖：可单独用于 Node、浏览器或任意 UI 框架的底层状态层。
 - 不可变更新：基于 limu 的 draft 提交，天然结构共享，未修改的分支保留原引用。
 - 同步语义：effect 在写入返回前同步重跑，调试与推理更直观。
 - 双格式产物：`type: module`，同时输出 ESM（`index.js`）与 CJS（`index.cjs`），并携带 `.d.ts` 类型。
@@ -306,10 +306,9 @@ type Scope = {
 
 公开导出的类型：`Subscribable`、`ReadonlySignal`、`Signal`、`SignalOptions`、`Scope`。
 
-## 依赖与产物
+## 实现与产物
 
-- **运行时依赖**：`@slux/shared` 提供 `runAll` 等通用工具；`limu` 是必需的 peer 依赖，用于 draft 提交。两者都由产物外部引用。
-- **构建依赖**：本仓库在开发依赖中安装 `limu` 供构建和测试，产物只包含 `core/src` 的实现，不内联第三方源码。本仓库对 `limu@4.2.1` 的 `Map` 假值键补丁不会随 peer 依赖传播；需要该行为的使用方须在自身项目应用[同一补丁](../../patches/README.md)。
+- **Map 假值键**：本仓库对 `limu@4.2.1` 的补丁仅在本仓库生效；需要该行为的使用方须在自身项目应用[同一补丁](../../patches/README.md)。
 - **职责边界**：依赖追踪、调度与作用域都属于 `core`；`shared` 只提供通用工具。
 - **产物**：`dist/index.js`（ESM）、`dist/index.cjs`（CJS）、`dist/index.d.ts` 与 `dist/index.d.cts`（类型），由 `rstack`（`rs lib`）构建。
 

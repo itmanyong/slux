@@ -150,3 +150,6 @@ packages/*/native/*.node
 
 # Rspress example assets copied from built example projects
 apps/website/docs/public/examples/
+
+# Sidebar generated from releases/*.md during the docs build
+apps/website/docs/releases/_meta.json

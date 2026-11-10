@@ -8,7 +8,12 @@ const CORE = "core-rsbuild-ts";
 const THEME_KEY = "slux-gallery-theme";
 
 function setup(hash = "") {
-  window.location.hash = hash;
+  // 只清掉 ?theme= 与 hash，保留调用方设置的 pathname（文档站静态路径测试依赖它）。
+  const clean = hash.replace(/^#/, "");
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = clean;
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   try {
     localStorage.removeItem(THEME_KEY);
   } catch {
@@ -315,32 +320,155 @@ describe("拖拽与位置保持", () => {
 });
 
 describe("主题同步", () => {
-  it("切换主题会推送给 iframe 并更新新窗口链接", () => {
-    const { root } = setup();
+  it("嵌入文档站时优先采用 URL 中的主题", () => {
+    const before = window.location.href;
+    window.history.replaceState(null, "", "/slux/examples/_gallery/?theme=dark");
+    localStorage.setItem(THEME_KEY, "light");
+    try {
+      const root = document.createElement("div");
+      document.body.append(root);
+      createGallery(root, data);
+      expect(document.documentElement.dataset.theme).toBe("dark");
+      expect(one<HTMLIFrameElement>(root, ".g-frame").getAttribute("src")).toContain("theme=dark");
+      root.remove();
+    } finally {
+      localStorage.removeItem(THEME_KEY);
+      window.history.replaceState(null, "", before);
+    }
+  });
+
+  function spyFrame(root: HTMLElement) {
     const frame = one<HTMLIFrameElement>(root, ".g-frame");
-    const sent: unknown[] = [];
     const win = frame.contentWindow;
+    const sent: unknown[] = [];
     if (win) {
       Object.defineProperty(win, "postMessage", {
         configurable: true,
         value: (payload: unknown) => sent.push(payload),
       });
     }
+    return { frame, win, sent };
+  }
+
+  const hasThemeMessage = (sent: unknown[], theme: string): boolean =>
+    sent.some(
+      (m) =>
+        typeof m === "object" &&
+        m !== null &&
+        (m as { type?: string }).type === "THEME_CHANGED" &&
+        (m as { payload?: { theme?: string } }).payload?.theme === theme,
+    );
+
+  it("切换主题只向 iframe 发消息，不重载 iframe，并写回地址栏", () => {
+    const { root } = setup();
+    const { frame, win, sent } = spyFrame(root);
+    const srcBefore = frame.getAttribute("src");
 
     one<HTMLButtonElement>(root, ".g-bar-btn").click();
     expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(new URLSearchParams(window.location.search).get("theme")).toBe("dark");
     expect(one<HTMLAnchorElement>(root, ".g-open-link").getAttribute("href")).toContain("theme=dark");
-    if (win) {
-      expect(
-        sent.some(
-          (m) =>
-            typeof m === "object" &&
-            m !== null &&
-            (m as { type?: string }).type === "slux-example-theme" &&
-            (m as { theme?: string }).theme === "dark",
-        ),
-      ).toBe(true);
+    expect(frame.getAttribute("src")).toBe(srcBefore); // 同步主题不重载 iframe
+    if (win) expect(hasThemeMessage(sent, "dark")).toBe(true);
+    root.remove();
+  });
+
+  it("从文档父页面接收主题时同步总览与内部示例", () => {
+    const parentDescriptor = Object.getOwnPropertyDescriptor(window, "parent");
+    const parent = { postMessage: () => {} };
+    Object.defineProperty(window, "parent", {
+      configurable: true,
+      value: parent,
+    });
+    try {
+      const { root } = setup();
+      const { frame, win, sent } = spyFrame(root);
+      const before = frame.getAttribute("src");
+      const event = new MessageEvent("message", {
+        data: { type: "THEME_CHANGED", payload: { theme: "dark" } },
+      });
+      Object.defineProperty(event, "source", { value: parent });
+      window.dispatchEvent(event);
+      expect(document.documentElement.dataset.theme).toBe("dark");
+      expect(one<HTMLAnchorElement>(root, ".g-open-link").getAttribute("href")).toContain("theme=dark");
+      expect(frame.getAttribute("src")).toBe(before);
+      if (win) expect(hasThemeMessage(sent, "dark")).toBe(true);
+      root.remove();
+    } finally {
+      if (parentDescriptor) Object.defineProperty(window, "parent", parentDescriptor);
     }
+  });
+
+  it("内部示例发来主题变更时更新总览，且不改 iframe URL", () => {
+    const { root } = setup();
+    const { frame, win } = spyFrame(root);
+    const before = frame.getAttribute("src");
+    if (win) {
+      const event = new MessageEvent("message", {
+        data: { type: "THEME_CHANGED", payload: { theme: "dark" } },
+      });
+      Object.defineProperty(event, "source", { value: win });
+      window.dispatchEvent(event);
+      expect(document.documentElement.dataset.theme).toBe("dark");
+      expect(frame.getAttribute("src")).toBe(before);
+    }
+    root.remove();
+  });
+
+  it("示例主动索取主题时回填当前主题", () => {
+    const { root } = setup();
+    const { win, sent } = spyFrame(root);
+    one<HTMLButtonElement>(root, ".g-bar-btn").click(); // dark
+    sent.length = 0;
+    if (win) {
+      const event = new MessageEvent("message", {
+        data: { type: "slux-example-theme-request" },
+      });
+      Object.defineProperty(event, "source", {
+        configurable: true,
+        value: win,
+      });
+      window.dispatchEvent(event);
+      expect(hasThemeMessage(sent, "dark")).toBe(true);
+    }
+    root.remove();
+  });
+
+  it("收到其他同源标签页的主题广播时同步总览并写回地址栏", async () => {
+    const { root } = setup();
+    const peer = new BroadcastChannel("slux-theme-sync");
+    // 模拟「另一个标签页」发出的主题变更；type 对得上即应用。
+    peer.postMessage({ type: "THEME_CHANGED", payload: { theme: "dark" } });
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    peer.close();
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(new URLSearchParams(window.location.search).get("theme")).toBe("dark");
+    root.remove();
+  });
+});
+
+describe("总览自身嵌入态", () => {
+  it("总览被嵌入时隐藏自己的顶部栏", () => {
+    const before = window.location.href;
+    window.history.replaceState(null, "", "/slux/examples/_gallery/?embed=1");
+    try {
+      const root = document.createElement("div");
+      document.body.append(root);
+      createGallery(root, data);
+      // 与示例对齐：根节点打上 data-embed，CSS 据此隐藏 .g-bar。
+      expect(document.documentElement.dataset.embed).toBe("1");
+      expect(root.querySelector(".g-bar")).not.toBeNull();
+      root.remove();
+    } finally {
+      delete document.documentElement.dataset.embed;
+      window.history.replaceState(null, "", before);
+    }
+  });
+
+  it("独立开发（非嵌入）时顶部栏保留", () => {
+    const { root } = setup();
+    expect(document.documentElement.dataset.embed).toBeUndefined();
+    expect(root.querySelector(".g-bar")).not.toBeNull();
     root.remove();
   });
 });

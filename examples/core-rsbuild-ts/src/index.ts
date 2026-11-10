@@ -6,7 +6,7 @@ import { Masonry } from "./ui/masonry.js";
 import { createPage, themeIcons } from "./ui/page.js";
 import { demoSources } from "./ui/sources.js";
 import { SessionStats } from "./ui/stats.js";
-import { THEME_CHANGE_EVENT, currentTheme, initTheme, toggleTheme } from "./ui/theme.js";
+import { THEME_CHANGE_EVENT, currentTheme, initTheme, toggleTheme } from "@slux/shell-example/theme";
 
 type Filter = "all" | DemoApiId;
 

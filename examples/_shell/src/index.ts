@@ -7,6 +7,22 @@ import type { ExampleGroup, ExamplePageOptions } from "./types.js";
 
 export type { ExampleDemo, ExampleGroup, LogTone } from "./types.js";
 export { DemoCard } from "./card.js";
+/** 上下层 iframe 主题桥：所有示例共用，也可单独从 @slux/shell-example/theme 引入。 */
+export {
+  EMBED_FLAG,
+  EMBED_PARAM,
+  REQUEST_MESSAGE,
+  SYNC_MESSAGE,
+  THEME_CHANGE_EVENT,
+  THEME_PARAM,
+  createThemeBridge,
+  currentTheme,
+  initTheme,
+  isEmbedded,
+  setTheme,
+  toggleTheme,
+} from "./theme.js";
+export type { Theme } from "./theme.js";
 
 type Filter = "all" | string;
 

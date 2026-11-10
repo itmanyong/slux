@@ -15,6 +15,12 @@
       "env": ["PUBLIC_*"],
       "outputs": ["dist/**"]
     },
+    "@slux/kit-example#build": {
+      "outputs": []
+    },
+    "@slux/shell-example#build": {
+      "outputs": []
+    },
     "preview": {
       "dependsOn": ["build"],
       "cache": false,

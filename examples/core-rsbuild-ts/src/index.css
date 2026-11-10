@@ -6,8 +6,5 @@
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/600.css";
 
-@import "./styles/tokens.css";
-@import "./styles/base.css";
-@import "./styles/layout.css";
-@import "./styles/card.css";
-@import "./styles/code.css";
+/* 复用示例外壳的共享样式（tokens / base / layout / card / code，含全局滚动条样式）。 */
+@import "@slux/shell-example/styles.css";
