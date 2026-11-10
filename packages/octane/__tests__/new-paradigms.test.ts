@@ -1,0 +1,33 @@
+import { act, createElement, createRoot } from "octane";
+import { expect, it } from "rstack/test";
+import { CompiledParadigmsReader } from "./paradigms.fixture.js";
+import { createSources } from "./new-paradigms.fixture.js";
+
+it("三个公开子入口经消费端编译后可更新，切换与卸载清理订阅", async () => {
+  const first = createSources();
+  const second = createSources(100);
+  const container = document.createElement("div");
+  const root = createRoot(container);
+  await act(() => root.render(createElement(CompiledParadigmsReader, { sources: first })));
+  expect(container.textContent).toBe("1:idle:2:3");
+  expect(first.subscriptions()).toEqual([1, 1, 1]);
+  await act(() => first.update(10));
+  expect(container.textContent).toBe("11:ready:12:13");
+  await act(() => root.render(createElement(CompiledParadigmsReader, { sources: second })));
+  expect(first.subscriptions()).toEqual([0, 0, 0]);
+  expect(second.subscriptions()).toEqual([1, 1, 1]);
+  await act(() => first.update(10));
+  expect(container.textContent).toBe("101:idle:102:103");
+  await act(() => second.update(10));
+  expect(container.textContent).toBe("111:ready:112:113");
+  await act(() => root.unmount());
+  expect(second.subscriptions()).toEqual([0, 0, 0]);
+  second.update(20);
+  expect(second.flux.get()).toBe(131);
+  expect(second.machine.get().context.count).toBe(132);
+  expect(second.observable.get()).toBe(123);
+  expect(second.subject.observed).toBe(true);
+  first.dispose();
+  second.dispose();
+  expect(second.subject.observed).toBe(false);
+});

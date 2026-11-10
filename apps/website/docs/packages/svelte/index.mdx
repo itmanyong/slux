@@ -1,0 +1,41 @@
+---
+title: "@slux/svelte · Svelte 绑定"
+description: 把 slux 状态包装为 Svelte store。
+---
+
+# Svelte 绑定
+
+<p className="package-lead">把 slux 状态包装为 Svelte store。</p>
+
+## 适用场景
+
+Svelte 组件希望使用原生 store 订阅语法。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/svelte svelte limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```svelte
+<script>
+  import { signal } from "@slux/core";
+  import { toWritable } from "@slux/svelte";
+
+  const count = toWritable(signal(0));
+</script>
+
+<button onclick={() => count.update((n) => n + 1)}>{$count}</button>
+```
+
+## 接下来
+
+toReadable 和 toWritable 分别提供只读与可写接口。
+
+- [查看完整 README 原文](/packages/svelte/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/svelte-rsbuild-ts)
+- [返回包索引](/packages/)

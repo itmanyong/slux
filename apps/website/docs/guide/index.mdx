@@ -1,0 +1,41 @@
+---
+title: 开始使用 slux
+description: 从框架无关的 signal 开始，在应用需要时接入状态范式、框架绑定和中间件。
+---
+
+# 开始使用
+
+slux 把响应式核心、状态范式、框架绑定和 Store 中间件拆成独立包。先安装你直接导入的包，再按需要组合。
+
+## 安装核心
+
+```sh
+pnpm add @slux/core limu
+```
+
+## 创建第一个状态
+
+```ts
+import { computed, effect, signal } from "@slux/core";
+
+const count = signal(1);
+const doubled = computed(() => count.get() * 2);
+
+const stop = effect(() => console.log(doubled.get())); // 首次输出 2
+count.set(2); // 同步输出 4
+stop();
+```
+
+`signal` 保存可写值；`computed` 根据读取的状态惰性计算；`effect` 订阅依赖并返回清理函数。
+
+`limu` 是 `@slux/core` 的必需 peer。涉及 `Map` 假值键的 draft 更新时，还需按[仓库补丁说明](https://github.com/itmanyong/slux/blob/main/patches/README.md)处理。
+
+## 下一步
+
+- 多个字段与 action 放在一起：阅读 [Store](/packages/store/)。
+- 需要细粒度组合：阅读 [Atom](/packages/atom/)。
+- 希望直接修改对象属性：阅读 [Proxy](/packages/proxy/)。
+- 正在选择方案：阅读 [状态范式对比](/guide/choose)。
+- 在组件中读取：阅读 [框架接入](/guide/frameworks)。
+
+包管理器中的实际可安装版本请以 registry 查询为准。仓库示例在 [GitHub examples](https://github.com/itmanyong/slux/tree/main/examples)。

@@ -1,0 +1,40 @@
+---
+title: 示例总览
+description: 按 slux 的五层架构浏览并运行 25 个独立示例项目。
+---
+
+import { normalizeImagePath } from "@rspress/core/runtime";
+
+# 总览
+
+这里展示仓库 `examples/` 中的 25 个可运行项目。选择左侧条目可查看单个项目；下方的交互式总览可以在一处切换全部示例。
+
+| 层级     | 示例                                                                                                                                                                                                                                                                                                                                         |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 核心层   | [响应式核心](/examples/core)、[共享工具](/examples/shared)                                                                                                                                                                                                                                                                                   |
+| 范式层   | [集中式状态](/examples/store)、[原子状态](/examples/atom)、[对象代理](/examples/proxy)、[Flux 数据流](/examples/flux)、[状态机](/examples/state-machine)、[RxJS 桥接](/examples/rxjs)                                                                                                                                                        |
+| 中间件层 | [状态持久化](/examples/storage)、[历史记录](/examples/history)、[跨标签同步](/examples/tab-sync)、[遥测事件](/examples/telemetry)、[开发调试](/examples/devtools)                                                                                                                                                                            |
+| 框架层   | [React](/examples/react)、[Vue](/examples/vue)、[Solid](/examples/solid)、[Svelte](/examples/svelte)、[Angular](/examples/angular)、[Preact](/examples/preact)、[Ripple](/examples/ripple)、[Inferno](/examples/inferno)、[Octane](/examples/octane)、[Vitarx](/examples/vitarx)、[ActView](/examples/actview)、[Viewfly](/examples/viewfly) |
+| 插件层   | 目前尚无独立插件包及对应示例；已有的[自动导入接入指南](/packages/auto-import)可用于现有项目。                                                                                                                                                                                                                                                |
+
+## 交互式示例总览
+
+使用右上角的选择框切换示例，或展开目录按层级浏览。总览内的示例会隐藏各自顶栏；需要完整页面时，可使用总览顶栏的“在新窗口打开”。
+
+<div className="example-actions">
+  <a className="example-action" href="https://github.com/itmanyong/slux/tree/main/examples/_gallery" target="_blank" rel="noopener noreferrer">
+    在Github中打开
+  </a>
+  <a
+    className="example-action example-action--primary"
+    href={normalizeImagePath("/examples/_gallery/")}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    在新标签页打开
+  </a>
+</div>
+
+<iframe className="package-demo-frame" title="slux 全部示例交互总览" src={normalizeImagePath("/examples/_gallery/")} loading="lazy" />
+
+示例页与各包的“演示示例”线路运行同一份构建产物。独立项目需要先构建；本地开发可运行 `pnpm --filter @slux/website docs:examples` 更新嵌入资源。

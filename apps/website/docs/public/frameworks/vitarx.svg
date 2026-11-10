@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Vitarx">
+  <defs>
+    <linearGradient id="left" x1="3" y1="5" x2="29" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c345ef"/>
+      <stop offset="1" stop-color="#5923ff"/>
+    </linearGradient>
+    <linearGradient id="right" x1="58" y1="6" x2="30" y2="55" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00eadf"/>
+      <stop offset="1" stop-color="#1763ff"/>
+    </linearGradient>
+  </defs>
+  <path d="M5.5 6h7.2c1.5 0 2.8.9 3.5 2.2L32 39.6l-6.1 13.1L1.9 11.6C.5 9.1 2.3 6 5.5 6Z" fill="url(#left)"/>
+  <path d="M51.3 6h7.2c3.2 0 5 3.1 3.6 5.6L37.7 54.1a6.5 6.5 0 0 1-11.2 0l-1.2-2.2 22.5-43.7A4 4 0 0 1 51.3 6Z" fill="url(#right)"/>
+  <circle cx="32" cy="16" r="5.5" fill="#11d9dc"/>
+</svg>

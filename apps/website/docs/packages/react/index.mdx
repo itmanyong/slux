@@ -1,0 +1,48 @@
+---
+title: "@slux/react · React 绑定"
+description: 在 React 组件中订阅 slux 状态。
+---
+
+# React 绑定
+
+<p className="package-lead">在 React 组件中订阅 slux 状态。</p>
+
+## 适用场景
+
+React 应用希望沿用已有 slux 状态实例。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/react react limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```tsx
+import { computed, signal } from "@slux/core";
+import { useSignal } from "@slux/react";
+
+const count = signal(0);
+const doubled = computed(() => count.get() * 2);
+
+export function Counter() {
+  const value = useSignal(count); // 0
+  const double = useSignal(doubled); // 0
+  return (
+    <button onClick={() => count.set((current) => current + 1)}>
+      {value} × 2 = {double}
+    </button>
+  );
+}
+```
+
+## 接下来
+
+useSignal 读取 core signal；其他范式从对应子入口导入。
+
+- [查看完整 README 原文](/packages/react/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/react-rsbuild-ts)
+- [返回包索引](/packages/)

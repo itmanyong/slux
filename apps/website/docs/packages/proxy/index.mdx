@@ -1,0 +1,62 @@
+---
+title: "@slux/proxy · 可变代理状态"
+description: 直接修改对象属性，同时获取只读快照与订阅更新。
+---
+
+# 可变代理状态
+
+<p className="package-lead">直接修改对象属性，同时获取只读快照与订阅更新。</p>
+
+## 适用场景
+
+希望用对象属性赋值的形式更新嵌套状态。
+
+## 安装
+
+```sh
+pnpm add @slux/proxy @slux/core limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```ts
+import { batch } from "@slux/core";
+import { observable, observe, ref, snapshot, subscribe } from "@slux/proxy";
+
+const state = observable({
+  user: { name: "Alice", age: 30 },
+  todos: [] as Array<{ text: string; done: boolean }>,
+  external: ref(new Map<string, number>()),
+});
+
+const dispose = observe(() => {
+  console.log(state.user.name);
+}); // 创建时立即同步执行一次
+
+const unsubscribe = subscribe(state, () => {
+  console.log(snapshot(state).user.name);
+}); // 不立即调用
+
+state.user.name = "Bob"; // observe 同步重跑；subscribe 同步通知
+state.user.age++; // 上面的 observe 没读 age，不重跑（subscribe 仍会收到通知）
+
+batch(() => {
+  state.user.name = "Carol";
+  state.todos.push({ text: "学习 proxy", done: false });
+}); // observe 合并到批结束；subscribe 在批内逐次同步通知
+
+const current = snapshot(state);
+console.log(current.todos[0]?.text);
+unsubscribe();
+dispose();
+```
+
+## 接下来
+
+observable 创建代理；observe 收集读取依赖；snapshot 读取不可变视图。
+
+- [查看完整 README 原文](/packages/proxy/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/proxy-rsbuild-ts)
+- [返回包索引](/packages/)

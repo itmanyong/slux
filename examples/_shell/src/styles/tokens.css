@@ -1,0 +1,118 @@
+:root {
+  color-scheme: light;
+
+  /* Chakra 灰阶：白底 + 冷灰边界，层级靠灰度与留白 */
+  --paper: #ffffff;
+  --panel: #ffffff;
+  --panel-2: #f7fafc; /* gray.50，用于 hover / 次级表面 */
+  --line: #e2e8f0; /* gray.200 */
+  --line-strong: #cbd5e0; /* gray.300 */
+
+  --ink: #1a202c; /* gray.900 */
+  --ink-2: #2d3748; /* gray.700 */
+  --muted: #718096; /* gray.500 */
+
+  /* 强调色：Chakra teal（Chakra 主题的默认强调色）。
+     文本一律用 accent-ink（teal.600）保证 4.5:1 对比度 */
+  --accent: #319795; /* teal.500 */
+  --accent-ink: #2c7a7b; /* teal.600 */
+  --accent-deep: #285e61; /* teal.700 */
+  --accent-soft: #e6fffa; /* teal.50 */
+  --ring: rgba(49, 151, 149, 0.35);
+  --on-accent: #ffffff; /* 实色强调底上的文字色 */
+
+  /* 顶栏：深色 chrome 条，两种主题下都成立 */
+  --bar-bg: #1a202c;
+  --bar-ink: #f7fafc;
+  --bar-muted: #a0aec0;
+  --bar-line: rgba(255, 255, 255, 0.08);
+  --bar-hover: rgba(255, 255, 255, 0.08);
+
+  /* 日志分类：Chakra soft badge 同款色相，只出现在圆点与错误正文 */
+  --tone-write: #3182ce; /* blue.600 */
+  --tone-notify: #dd6b20; /* orange.600 */
+  --tone-effect: #38a169; /* green.600 */
+  --tone-compute: #805ad5; /* purple.600 */
+  --tone-scope: #2c7a7b; /* teal.600 */
+  --tone-error: #e53e3e; /* red.600 */
+  --tone-info: #718096;
+
+  /* 代码块：Chakra 文档式深底代码，两种主题下都一致 */
+  --code-bg: #1a202c;
+  --code-ink: #e2e8f0;
+  --code-muted: #718096;
+  --code-line: rgba(255, 255, 255, 0.08);
+  --code-line-strong: rgba(255, 255, 255, 0.16);
+  --tok-comment: #718096;
+  --tok-string: #68d391;
+  --tok-number: #f6ad55;
+  --tok-keyword: #b794f4;
+  --tok-call: #63b3ed;
+  --tok-type: #4fd1c5;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  /* 中文回退到本机字体；拉丁字符由 Space Grotesk / IBM Plex Sans 接管 */
+  --font-display: "Space Grotesk", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-sans: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --app-bar: 56px;
+  --overview-bar: 52px;
+  --menu-width: 216px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #1a202c; /* gray.900 */
+  --panel: #232b3c;
+  --panel-2: #2a3447;
+  --line: #333d51;
+  --line-strong: #44506a;
+
+  --ink: #e2e8f0; /* gray.200 */
+  --ink-2: #cbd5e0; /* gray.300 */
+  --muted: #a0aec0; /* gray.400 */
+
+  --accent: #4fd1c5; /* teal.300 */
+  --accent-ink: #81e6d9; /* teal.200 */
+  --accent-deep: #38b2ac; /* teal.400 */
+  --accent-soft: #1d4747;
+  --ring: rgba(79, 209, 197, 0.28);
+  --on-accent: #10231f; /* 深色主题下强调底偏亮，文字用深色 */
+
+  --bar-bg: #12151f;
+  --bar-ink: #f7fafc;
+  --bar-muted: #a0aec0;
+  --bar-line: rgba(255, 255, 255, 0.06);
+  --bar-hover: rgba(255, 255, 255, 0.08);
+
+  --tone-write: #63b3ed;
+  --tone-notify: #f6ad55;
+  --tone-effect: #68d391;
+  --tone-compute: #b794f4;
+  --tone-scope: #4fd1c5;
+  --tone-error: #fc8181;
+  --tone-info: #a0aec0;
+
+  --code-bg: #12151f;
+  --code-ink: #e2e8f0;
+  --code-muted: #6b7891;
+  --code-line: rgba(255, 255, 255, 0.06);
+  --code-line-strong: rgba(255, 255, 255, 0.14);
+  --tok-comment: #6b7891;
+  --tok-string: #68d391;
+  --tok-number: #f6ad55;
+  --tok-keyword: #b794f4;
+  --tok-call: #63b3ed;
+  --tok-type: #4fd1c5;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}

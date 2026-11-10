@@ -1,0 +1,40 @@
+{
+  "name": "@slux/example-react-rsbuild-ts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rs build",
+    "dev": "rs dev --port 9014",
+    "lint": "rs lint",
+    "preview": "rs preview",
+    "test": "rs test",
+    "typecheck": "tsc --noEmit",
+    "fmt": "rs fmt"
+  },
+  "dependencies": {
+    "@slux/atom": "workspace:*",
+    "@slux/core": "workspace:*",
+    "@slux/shell-example": "workspace:*",
+    "@slux/flux": "workspace:*",
+    "@slux/proxy": "workspace:*",
+    "@slux/react": "workspace:*",
+    "@slux/rxjs": "workspace:*",
+    "@slux/state-machine": "workspace:*",
+    "@slux/store": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "rxjs": "catalog:"
+  },
+  "devDependencies": {
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@rsbuild/plugin-react": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:",
+    "rstack": "catalog:"
+  }
+}

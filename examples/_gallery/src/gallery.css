@@ -1,0 +1,360 @@
+/* 总览页专属样式：复用 shell-example 的 tokens 与基础排版。 */
+
+.g-app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 顶栏 ─────────────────────────────────────────── */
+.g-bar {
+  flex: none;
+  height: var(--app-bar);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 20px;
+  background: var(--bar-bg);
+  color: var(--bar-ink);
+  border-bottom: 1px solid var(--bar-line);
+}
+
+.g-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.g-brand-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.g-brand-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.g-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.g-current {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--bar-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+
+.g-open-link,
+.g-bar-btn {
+  flex: none;
+  font-size: 12px;
+  padding: 6px 12px;
+  border: 1px solid var(--bar-line);
+  border-radius: var(--radius-md);
+  color: var(--bar-ink);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.g-open-link:hover,
+.g-bar-btn:hover {
+  background: var(--bar-hover);
+}
+
+.g-open-link[aria-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── 主区域 ───────────────────────────────────────── */
+.g-main {
+  flex: 1;
+  position: relative;
+  background: var(--paper);
+}
+
+.g-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 24px;
+}
+
+.g-placeholder.hidden {
+  display: none;
+}
+
+.g-placeholder-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--ink-2);
+}
+
+.g-placeholder-hint {
+  font-size: 13.5px;
+  color: var(--muted);
+  max-width: 460px;
+}
+
+.g-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: none;
+  background: var(--paper);
+}
+
+.g-frame.ready {
+  display: block;
+}
+
+/* ── 统一的示例浮层 ─────────────────────────────────
+   收起态只有标题栏；展开态在标题栏下方展开分组列表，同一个下拉框依旧可用。
+   始终是同一个节点，因此切换不会重置拖拽坐标。 */
+.g-panel {
+  position: fixed;
+  top: calc(var(--app-bar) + 16px);
+  right: 20px;
+  left: auto;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.g-app:not(.collapsed) .g-panel {
+  width: 272px;
+  height: min(560px, calc(100vh - var(--app-bar) - 40px));
+}
+
+.g-app.collapsed .g-panel {
+  width: max-content;
+  height: auto;
+}
+
+.g-panel.dragging {
+  box-shadow: 0 18px 48px rgb(0 0 0 / 22%);
+  user-select: none;
+}
+
+.g-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  padding: 7px 9px 7px 11px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.g-panel.dragging .g-panel-head {
+  cursor: grabbing;
+}
+
+.g-grip {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: -2px;
+}
+
+.g-panel-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.g-select {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 6px 8px;
+  max-width: 190px;
+  outline: none;
+  cursor: pointer;
+  touch-action: auto;
+}
+
+.g-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* 上下箭头：收起时朝下（展开），展开时旋转 180° 朝上（收起）。 */
+.g-toggle {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border-radius: var(--radius-md);
+  touch-action: auto;
+}
+
+.g-toggle:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.g-toggle::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.18s ease;
+}
+
+.g-app:not(.collapsed) .g-toggle::before {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.g-panel-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.g-app.collapsed .g-panel-body {
+  display: none;
+}
+
+.g-panel-hint {
+  margin: 0;
+  padding: 0 14px 8px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.g-search {
+  margin: 0 12px 8px;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  outline: none;
+}
+
+.g-search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.g-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+}
+
+.g-group.hidden {
+  display: none;
+}
+
+.g-group-title {
+  padding: 10px 14px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.g-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 12px 7px 14px;
+  font-size: 13px;
+  color: var(--ink-2);
+  border-left: 2px solid transparent;
+  text-align: left;
+}
+
+.g-item:hover {
+  background: var(--panel-2);
+}
+
+.g-item.active {
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+.g-item.hidden {
+  display: none;
+}
+
+.g-item-port {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  background: var(--panel-2);
+  border-radius: var(--radius-sm);
+  padding: 1px 6px;
+}
+
+.g-item.active .g-item-port {
+  color: var(--accent-ink);
+  background: var(--panel);
+}
+
+@media (max-width: 720px) {
+  .g-app:not(.collapsed) .g-panel {
+    width: min(272px, calc(100vw - 32px));
+  }
+
+  .g-panel {
+    right: 16px;
+  }
+
+  .g-current {
+    display: none;
+  }
+
+  .g-select {
+    max-width: 130px;
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "name": "@slux/octane",
+  "version": "0.1.0",
+  "description": "slux octane bindings",
+  "keywords": [
+    "slux",
+    "octane",
+    "bindings",
+    "state-management"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "author": "itmanyong <itmanyong@gmail.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itmanyong/slux.git",
+    "directory": "packages/octane"
+  },
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "package.json"
+  ],
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./atom": "./src/atom.ts",
+    "./store": "./src/store.ts",
+    "./proxy": "./src/proxy.ts",
+    "./package.json": "./package.json",
+    "./flux": "./src/flux.ts",
+    "./state-machine": "./src/state-machine.ts",
+    "./rxjs": "./src/rxjs.ts"
+  },
+  "scripts": {
+    "dev": "rs lib -w",
+    "build": "rs lib",
+    "test": "rs test",
+    "lint": "rs lint",
+    "fmt": "rs fmt",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules .turbo"
+  },
+  "peerDependencies": {
+    "@slux/atom": "workspace:^",
+    "@slux/core": "workspace:^",
+    "@slux/proxy": "workspace:^",
+    "@slux/store": "workspace:^",
+    "octane": ">=0.16.0",
+    "@slux/flux": "workspace:^",
+    "@slux/state-machine": "workspace:^",
+    "@slux/rxjs": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@slux/atom": {
+      "optional": true
+    },
+    "@slux/proxy": {
+      "optional": true
+    },
+    "@slux/store": {
+      "optional": true
+    },
+    "@slux/flux": {
+      "optional": true
+    },
+    "@slux/state-machine": {
+      "optional": true
+    },
+    "@slux/rxjs": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@slux/atom": "workspace:*",
+    "@slux/core": "workspace:*",
+    "@slux/proxy": "workspace:*",
+    "@slux/store": "workspace:*",
+    "jsdom": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "catalog:",
+    "octane": "catalog:",
+    "@tsrx/oxc": "catalog:",
+    "@slux/flux": "workspace:*",
+    "@slux/state-machine": "workspace:*",
+    "@slux/rxjs": "workspace:*",
+    "rxjs": "catalog:"
+  },
+  "octane": {
+    "hookSlots": {
+      "manual": [
+        "src"
+      ]
+    }
+  },
+  "dependencies": {
+    "@slux/shared": "workspace:*"
+  }
+}

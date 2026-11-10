@@ -1,0 +1,51 @@
+---
+title: "@slux/octane · Octane 绑定"
+description: 把 slux 状态接入 Octane 编译器的组件运行时。
+---
+
+# Octane 绑定
+
+<p className="package-lead">把 slux 状态接入 Octane 编译器的组件运行时。</p>
+
+## 适用场景
+
+消费端已经配置 Octane 官方编译器。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/octane octane limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```tsx
+// Counter.tsx —— 由消费端 Octane 编译器编译
+import { signal } from "@slux/core";
+import { useSignal } from "@slux/octane";
+import { atom } from "@slux/atom";
+import { useAtom } from "@slux/octane/atom";
+
+const count = signal(0);
+const title = atom("hello");
+
+export function Counter() {
+  const value = useSignal(count); // number：直接是值，不是 ref / accessor
+  const [text, setText] = useAtom(title); // [string, (value: string) => void]
+  return <output>{`${text}:${value}`}</output>;
+}
+
+// 写入仍走原实例 / 返回的 setter（可放在事件回调或外部 action 中）：
+count.set((n) => n + 1);
+setText("world");
+```
+
+## 接下来
+
+useSignal 使用编译器 slot hooks；发布入口是 TypeScript 源码。
+
+- [查看完整 README 原文](/packages/octane/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/octane-vite-ts)
+- [返回包索引](/packages/)

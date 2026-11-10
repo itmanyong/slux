@@ -1,0 +1,47 @@
+{
+  "name": "@slux/example-angular-rsbuild-ts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rspack build -c rspack.config.ts",
+    "dev": "rspack serve -c rspack.config.ts --port 9020",
+    "lint": "rs lint",
+    "preview": "rs preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fmt": "rs fmt"
+  },
+  "dependencies": {
+    "@angular/core": "catalog:",
+    "@angular/compiler": "catalog:",
+    "@angular/platform-browser": "catalog:",
+    "@slux/angular": "workspace:*",
+    "@slux/atom": "workspace:*",
+    "@slux/core": "workspace:*",
+    "@slux/shell-example": "workspace:*",
+    "@slux/flux": "workspace:*",
+    "@slux/proxy": "workspace:*",
+    "@slux/rxjs": "workspace:*",
+    "@slux/state-machine": "workspace:*",
+    "@slux/store": "workspace:*",
+    "rxjs": "catalog:"
+  },
+  "devDependencies": {
+    "@angular/build": "catalog:",
+    "@angular/compiler-cli": "catalog:",
+    "@angular/ssr": "catalog:",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@nx/angular-rspack": "catalog:",
+    "@rspack/cli": "catalog:",
+    "@rspack/core": "catalog:",
+    "@rspack/dev-server": "catalog:",
+    "@types/node": "catalog:",
+    "jsdom": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "6.0.3",
+    "vitest": "catalog:"
+  }
+}

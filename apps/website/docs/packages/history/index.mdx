@@ -1,0 +1,52 @@
+---
+title: "@slux/history · 撤销与重做"
+description: 为 Store 更新维护历史记录。
+---
+
+# 撤销与重做
+
+<p className="package-lead">为 Store 更新维护历史记录。</p>
+
+## 适用场景
+
+编辑器或表单需要撤销、重做或时间旅行。
+
+## 安装
+
+```sh
+pnpm add @slux/store @slux/history @slux/core limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```ts
+import { createStore } from "@slux/store";
+import { history } from "@slux/history";
+
+type Counter = { count: number; increment: () => void };
+
+const h = history<Counter>({ maxDepth: 100 });
+const store = createStore<Counter>(
+  (set) => ({
+    count: 0,
+    increment: () => set((state) => ({ count: state.count + 1 })),
+  }),
+  { middleware: [h] },
+);
+
+store.getState().increment(); // count: 1
+h.undo(); // count: 0
+h.redo(); // count: 1
+h.canUndo.get(); // true
+store.destroy();
+```
+
+## 接下来
+
+history 作为 Store 中间件接入；销毁 Store 时同步清理。
+
+- [查看完整 README 原文](/packages/history/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/history-rsbuild-ts)
+- [返回包索引](/packages/)

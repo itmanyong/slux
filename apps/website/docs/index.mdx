@@ -1,0 +1,184 @@
+---
+title: slux · 框架无关的响应式状态管理
+description: 一套响应式核心，六种状态组织方式，按需接入框架与 Store 中间件。
+pageType: custom
+sidebar: false
+outline: false
+hideReadingTime: true
+---
+
+import { Link } from "@rspress/core/theme";
+import { normalizeImagePath } from "@rspress/core/runtime";
+
+<main className="slux-home">
+  <section className="home-hero">
+    <div className="home-hero-content">
+      <img className="home-emblem" src={normalizeImagePath("/logo.svg")} alt="" />
+      <p className="home-wordmark">slux</p>
+      <h1>框架无关的响应式状态管理</h1>
+      <p className="home-hero-lead">从一个 signal 开始，按需组合状态范式、框架绑定与 Store 中间件。</p>
+      <div className="home-actions">
+        <Link className="home-button home-button-primary" href="/guide/">快速开始</Link>
+        <a className="home-button home-button-secondary" href="https://github.com/itmanyong/slux" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        <a className="home-button home-button-secondary" href={normalizeImagePath("/examples/_gallery/")} target="_blank" rel="noopener noreferrer">全部示例 <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <div className="home-feature-grid">
+      <Link className="home-feature" href="/packages/core/">
+        <svg className="home-feature-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="3" /><circle cx="16" cy="16" r="9" /><path d="M16 1v6M16 25v6M1 16h6M25 16h6" /></svg>
+        <strong>响应式核心</strong>
+        <p>signal、computed、effect 与 batch，可以独立用于任何 JavaScript 应用。</p>
+      </Link>
+      <Link className="home-feature" href="/guide/choose">
+        <svg className="home-feature-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="3" width="11" height="11" rx="2" /><rect x="18" y="3" width="11" height="11" rx="2" /><rect x="3" y="18" width="11" height="11" rx="2" /><rect x="18" y="18" width="11" height="11" rx="2" /></svg>
+        <strong>六种状态范式</strong>
+        <p>从 Store 到 RxJS，按数据流和团队习惯选择组织方式。</p>
+      </Link>
+      <Link className="home-feature" href="/guide/frameworks">
+        <svg className="home-feature-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="4" width="26" height="24" rx="3" /><path d="M3 11h26M12 11v17" /></svg>
+        <strong>框架绑定</strong>
+        <p>同一状态源接入 React、Vue、Solid 等框架的原生读取形式。</p>
+      </Link>
+      <Link className="home-feature" href="/guide/ecosystem">
+        <svg className="home-feature-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="12" y="12" width="8" height="8" rx="2" /><path d="M16 2v10M16 20v10M2 16h10M20 16h10M7 7l5 5M20 20l5 5M25 7l-5 5M12 20l-5 5" /></svg>
+        <strong>中间件 + 插件</strong>
+        <p>按需组合 Store 中间件，并用自动导入接入现有工具链。</p>
+      </Link>
+    </div>
+
+  </section>
+
+<section className="home-section home-section-demo">
+  <div className="home-section-inner home-demo-grid">
+    <div className="home-section-copy">
+      <span className="home-kicker">响应式核心</span>
+      <h2>在框架之外管理状态</h2>
+      <p>状态的创建、派生与副作用不依赖 UI 运行时。先写好逻辑，再选择如何在组件中读取。</p>
+      <Link className="home-text-link" href="/packages/core/">
+        了解 Core <span aria-hidden="true">↗</span>
+      </Link>
+    </div>
+    <div className="home-code" aria-label="slux core 代码示例">
+      <div className="home-code-header">
+        <span>counter.ts</span>
+        <span>@slux/core</span>
+      </div>
+      <pre><code>{`import { signal, computed, effect } from "@slux/core";
+
+const count = signal(0);
+const doubled = computed(() => count.get() \* 2);
+
+effect(() => console.log(doubled.get()));
+count.set(2); // 输出 4`}</code></pre>
+
+</div>
+
+  </div>
+</section>
+
+<section className="home-section home-section-patterns">
+  <div className="home-section-inner home-pattern-layout">
+    <div className="home-section-heading home-pattern-intro">
+      <span className="home-kicker">选择范式</span>
+      <h2>用适合问题的方式组织状态</h2>
+      <p>六种范式建立在同一个响应式核心之上。应用只安装实际需要的包。</p>
+      <Link className="home-text-link" href="/guide/choose">
+        查看范式对比 <span aria-hidden="true">↗</span>
+      </Link>
+    </div>
+    <div className="home-pattern-grid">
+      <Link href="/packages/store/">
+        <strong>Store</strong>
+        <span>集中管理数据与 action</span>
+        <b aria-hidden="true">↗</b>
+      </Link>
+      <Link href="/packages/atom/">
+        <strong>Atom</strong>
+        <span>组合细粒度状态</span>
+        <b aria-hidden="true">↗</b>
+      </Link>
+      <Link href="/packages/proxy/">
+        <strong>Proxy</strong>
+        <span>按对象属性写入</span>
+        <b aria-hidden="true">↗</b>
+      </Link>
+      <Link href="/packages/flux/">
+        <strong>Flux</strong>
+        <span>通过 reducer 与 dispatch 更新</span>
+        <b aria-hidden="true">↗</b>
+      </Link>
+      <Link href="/packages/state-machine/">
+        <strong>State Machine</strong>
+        <span>约束合法的状态转换</span>
+        <b aria-hidden="true">↗</b>
+      </Link>
+      <Link href="/packages/rxjs/">
+        <strong>RxJS</strong>
+        <span>连接 Observable 数据流</span>
+        <b aria-hidden="true">↗</b>
+      </Link>
+    </div>
+  </div>
+</section>
+
+  <section className="home-section home-section-final">
+    <div className="home-section-inner">
+      <div className="home-framework-intro">
+        <span className="home-kicker">框架接入</span>
+        <h2>一份状态逻辑，接入熟悉的框架</h2>
+        <p>框架绑定只负责读取和订阅。更新仍通过原始状态实例完成。</p>
+        <Link className="home-text-link" href="/guide/frameworks">查看框架接入指南 <span aria-hidden="true">↗</span></Link>
+      </div>
+      <div className="home-framework-grid">
+        <Link className="home-framework-card" href="/packages/react/"><strong>React</strong><span>通过 Hook 在组件中订阅共享状态，事件中继续写入原始实例。</span><img src={normalizeImagePath("/frameworks/react.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/vue/"><strong>Vue</strong><span>映射为只读 Ref，在组合式 API 与模板中读取已有状态。</span><img src={normalizeImagePath("/frameworks/vue.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/solid/"><strong>Solid</strong><span>转换为 Accessor，让 Solid 组件订阅框架外的状态源。</span><img src={normalizeImagePath("/frameworks/solid.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/svelte/"><strong>Svelte</strong><span>包装为 Readable 或 Writable Store，接入 Svelte 的订阅语法。</span><img src={normalizeImagePath("/frameworks/svelte.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/angular/"><strong>Angular</strong><span>转换为 Signal 或 Observable，供组件与服务读取外部状态。</span><img src={normalizeImagePath("/frameworks/angular.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/preact/"><strong>Preact</strong><span>使用轻量 Hook 订阅同一状态源，无需引入 React 运行时。</span><img src={normalizeImagePath("/frameworks/preact.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/ripple/"><strong>Ripple</strong><span>映射为 Derived，让 Ripple 组件直接读取共享 signal。</span><img src={normalizeImagePath("/frameworks/ripple.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/inferno/"><strong>Inferno</strong><span>通过绑定组件和 render prop，把状态变化传入视图。</span><img src={normalizeImagePath("/frameworks/inferno.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/octane/"><strong>Octane</strong><span>对接编译器 slot hooks，在 Octane 组件运行时读取状态。</span><img src={normalizeImagePath("/frameworks/octane.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/vitarx/"><strong>Vitarx</strong><span>映射为只读浅 Ref，在 Vitarx 组件中消费外部状态。</span><img src={normalizeImagePath("/frameworks/vitarx.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/actview/"><strong>ActView</strong><span>把共享状态接入 ActView 组件，保留原有状态实例。</span><img src={normalizeImagePath("/frameworks/actview.svg")} alt="" /></Link>
+        <Link className="home-framework-card" href="/packages/viewfly/"><strong>Viewfly</strong><span>转为 Accessor，供 Viewfly 组件订阅并读取共享状态。</span><img src={normalizeImagePath("/frameworks/viewfly.svg")} alt="" /></Link>
+      </div>
+    </div>
+  </section>
+  <footer className="home-footer">
+    <div className="home-footer-inner">
+      <nav className="home-footer-links" aria-label="底部导航">
+        <div className="home-footer-column">
+          <h2>指南</h2>
+          <Link href="/guide/introduction">介绍</Link>
+          <Link href="/guide/">快速开始</Link>
+          <Link href="/guide/ecosystem">生态</Link>
+          <Link href="/guide/ai">AI</Link>
+        </div>
+        <div className="home-footer-column">
+          <h2>能力</h2>
+          <Link href="/packages/overview-core">核心</Link>
+          <Link href="/packages/overview-paradigm">范式</Link>
+          <Link href="/packages/overview-middleware">中间件</Link>
+          <Link href="/packages/overview-plugin">插件</Link>
+        </div>
+        <div className="home-footer-column">
+          <h2>框架</h2>
+          <Link href="/packages/overview-framework">框架总览</Link>
+          <Link href="/packages/react/">React</Link>
+          <Link href="/packages/vue/">Vue</Link>
+          <Link href="/packages/solid/">Solid</Link>
+        </div>
+        <div className="home-footer-column">
+          <h2>资源</h2>
+          <Link href="/packages/">包总览</Link>
+          <Link href="/examples/">示例总览</Link>
+          <a href="https://github.com/itmanyong/slux" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://github.com/itmanyong/slux/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a>
+        </div>
+      </nav>
+      <p className="home-footer-copyright">© 2026 slux contributors · MIT License</p>
+    </div>
+  </footer>
+</main>

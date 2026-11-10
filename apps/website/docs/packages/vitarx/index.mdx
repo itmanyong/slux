@@ -1,0 +1,51 @@
+---
+title: "@slux/vitarx · Vitarx 绑定"
+description: 把 slux 状态映射为 Vitarx 的只读浅 Ref。
+---
+
+# Vitarx 绑定
+
+<p className="package-lead">把 slux 状态映射为 Vitarx 的只读浅 Ref。</p>
+
+## 适用场景
+
+Vitarx 组件要读取共享状态。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/vitarx vitarx limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```tsx
+import { computed, createApp, createView } from "vitarx";
+import { signal } from "@slux/core";
+import { useSignal } from "@slux/vitarx";
+
+const count = signal(0);
+
+function Counter() {
+  const value = useSignal(count); // Readonly<ShallowRef<number>>
+  return createView("span", {
+    children: computed(() => String(value.value)),
+  });
+}
+
+const container = document.createElement("div");
+const app = createApp(Counter);
+app.mount(container);
+count.set(5); // 写入走原 signal
+app.unmount(); // 释放绑定订阅
+```
+
+## 接下来
+
+useSignal 返回 .value；客户端需有 active scope。
+
+- [查看完整 README 原文](/packages/vitarx/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/vitarx-vite-ts)
+- [返回包索引](/packages/)

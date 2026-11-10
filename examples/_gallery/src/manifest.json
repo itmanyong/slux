@@ -1,0 +1,207 @@
+{
+  "gallery": {
+    "port": 9000
+  },
+  "examples": [
+    {
+      "dir": "core-rsbuild-ts",
+      "pkg": "@slux/example-core-rsbuild-ts",
+      "label": "core",
+      "group": "核心层",
+      "kind": "rsbuild",
+      "port": 9001
+    },
+    {
+      "dir": "atom-rsbuild-ts",
+      "pkg": "@slux/example-atom-rsbuild-ts",
+      "label": "atom",
+      "group": "范式层",
+      "kind": "rsbuild",
+      "port": 9002
+    },
+    {
+      "dir": "flux-rsbuild-ts",
+      "pkg": "@slux/example-flux-rsbuild-ts",
+      "label": "flux",
+      "group": "范式层",
+      "kind": "rsbuild",
+      "port": 9003
+    },
+    {
+      "dir": "proxy-rsbuild-ts",
+      "pkg": "@slux/example-proxy-rsbuild-ts",
+      "label": "proxy",
+      "group": "范式层",
+      "kind": "rsbuild",
+      "port": 9004
+    },
+    {
+      "dir": "store-rsbuild-ts",
+      "pkg": "@slux/example-store-rsbuild-ts",
+      "label": "store",
+      "group": "范式层",
+      "kind": "rsbuild",
+      "port": 9005
+    },
+    {
+      "dir": "history-rsbuild-ts",
+      "pkg": "@slux/example-history-rsbuild-ts",
+      "label": "history",
+      "group": "中间件层",
+      "kind": "rsbuild",
+      "port": 9006
+    },
+    {
+      "dir": "storage-rsbuild-ts",
+      "pkg": "@slux/example-storage-rsbuild-ts",
+      "label": "storage",
+      "group": "中间件层",
+      "kind": "rsbuild",
+      "port": 9007
+    },
+    {
+      "dir": "state-machine-rsbuild-ts",
+      "pkg": "@slux/example-state-machine-rsbuild-ts",
+      "label": "state-machine",
+      "group": "范式层",
+      "kind": "rsbuild",
+      "port": 9008
+    },
+    {
+      "dir": "rxjs-rsbuild-ts",
+      "pkg": "@slux/example-rxjs-rsbuild-ts",
+      "label": "rxjs",
+      "group": "范式层",
+      "kind": "rsbuild",
+      "port": 9009
+    },
+    {
+      "dir": "shared-rsbuild-ts",
+      "pkg": "@slux/example-shared-rsbuild-ts",
+      "label": "shared",
+      "group": "核心层",
+      "kind": "rsbuild",
+      "port": 9010
+    },
+    {
+      "dir": "telemetry-rsbuild-ts",
+      "pkg": "@slux/example-telemetry-rsbuild-ts",
+      "label": "telemetry",
+      "group": "中间件层",
+      "kind": "rsbuild",
+      "port": 9011
+    },
+    {
+      "dir": "devtools-rsbuild-ts",
+      "pkg": "@slux/example-devtools-rsbuild-ts",
+      "label": "devtools",
+      "group": "中间件层",
+      "kind": "rsbuild",
+      "port": 9012
+    },
+    {
+      "dir": "tab-sync-rsbuild-ts",
+      "pkg": "@slux/example-tab-sync-rsbuild-ts",
+      "label": "tab-sync",
+      "group": "中间件层",
+      "kind": "rsbuild",
+      "port": 9013
+    },
+    {
+      "dir": "react-rsbuild-ts",
+      "pkg": "@slux/example-react-rsbuild-ts",
+      "label": "react",
+      "group": "框架层",
+      "kind": "rsbuild",
+      "port": 9014
+    },
+    {
+      "dir": "vue-rsbuild-ts",
+      "pkg": "@slux/example-vue-rsbuild-ts",
+      "label": "vue",
+      "group": "框架层",
+      "kind": "rsbuild",
+      "port": 9015
+    },
+    {
+      "dir": "solid-rsbuild-ts",
+      "pkg": "@slux/example-solid-rsbuild-ts",
+      "label": "solid",
+      "group": "框架层",
+      "kind": "rsbuild",
+      "port": 9016
+    },
+    {
+      "dir": "svelte-rsbuild-ts",
+      "pkg": "@slux/example-svelte-rsbuild-ts",
+      "label": "svelte",
+      "group": "框架层",
+      "kind": "rsbuild",
+      "port": 9017
+    },
+    {
+      "dir": "preact-rsbuild-ts",
+      "pkg": "@slux/example-preact-rsbuild-ts",
+      "label": "preact",
+      "group": "框架层",
+      "kind": "rsbuild",
+      "port": 9018
+    },
+    {
+      "dir": "inferno-rsbuild-ts",
+      "pkg": "@slux/example-inferno-rsbuild-ts",
+      "label": "inferno",
+      "group": "框架层",
+      "kind": "rsbuild",
+      "port": 9019
+    },
+    {
+      "dir": "angular-rsbuild-ts",
+      "pkg": "@slux/example-angular-rsbuild-ts",
+      "label": "angular",
+      "group": "框架层",
+      "kind": "rspack",
+      "port": 9020
+    },
+    {
+      "dir": "actview-vite-ts",
+      "pkg": "@slux/example-actview-vite-ts",
+      "label": "actview",
+      "group": "框架层",
+      "kind": "vite",
+      "port": 9021
+    },
+    {
+      "dir": "octane-vite-ts",
+      "pkg": "@slux/example-octane-vite-ts",
+      "label": "octane",
+      "group": "框架层",
+      "kind": "vite",
+      "port": 9022
+    },
+    {
+      "dir": "ripple-vite-ts",
+      "pkg": "@slux/example-ripple-vite-ts",
+      "label": "ripple",
+      "group": "框架层",
+      "kind": "vite",
+      "port": 9023
+    },
+    {
+      "dir": "viewfly-vite-ts",
+      "pkg": "@slux/example-viewfly-vite-ts",
+      "label": "viewfly",
+      "group": "框架层",
+      "kind": "vite",
+      "port": 9024
+    },
+    {
+      "dir": "vitarx-vite-ts",
+      "pkg": "@slux/example-vitarx-vite-ts",
+      "label": "vitarx",
+      "group": "框架层",
+      "kind": "vite",
+      "port": 9025
+    }
+  ]
+}

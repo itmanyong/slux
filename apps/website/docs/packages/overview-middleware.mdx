@@ -1,0 +1,18 @@
+---
+title: 中间件总览
+description: 为 Store 按需接入持久化、历史、跨标签同步、遥测和开发调试能力。
+---
+
+# 中间件总览
+
+中间件围绕 `@slux/store` 提供独立能力。先建立 Store，再安装和配置解决当前需求的包。
+
+| 需求           | 包                                       |
+| -------------- | ---------------------------------------- |
+| 保存与恢复状态 | [@slux/storage](/packages/storage/)     |
+| 撤销与重做     | [@slux/history](/packages/history/)     |
+| 跨标签页同步   | [@slux/tab-sync](/packages/tab-sync/)   |
+| 记录更新与错误 | [@slux/telemetry](/packages/telemetry/) |
+| 开发时检查状态 | [@slux/devtools](/packages/devtools/)   |
+
+每个包的使用指南说明接入方式；涉及运行环境或订阅时序的约束，请继续查看对应包的 README 原文和 API 定义。

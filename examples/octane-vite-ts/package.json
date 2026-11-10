@@ -1,0 +1,40 @@
+{
+  "name": "@slux/example-octane-vite-ts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --port 9022 --strictPort",
+    "lint": "rs lint",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fmt": "rs fmt"
+  },
+  "dependencies": {
+    "@slux/atom": "workspace:*",
+    "@slux/core": "workspace:*",
+    "@slux/octane": "workspace:*",
+    "@slux/proxy": "workspace:*",
+    "@slux/store": "workspace:*",
+    "octane": "catalog:",
+    "@slux/shell-example": "workspace:*",
+    "@slux/flux": "workspace:*",
+    "@slux/state-machine": "workspace:*",
+    "@slux/rxjs": "workspace:*",
+    "rxjs": "catalog:"
+  },
+  "devDependencies": {
+    "@tsrx/oxc": "catalog:",
+    "@types/node": "catalog:",
+    "jsdom": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0"
+  }
+}

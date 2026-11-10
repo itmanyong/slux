@@ -1,0 +1,37 @@
+{
+  "name": "@slux/example-vue-rsbuild-ts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rs build",
+    "dev": "rs dev --port 9015",
+    "lint": "rs lint",
+    "preview": "rs preview",
+    "test": "rs test",
+    "typecheck": "tsc --noEmit",
+    "fmt": "rs fmt"
+  },
+  "dependencies": {
+    "@slux/core": "workspace:*",
+    "@slux/vue": "workspace:*",
+    "vue": "catalog:",
+    "@slux/shell-example": "workspace:*",
+    "@slux/atom": "workspace:*",
+    "@slux/store": "workspace:*",
+    "@slux/proxy": "workspace:*",
+    "@slux/flux": "workspace:*",
+    "@slux/state-machine": "workspace:*",
+    "@slux/rxjs": "workspace:*",
+    "rxjs": "catalog:"
+  },
+  "devDependencies": {
+    "@rsbuild/plugin-vue": "catalog:",
+    "@types/node": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "catalog:",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0"
+  }
+}

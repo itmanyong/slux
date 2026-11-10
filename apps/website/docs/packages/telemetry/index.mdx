@@ -1,0 +1,47 @@
+---
+title: "@slux/telemetry · 状态遥测"
+description: 观测 Store 更新和订阅行为。
+---
+
+# 状态遥测
+
+<p className="package-lead">观测 Store 更新和订阅行为。</p>
+
+## 适用场景
+
+需要收集状态变化或订阅规模指标。
+
+## 安装
+
+```sh
+pnpm add @slux/store @slux/telemetry @slux/core limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```ts
+import { createStore } from "@slux/store";
+import { telemetry } from "@slux/telemetry";
+
+type State = { count: number };
+
+const metrics = telemetry<State>({
+  onStateChange: (meta) => console.log(meta.changeCount, meta.durationMs),
+  onError: (context) => console.error(context.source, context.error),
+});
+
+const store = createStore<State>(() => ({ count: 0 }), { middleware: [metrics] });
+
+store.setState({ count: 1 });
+metrics.setEnabled(false); // 暂停上报，状态更新照常
+```
+
+## 接下来
+
+telemetry 作为 Store 中间件接入，按选项提供回调。
+
+- [查看完整 README 原文](/packages/telemetry/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/telemetry-rsbuild-ts)
+- [返回包索引](/packages/)

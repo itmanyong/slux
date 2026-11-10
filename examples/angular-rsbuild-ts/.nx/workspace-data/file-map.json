@@ -1,0 +1,84 @@
+{
+  "version": "6.0",
+  "nxVersion": "24.0.5",
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": ".gitignore",
+        "hash": "7428526608384850638"
+      },
+      {
+        "file": "README.md",
+        "hash": "10727859728694423037"
+      },
+      {
+        "file": "__tests__/mount.test.ts",
+        "hash": "16664597494153413722"
+      },
+      {
+        "file": "package.json",
+        "hash": "3449474416386820784"
+      },
+      {
+        "file": "public/favicon.png",
+        "hash": "12172256526383398803"
+      },
+      {
+        "file": "public/favicon.svg",
+        "hash": "17050665456370215459"
+      },
+      {
+        "file": "rspack.config.ts",
+        "hash": "6354200959577453050"
+      },
+      {
+        "file": "rstack.config.ts",
+        "hash": "7000460369097569206"
+      },
+      {
+        "file": "src/boot.ts",
+        "hash": "13571166593861539571"
+      },
+      {
+        "file": "src/demos/angular.ts",
+        "hash": "9466806460255688394"
+      },
+      {
+        "file": "src/demos/index.ts",
+        "hash": "11941482182103971527"
+      },
+      {
+        "file": "src/env.d.ts",
+        "hash": "5867975405247287024"
+      },
+      {
+        "file": "src/index.css",
+        "hash": "5451986131910018580"
+      },
+      {
+        "file": "src/index.html",
+        "hash": "12034700368541113091"
+      },
+      {
+        "file": "src/index.ts",
+        "hash": "13838998186521124925"
+      },
+      {
+        "file": "src/main.ts",
+        "hash": "7397146185460643045"
+      },
+      {
+        "file": "src/ui/card.ts",
+        "hash": "2580315866753923377"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "8576086779484928923"
+      }
+    ]
+  },
+  "externalNodesHash": "3244421341483603138"
+}

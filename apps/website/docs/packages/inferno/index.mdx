@@ -1,0 +1,43 @@
+---
+title: "@slux/inferno · Inferno 绑定"
+description: 通过组件与 render prop 在 Inferno 中读取 slux 状态。
+---
+
+# Inferno 绑定
+
+<p className="package-lead">通过组件与 render prop 在 Inferno 中读取 slux 状态。</p>
+
+## 适用场景
+
+Inferno 应用要使用框架外状态。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/inferno inferno limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```ts
+import { createElement as h } from "inferno-create-element";
+import { signal } from "@slux/core";
+import { SignalValue } from "@slux/inferno";
+
+const count = signal(0);
+
+const view = h(SignalValue<number>, {
+  source: count,
+  children: (value) => h("span", null, String(value)),
+});
+```
+
+## 接下来
+
+主入口提供 SignalValue；六种范式走各自子入口。
+
+- [查看完整 README 原文](/packages/inferno/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/inferno-rsbuild-ts)
+- [返回包索引](/packages/)

@@ -1,0 +1,85 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false
+  },
+  "include": [],
+  "references": [
+    {
+      "path": "packages/actview"
+    },
+    {
+      "path": "packages/angular"
+    },
+    {
+      "path": "packages/atom"
+    },
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/devtools"
+    },
+    {
+      "path": "packages/flux"
+    },
+    {
+      "path": "packages/history"
+    },
+    {
+      "path": "packages/inferno"
+    },
+    {
+      "path": "packages/octane"
+    },
+    {
+      "path": "packages/preact"
+    },
+    {
+      "path": "packages/proxy"
+    },
+    {
+      "path": "packages/react"
+    },
+    {
+      "path": "packages/ripple"
+    },
+    {
+      "path": "packages/rxjs"
+    },
+    {
+      "path": "packages/shared"
+    },
+    {
+      "path": "packages/solid"
+    },
+    {
+      "path": "packages/state-machine"
+    },
+    {
+      "path": "packages/storage"
+    },
+    {
+      "path": "packages/store"
+    },
+    {
+      "path": "packages/svelte"
+    },
+    {
+      "path": "packages/tab-sync"
+    },
+    {
+      "path": "packages/telemetry"
+    },
+    {
+      "path": "packages/viewfly"
+    },
+    {
+      "path": "packages/vitarx"
+    },
+    {
+      "path": "packages/vue"
+    }
+  ]
+}

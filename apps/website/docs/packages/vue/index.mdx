@@ -1,0 +1,47 @@
+---
+title: "@slux/vue · Vue 绑定"
+description: 把 slux 状态接入 Vue 组合式 API。
+---
+
+# Vue 绑定
+
+<p className="package-lead">把 slux 状态接入 Vue 组合式 API。</p>
+
+## 适用场景
+
+Vue 3 组件需要读取框架外的状态。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/vue vue limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```vue
+<script setup lang="ts">
+import { signal } from "@slux/core";
+import { useSignal } from "@slux/vue";
+
+const count = signal(0);
+const value = useSignal(count); // Readonly<Ref<number>>
+function increment() {
+  count.set((n) => n + 1);
+}
+</script>
+
+<template>
+  <button @click="increment">{{ value }}</button>
+</template>
+```
+
+## 接下来
+
+useSignal 返回只读 Ref；写入仍通过原始 signal。
+
+- [查看完整 README 原文](/packages/vue/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/vue-rsbuild-ts)
+- [返回包索引](/packages/)

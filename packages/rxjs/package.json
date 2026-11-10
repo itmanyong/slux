@@ -1,0 +1,66 @@
+{
+  "name": "@slux/rxjs",
+  "version": "0.1.0",
+  "description": "slux RxJS bridges",
+  "keywords": [
+    "slux",
+    "rxjs",
+    "observable",
+    "reactive"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "author": "itmanyong <itmanyong@gmail.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itmanyong/slux.git",
+    "directory": "packages/rxjs"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "package.json"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "dev": "rs lib -w",
+    "build": "rs lib",
+    "test": "rs test",
+    "lint": "rs lint",
+    "fmt": "rs fmt",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules .turbo"
+  },
+  "dependencies": {
+    "@slux/core": "workspace:*",
+    "@slux/shared": "workspace:*"
+  },
+  "peerDependencies": {
+    "rxjs": "^7.8.0"
+  },
+  "devDependencies": {
+    "rxjs": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "catalog:"
+  }
+}

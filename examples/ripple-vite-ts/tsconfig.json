@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "rootDir": "../..",
+    "strict": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "outDir": "dist",
+    "verbatimModuleSyntax": true,
+    "allowArbitraryExtensions": true,
+    "types": ["vite/client"]
+  },
+  "include": ["src", "__tests__", "vite.config.ts"]
+}

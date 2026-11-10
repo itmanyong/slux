@@ -1,0 +1,25 @@
+---
+title: 框架总览
+description: 浏览 slux 当前的全部框架绑定及其原生读取方式。
+---
+
+# 框架总览
+
+状态逻辑可以先在框架之外创建，再通过绑定包接入组件。选择应用正在使用的框架，按其原生读取方式订阅状态。
+
+| 框架    | 读取形式                  | 文档                                 |
+| ------- | ------------------------- | ------------------------------------ |
+| React   | Hooks                     | [@slux/react](/packages/react/)     |
+| Vue     | 只读 Ref                  | [@slux/vue](/packages/vue/)         |
+| Solid   | Accessor                  | [@slux/solid](/packages/solid/)     |
+| Svelte  | Readable / Writable store | [@slux/svelte](/packages/svelte/)   |
+| Angular | Signal / Observable       | [@slux/angular](/packages/angular/) |
+| Preact  | Hooks                     | [@slux/preact](/packages/preact/)   |
+| Ripple  | Derived                   | [@slux/ripple](/packages/ripple/)   |
+| Inferno | 组件 + render prop        | [@slux/inferno](/packages/inferno/) |
+| Octane  | 编译器 slot hooks         | [@slux/octane](/packages/octane/)   |
+| Vitarx  | 只读浅 Ref                | [@slux/vitarx](/packages/vitarx/)   |
+| ActView | 只读浅 Ref                | [@slux/actview](/packages/actview/) |
+| Viewfly | Accessor                  | [@slux/viewfly](/packages/viewfly/) |
+
+接入步骤见[框架接入指南](/guide/frameworks)；各绑定包的演示页面可直接运行对应的真实项目。

@@ -1,0 +1,19 @@
+---
+title: 介绍
+description: 认识 slux 的响应式核心、状态范式、中间件与框架绑定。
+---
+
+# 介绍
+
+slux 将状态逻辑与 UI 框架拆开。`@slux/core` 提供 signal、computed、effect、batch 与作用域；范式包决定如何组织状态；中间件处理持久化、历史等需求；框架包负责在组件中读取同一份状态。
+
+## 如何选择入口
+
+| 需求                               | 从这里开始                    |
+| ---------------------------------- | ----------------------------- |
+| 在普通 TypeScript 中创建可订阅状态 | [核心](/guide/core)           |
+| 选择 Store、Atom、Proxy 等组织方式 | [范式](/guide/choose)         |
+| 在 React、Vue 等组件中读取状态     | [框架接入](/guide/frameworks) |
+| 为 Store 添加持久化、历史或同步    | [中间件](/guide/middleware)   |
+
+每个包页面提供使用指南、API 定义、类型定义、README 原文与演示示例五条线路。初次使用建议先看[快速开始](/guide/)，再进入所需的包。

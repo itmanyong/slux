@@ -1,0 +1,55 @@
+{
+  "$schema": "./node_modules/turbo/schema.json",
+  "globalDependencies": ["rstack*.config.ts", "tsconfig.base.json", "pnpm-workspace.yaml", "patches/**"],
+  "globalEnv": ["NODE_ENV", "UNO_ORCHESTRATION_ENV"],
+  "tasks": {
+    "dev": {
+      "dependsOn": ["build"],
+      "env": ["PUBLIC_*"],
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!README.md", "!__tests__/**", ".env*"],
+      "env": ["PUBLIC_*"],
+      "outputs": ["dist/**"]
+    },
+    "preview": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!README.md", ".env*"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!README.md"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "fmt": {
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    },
+    "docs:dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "docs:build": {
+      "cache": false
+    },
+    "docs:preview": {
+      "dependsOn": ["docs:build"],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

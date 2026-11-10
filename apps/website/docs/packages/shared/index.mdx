@@ -1,0 +1,62 @@
+---
+title: "@slux/shared · 共享工具"
+description: 执行一组同步任务，或生成自动导入配置。
+---
+
+# 共享工具
+
+<p className="package-lead">执行一组同步任务，或生成自动导入配置。</p>
+
+## 适用场景
+
+只需要工具函数，而不需要创建响应式状态。
+
+## 安装
+
+```sh
+pnpm add @slux/shared
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```ts
+import { createAutoImports, generateBatchAutoImports, runAll } from "@slux/shared";
+
+// 执行全部同步任务，按迭代顺序调用
+const values: number[] = [];
+runAll([
+  () => {
+    values.push(1);
+  },
+  () => {
+    values.push(2);
+  },
+]);
+// values === [1, 2]
+
+// 生成一份带前缀别名的自动导入配置
+const coreImports = createAutoImports({
+  prefix: "u",
+  fromName: "@slux/core",
+  imports: ["signal", "effect"],
+});
+// { "@slux/core": [["signal", "uSignal"], ["effect", "uEffect"]] }
+
+// 合并多个配置来源（同名来源会拼接）
+const merged = generateBatchAutoImports([
+  { fromName: "@slux/core", imports: ["signal"] },
+  { fromName: "@slux/core", imports: ["effect"] },
+  { fromName: "@slux/atom", imports: ["atom"] },
+]);
+// { "@slux/core": ["signal", "effect"], "@slux/atom": ["atom"] }
+```
+
+## 接下来
+
+runAll 依序运行任务；自动导入辅助函数适合构建配置。
+
+- [查看完整 README 原文](/packages/shared/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/shared-rsbuild-ts)
+- [返回包索引](/packages/)

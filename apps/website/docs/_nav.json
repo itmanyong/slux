@@ -1,0 +1,21 @@
+[
+  { "text": "指南", "link": "/guide/", "activeMatch": "^/guide/" },
+  { "text": "核心", "link": "/packages/overview-core", "activeMatch": "^/packages/(overview-core$|(core|shared)(/|$))" },
+  {
+    "text": "范式",
+    "link": "/packages/overview-paradigm",
+    "activeMatch": "^/packages/(overview-paradigm$|(store|atom|proxy|flux|state-machine|rxjs)(/|$))"
+  },
+  {
+    "text": "中间件",
+    "link": "/packages/overview-middleware",
+    "activeMatch": "^/packages/(overview-middleware$|(storage|history|tab-sync|telemetry|devtools)(/|$))"
+  },
+  {
+    "text": "框架",
+    "link": "/packages/overview-framework",
+    "activeMatch": "^/packages/(overview-framework$|(react|vue|solid|svelte|angular|preact|ripple|inferno|octane|vitarx|actview|viewfly)(/|$))"
+  },
+  { "text": "插件", "link": "/packages/overview-plugin", "activeMatch": "^/packages/(overview-plugin|auto-import)$" },
+  { "text": "示例", "link": "/examples/", "activeMatch": "^/examples/" }
+]

@@ -1,0 +1,57 @@
+---
+title: 总览
+description: 按核心、状态范式、Store 中间件和框架绑定浏览 slux 的全部公开包。
+---
+
+# 总览
+
+slux 包按用途分层。每个包都有面向使用者的指南，以及直接从仓库包目录读取的 README 原文。
+
+## 核心与工具
+
+| 包                                 | 用途                                     |
+| ---------------------------------- | ---------------------------------------- |
+| [@slux/core](/packages/core/)     | signal、computed、effect、batch 与作用域 |
+| [@slux/shared](/packages/shared/) | 同步任务与自动导入辅助工具               |
+
+## 状态范式
+
+| 包                                               | 适合的场景             |
+| ------------------------------------------------ | ---------------------- |
+| [@slux/store](/packages/store/)                 | 数据与 action 集中管理 |
+| [@slux/atom](/packages/atom/)                   | 独立原子状态与派生     |
+| [@slux/proxy](/packages/proxy/)                 | 可变对象写入与只读快照 |
+| [@slux/flux](/packages/flux/)                   | reducer 与 dispatch    |
+| [@slux/state-machine](/packages/state-machine/) | 显式状态转换           |
+| [@slux/rxjs](/packages/rxjs/)                   | Observable 桥接        |
+
+## Store 中间件
+
+| 包                                       | 用途                 |
+| ---------------------------------------- | -------------------- |
+| [@slux/storage](/packages/storage/)     | 持久化与恢复         |
+| [@slux/history](/packages/history/)     | 撤销与重做           |
+| [@slux/tab-sync](/packages/tab-sync/)   | 跨标签页同步         |
+| [@slux/telemetry](/packages/telemetry/) | 更新与订阅遥测       |
+| [@slux/devtools](/packages/devtools/)   | DevTools、日志与检查 |
+
+## 框架绑定
+
+| 包                                   | 原生读取形式              |
+| ------------------------------------ | ------------------------- |
+| [@slux/react](/packages/react/)     | Hooks                     |
+| [@slux/vue](/packages/vue/)         | 只读 Ref                  |
+| [@slux/solid](/packages/solid/)     | Accessor                  |
+| [@slux/svelte](/packages/svelte/)   | Readable / Writable store |
+| [@slux/angular](/packages/angular/) | Signal / Observable       |
+| [@slux/preact](/packages/preact/)   | Hooks                     |
+| [@slux/ripple](/packages/ripple/)   | Derived                   |
+| [@slux/inferno](/packages/inferno/) | 组件 + render prop        |
+| [@slux/octane](/packages/octane/)   | 编译器 slot hooks         |
+| [@slux/vitarx](/packages/vitarx/)   | 只读浅 Ref                |
+| [@slux/actview](/packages/actview/) | 只读浅 Ref                |
+| [@slux/viewfly](/packages/viewfly/) | Accessor                  |
+
+## 插件层
+
+插件层尚无独立发布的包。现有的[自动导入接入指南](/packages/auto-import)介绍如何将各包的公开 API 接入 `unplugin-auto-import`。

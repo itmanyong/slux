@@ -1,0 +1,162 @@
+{
+  "name": "@slux/solid",
+  "version": "0.1.0",
+  "description": "slux solid bindings",
+  "keywords": [
+    "slux",
+    "solid",
+    "signals",
+    "bindings",
+    "state-management"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "author": "itmanyong <itmanyong@gmail.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itmanyong/slux.git",
+    "directory": "packages/solid"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "package.json"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./atom": {
+      "import": {
+        "types": "./dist/atom.d.ts",
+        "default": "./dist/atom.js"
+      },
+      "require": {
+        "types": "./dist/atom.d.cts",
+        "default": "./dist/atom.cjs"
+      }
+    },
+    "./store": {
+      "import": {
+        "types": "./dist/store.d.ts",
+        "default": "./dist/store.js"
+      },
+      "require": {
+        "types": "./dist/store.d.cts",
+        "default": "./dist/store.cjs"
+      }
+    },
+    "./proxy": {
+      "import": {
+        "types": "./dist/proxy.d.ts",
+        "default": "./dist/proxy.js"
+      },
+      "require": {
+        "types": "./dist/proxy.d.cts",
+        "default": "./dist/proxy.cjs"
+      }
+    },
+    "./package.json": "./package.json",
+    "./flux": {
+      "import": {
+        "types": "./dist/flux.d.ts",
+        "default": "./dist/flux.js"
+      },
+      "require": {
+        "types": "./dist/flux.d.cts",
+        "default": "./dist/flux.cjs"
+      }
+    },
+    "./state-machine": {
+      "import": {
+        "types": "./dist/state-machine.d.ts",
+        "default": "./dist/state-machine.js"
+      },
+      "require": {
+        "types": "./dist/state-machine.d.cts",
+        "default": "./dist/state-machine.cjs"
+      }
+    },
+    "./rxjs": {
+      "import": {
+        "types": "./dist/rxjs.d.ts",
+        "default": "./dist/rxjs.js"
+      },
+      "require": {
+        "types": "./dist/rxjs.d.cts",
+        "default": "./dist/rxjs.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "dev": "rs lib -w",
+    "build": "rs lib",
+    "test": "rs test",
+    "lint": "rs lint",
+    "fmt": "rs fmt",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules .turbo"
+  },
+  "peerDependencies": {
+    "@slux/atom": "workspace:^",
+    "@slux/core": "workspace:^",
+    "@slux/proxy": "workspace:^",
+    "@slux/store": "workspace:^",
+    "solid-js": ">=1.0.0",
+    "@slux/flux": "workspace:^",
+    "@slux/state-machine": "workspace:^",
+    "@slux/rxjs": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@slux/atom": {
+      "optional": true
+    },
+    "@slux/proxy": {
+      "optional": true
+    },
+    "@slux/store": {
+      "optional": true
+    },
+    "@slux/flux": {
+      "optional": true
+    },
+    "@slux/state-machine": {
+      "optional": true
+    },
+    "@slux/rxjs": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@slux/atom": "workspace:*",
+    "@slux/core": "workspace:*",
+    "@slux/proxy": "workspace:*",
+    "@slux/store": "workspace:*",
+    "jsdom": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "catalog:",
+    "solid-js": "catalog:",
+    "@slux/flux": "workspace:*",
+    "@slux/state-machine": "workspace:*",
+    "@slux/rxjs": "workspace:*",
+    "rxjs": "catalog:"
+  },
+  "dependencies": {
+    "@slux/shared": "workspace:*"
+  }
+}

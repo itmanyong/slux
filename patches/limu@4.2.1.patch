@@ -1,0 +1,54 @@
+diff --git a/dist/limu.js b/dist/limu.js
+index 73eb46ffa38302097ff39e572ad702dc427524ae..c08e58b2475e530ba7395421909edbbe1e801253 100644
+--- a/dist/limu.js
++++ b/dist/limu.js
+@@ -1055,7 +1055,7 @@
+   function getMayProxiedVal(val, options) {
+       const { key, parentMeta, parent, parentType, apiCtx } = options;
+       const mayCreateProxyVal = (val, inputKey) => {
+-          const key = inputKey || '';
++          const key = parentType === MAP ? inputKey : inputKey || '';
+           if (isPrimitive(val) || !val) {
+               return val;
+           }
+diff --git a/dist/limu.mjs b/dist/limu.mjs
+index 1856555e42ccb1235f617ef67b8cfc61c61eea30..886e9aea8bada2745c07e1527dc93482b757de1a 100644
+--- a/dist/limu.mjs
++++ b/dist/limu.mjs
+@@ -1049,7 +1049,7 @@ function shouldGenerateProxyItems(parentType, key) {
+ function getMayProxiedVal(val, options) {
+     const { key, parentMeta, parent, parentType, apiCtx } = options;
+     const mayCreateProxyVal = (val, inputKey) => {
+-        const key = inputKey || '';
++        const key = parentType === MAP ? inputKey : inputKey || '';
+         if (isPrimitive(val) || !val) {
+             return val;
+         }
+diff --git a/lib/core/helper.js b/lib/core/helper.js
+index dcfc41afed8d4b2238f6ab6af6b2e2a4f04ef85b..d80118464f932ac83e766a7352cefa73ced11f82 100644
+--- a/lib/core/helper.js
++++ b/lib/core/helper.js
+@@ -40,7 +40,7 @@ export function shouldGenerateProxyItems(parentType, key) {
+ export function getMayProxiedVal(val, options) {
+     const { key, parentMeta, parent, parentType, apiCtx } = options;
+     const mayCreateProxyVal = (val, inputKey) => {
+-        const key = inputKey || '';
++        const key = parentType === MAP ? inputKey : inputKey || '';
+         if (isPrimitive(val) || !val) {
+             return val;
+         }
+diff --git a/src/core/helper.ts b/src/core/helper.ts
+index 43fb2ce4fb0ebfdefe9a0f9a82358e45585518b8..e9024a99dbc1d61ca80101bcb2c6ea398dc67806 100644
+--- a/src/core/helper.ts
++++ b/src/core/helper.ts
+@@ -51,8 +51,8 @@ export function shouldGenerateProxyItems(parentType: any, key: any) {
+ 
+ export function getMayProxiedVal(val: any, options: { parentMeta: DraftMeta } & AnyObject) {
+   const { key, parentMeta, parent, parentType, apiCtx } = options;
+-  const mayCreateProxyVal = (val: any, inputKey?: string) => {
+-    const key = inputKey || '';
++  const mayCreateProxyVal = (val: any, inputKey?: any) => {
++    const key = parentType === MAP ? inputKey : inputKey || '';
+     if (isPrimitive(val) || !val) {
+       return val;
+     }

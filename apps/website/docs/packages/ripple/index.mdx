@@ -1,0 +1,42 @@
+---
+title: "@slux/ripple · Ripple 绑定"
+description: 把 slux 状态接入 Ripple 组件。
+---
+
+# Ripple 绑定
+
+<p className="package-lead">把 slux 状态接入 Ripple 组件。</p>
+
+## 适用场景
+
+Ripple 组件需要读取共享 signal，或使用服务端入口。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/ripple ripple limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```tsx
+import { signal } from "@slux/core";
+import { useSignal } from "@slux/ripple";
+
+const count = signal(0);
+
+export function Counter() {
+  const value = useSignal(count);
+  return <button onClick={() => count.set((n) => n + 1)}>{value.value}</button>;
+}
+```
+
+## 接下来
+
+useSignal 返回 Derived；服务端入口与客户端入口分开使用。
+
+- [查看完整 README 原文](/packages/ripple/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/ripple-vite-ts)
+- [返回包索引](/packages/)

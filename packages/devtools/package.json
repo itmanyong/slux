@@ -1,0 +1,70 @@
+{
+  "name": "@slux/devtools",
+  "version": "0.1.0",
+  "description": "slux Store 的 Redux DevTools、日志和检查工具",
+  "sideEffects": false,
+  "keywords": [
+    "slux",
+    "devtools",
+    "middleware",
+    "redux-devtools",
+    "logging"
+  ],
+  "author": "itmanyong <itmanyong@gmail.com>",
+  "contributors": [
+    "itmanyong <itmanyong@gmail.com>"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "homepage": "https://www.npmjs.com/package/@slux/devtools",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itmanyong/slux.git",
+    "directory": "packages/devtools"
+  },
+  "bugs": {
+    "url": "https://github.com/itmanyong/slux/issues"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "package.json"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "dev": "rs lib -w",
+    "build": "rs lib",
+    "test": "rs test",
+    "lint": "rs lint",
+    "fmt": "rs fmt",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules .turbo"
+  },
+  "dependencies": {
+    "@slux/store": "workspace:*",
+    "@slux/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "rstack": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,41 @@
+---
+title: "@slux/solid · Solid 绑定"
+description: 把 slux 状态映射到 Solid Accessor。
+---
+
+# Solid 绑定
+
+<p className="package-lead">把 slux 状态映射到 Solid Accessor。</p>
+
+## 适用场景
+
+Solid 组件需要订阅共享状态。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/solid solid-js limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```tsx
+import { signal } from "@slux/core";
+import { useSignal } from "@slux/solid";
+
+const count = signal(0);
+function Counter() {
+  const value = useSignal(count); // Accessor<number>
+  return <button onClick={() => count.set((n) => n + 1)}>{value()}</button>;
+}
+```
+
+## 接下来
+
+useSignal 返回可调用的 Accessor；客户端构建需使用 browser 导出条件。
+
+- [查看完整 README 原文](/packages/solid/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/solid-rsbuild-ts)
+- [返回包索引](/packages/)

@@ -1,0 +1,53 @@
+---
+title: "@slux/flux · Reducer 与 Dispatch"
+description: 通过 reducer 处理 action，并把状态变更收束到 dispatch。
+---
+
+# Reducer 与 Dispatch
+
+<p className="package-lead">通过 reducer 处理 action，并把状态变更收束到 dispatch。</p>
+
+## 适用场景
+
+现有应用习惯 action 流，或需要拦截 dispatch。
+
+## 安装
+
+```sh
+pnpm add @slux/flux @slux/core limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```ts
+import { batch, computed } from "@slux/core";
+import { createFluxStore, type FluxReducer } from "@slux/flux";
+
+type State = { count: number };
+type Action = { type: "add"; amount: number } | { type: "reset" };
+
+const reducer: FluxReducer<State, Action> = (state, action) => (action.type === "add" ? { count: state.count + action.amount } : { count: 0 });
+
+const store = createFluxStore(reducer, { count: 0 });
+const doubled = computed(() => store.get().count * 2);
+const stop = store.subscribe((state) => console.log("count:", state.count));
+
+batch(() => {
+  store.dispatch({ type: "add", amount: 1 });
+  store.dispatch({ type: "add", amount: 2 });
+}); // 订阅只收到 count: 3
+
+console.log(doubled.get()); // 6
+stop();
+store.destroy();
+```
+
+## 接下来
+
+createFluxStore 创建实例，组件读取状态，事件处理器派发 action。
+
+- [查看完整 README 原文](/packages/flux/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/flux-rsbuild-ts)
+- [返回包索引](/packages/)

@@ -1,0 +1,53 @@
+---
+title: "@slux/rxjs · RxJS 桥接"
+description: 在 slux 状态与 Observable 之间转换。
+---
+
+# RxJS 桥接
+
+<p className="package-lead">在 slux 状态与 Observable 之间转换。</p>
+
+## 适用场景
+
+已有 RxJS 数据流需要与 slux 状态协作。
+
+## 安装
+
+```sh
+pnpm add @slux/rxjs @slux/core rxjs limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```ts
+import { computed, signal } from "@slux/core";
+import { fromObservable, toObservable } from "@slux/rxjs";
+import { Subject } from "rxjs";
+
+// core 状态 → RxJS Observable
+const count = signal(1);
+const doubled = computed(() => count.get() * 2);
+const sub = toObservable(doubled).subscribe((value) => {
+  console.log("doubled:", value); // 立即输出 2
+});
+count.set(2); // 4
+
+// RxJS Observable → core 状态
+const events = new Subject<number>();
+const state = fromObservable(events, 0);
+events.next(42);
+console.log(state.get(), state.status.get()); // 42 "active"
+
+sub.unsubscribe();
+state.dispose();
+```
+
+## 接下来
+
+toObservable 从状态创建流；fromObservable 订阅外部流并提供状态。
+
+- [查看完整 README 原文](/packages/rxjs/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/rxjs-rsbuild-ts)
+- [返回包索引](/packages/)

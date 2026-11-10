@@ -1,0 +1,37 @@
+---
+title: 自动导入插件
+description: 将 slux 的公开 API 接入 unplugin-auto-import，按需生成导入语句。
+---
+
+# 自动导入插件
+
+slux 的各包提供 `createAutoImportApis`，用于生成 `unplugin-auto-import` 的配置。构建插件负责插入导入语句；slux 不要求应用启用自动导入。
+
+## 安装
+
+```sh
+pnpm add @slux/core limu
+pnpm add -D unplugin-auto-import
+```
+
+`limu` 是 `@slux/core` 的必需 peer。其他包按实际使用的 API 安装。
+
+## 在 Vite 中使用
+
+```ts title="vite.config.ts"
+import { defineConfig } from "vite";
+import AutoImport from "unplugin-auto-import/vite";
+import { createAutoImportApis } from "@slux/core";
+
+export default defineConfig({
+  plugins: [AutoImport({ imports: [createAutoImportApis()] })],
+});
+```
+
+配置后可在应用代码中直接调用 `signal`、`computed`、`effect`、`batch`、`createScope`、`runInScope` 和 `serializeScope`。使用 Rspack 或 webpack 时，将 `unplugin-auto-import/vite` 换为相应的插件入口。
+
+需要避免与应用中的同名标识符冲突时，可以使用 `createAutoImportApis("u")` 生成 `uSignal`、`uComputed` 等别名。
+
+## 更多包
+
+各范式包和框架绑定的自动导入清单以对应包的 README 为准。若要自行组合来源，可使用 [`@slux/shared` 的 `createAutoImports`](/packages/shared/)；它仅生成配置映射，不负责修改应用代码。

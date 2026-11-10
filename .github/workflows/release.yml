@@ -1,0 +1,66 @@
+name: Publish packages
+
+on:
+  push:
+    tags:
+      - "release/v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "需要重试的发布标签，例如 release/v0.1.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: npm-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - name: Check release tag and notes
+        env:
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^release/v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          test "$(node -p 'require("./packages/core/package.json").version')" = "${RELEASE_TAG#release/v}"
+          test -f "releases/v${RELEASE_TAG#release/v}.md"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:release
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - name: Publish to npm
+        run: |
+          test -n "$NODE_AUTH_TOKEN" || { echo "缺少 NPM_TOKEN secret"; exit 1; }
+          pnpm release:ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          version="${RELEASE_TAG#release/v}"
+          if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            gh release edit "$RELEASE_TAG" --notes-file "releases/v${version}.md"
+          else
+            gh release create "$RELEASE_TAG" --verify-tag --title "v${version}" --notes-file "releases/v${version}.md"
+          fi

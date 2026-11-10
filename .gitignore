@@ -134,3 +134,19 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Turbo
+.turbo
+
+# ai
+.workbuddy
+.shots
+
+# rsrack
+.rstack
+
+# Native binaries（按平台生成，见 scripts/build-native.mjs）
+packages/*/native/*.node
+
+# Rspress example assets copied from built example projects
+apps/website/docs/public/examples/

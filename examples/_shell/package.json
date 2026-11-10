@@ -1,0 +1,22 @@
+{
+  "name": "@slux/shell-example",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "示例页面外壳：报头、分组索引、瀑布流卡片、日志/源码面板与主题，供全部示例复用",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "rs lint",
+    "fmt": "rs fmt",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "catalog:"
+  }
+}

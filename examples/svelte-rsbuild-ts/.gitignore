@@ -1,0 +1,18 @@
+# Local
+.DS_Store
+*.local
+*.log*
+
+# Dist
+node_modules
+dist/
+
+# Profile
+.rspack-profile-*/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+# fmt 无法解析 with { type: "text" } 声明，排除格式化
+src/env.d.ts

@@ -1,0 +1,19 @@
+---
+title: 范式总览
+description: 根据数据结构与更新流程选择 Store、Atom、Proxy、Flux、状态机或 RxJS。
+---
+
+# 范式总览
+
+这六种状态组织方式建立在同一响应式核心之上。按应用当前需要安装对应的包即可；选型时先看状态如何更新、如何拆分，再考虑框架接入。
+
+| 范式          | 适合的需求                    | 文档                                             |
+| ------------- | ----------------------------- | ------------------------------------------------ |
+| Store         | 集中管理数据和 action         | [@slux/store](/packages/store/)                 |
+| Atom          | 组合细粒度状态                | [@slux/atom](/packages/atom/)                   |
+| Proxy         | 按对象属性写入                | [@slux/proxy](/packages/proxy/)                 |
+| Flux          | 通过 reducer 与 dispatch 更新 | [@slux/flux](/packages/flux/)                   |
+| State Machine | 约束合法状态转换              | [@slux/state-machine](/packages/state-machine/) |
+| RxJS          | 连接 Observable 数据流        | [@slux/rxjs](/packages/rxjs/)                   |
+
+如果还没有确定方案，先看[状态范式选择](/guide/choose)中的对比，再运行对应的[示例](/examples/)。

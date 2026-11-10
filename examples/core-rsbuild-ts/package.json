@@ -1,0 +1,26 @@
+{
+  "name": "@slux/example-core-rsbuild-ts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rs build",
+    "dev": "rs dev --port 9001",
+    "lint": "rs lint",
+    "preview": "rs preview",
+    "typecheck": "tsc --noEmit",
+    "fmt": "rs fmt"
+  },
+  "dependencies": {
+    "@slux/core": "workspace:*",
+    "@slux/kit-example": "workspace:*"
+  },
+  "devDependencies": {
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@types/node": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "catalog:"
+  }
+}

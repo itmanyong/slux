@@ -1,0 +1,27 @@
+{
+  "name": "@slux/example-flux-rsbuild-ts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rs build",
+    "dev": "rs dev --port 9003",
+    "lint": "rs lint",
+    "preview": "rs preview",
+    "test": "rs test",
+    "typecheck": "tsc --noEmit",
+    "fmt": "rs fmt"
+  },
+  "dependencies": {
+    "@slux/flux": "workspace:*",
+    "@slux/shell-example": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "rstack": "catalog:",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0"
+  }
+}

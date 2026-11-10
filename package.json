@@ -1,0 +1,70 @@
+{
+  "name": "slux",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --concurrency=32",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint && rs lint scripts",
+    "lint:fix": "rs lint --fix .",
+    "format": "turbo run fmt",
+    "format:check": "rs fmt --check .",
+    "typecheck": "turbo run typecheck",
+    "prepare": "simple-git-hooks",
+    "changeset": "changeset",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "version:packages": "changeset version",
+    "release": "node scripts/release.mjs",
+    "release:ci": "changeset publish",
+    "test:release": "node --test scripts/release-lib.test.mjs scripts/release.test.mjs",
+    "docs:dev": "turbo run docs:dev",
+    "docs:build": "turbo run docs:build",
+    "docs:preview": "turbo run docs:preview",
+    "examples:dev": "node scripts/run-examples.mjs",
+    "generate:apis": "node scripts/gen-apis.mjs"
+  },
+  "devDependencies": {
+    "@changesets/cli": "catalog:",
+    "@types/node": "catalog:",
+    "rstack": "catalog:",
+    "simple-git-hooks": "catalog:",
+    "lint-staged": "catalog:",
+    "turbo": "catalog:",
+    "@microsoft/api-extractor": "catalog:",
+    "typescript": "catalog:"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged --concurrent false --max-arg-length 3000"
+  },
+  "lint-staged": {
+    "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}": [
+      "rs lint --fix",
+      "rs fmt --write"
+    ],
+    "*.{css,html,vue,json,md,yml,yaml}": [
+      "rs fmt --write"
+    ]
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.15.0",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=10"
+  },
+  "volta": {
+    "node": "24.22.1",
+    "pnpm": "12.15.0"
+  },
+  "packageManager": "pnpm@12.15.0"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "@slux/example-viewfly-vite-ts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --port 9024 --strictPort",
+    "lint": "rs lint",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fmt": "rs fmt"
+  },
+  "dependencies": {
+    "@slux/atom": "workspace:*",
+    "@slux/core": "workspace:*",
+    "@slux/proxy": "workspace:*",
+    "@slux/store": "workspace:*",
+    "@slux/viewfly": "workspace:*",
+    "@viewfly/core": "catalog:",
+    "@viewfly/platform-browser": "catalog:",
+    "@slux/shell-example": "workspace:*",
+    "@slux/flux": "workspace:*",
+    "@slux/state-machine": "workspace:*",
+    "@slux/rxjs": "workspace:*",
+    "rxjs": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@viewfly/devtools": "catalog:",
+    "jsdom": "catalog:",
+    "rstack": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0"
+  }
+}

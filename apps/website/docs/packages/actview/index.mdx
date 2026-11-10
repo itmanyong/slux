@@ -1,0 +1,47 @@
+---
+title: "@slux/actview · ActView 绑定"
+description: 在 ActView 组件中读取 slux 状态。
+---
+
+# ActView 绑定
+
+<p className="package-lead">在 ActView 组件中读取 slux 状态。</p>
+
+## 适用场景
+
+ActView 应用使用框架外 signal。
+
+## 安装
+
+```sh
+pnpm add @slux/core @slux/actview @actview/core limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```tsx
+import { defineComponent } from "@actview/core";
+import { jsx } from "@actview/jsx";
+import { signal } from "@slux/core";
+import { useSignal } from "@slux/actview";
+
+const count = signal(0);
+
+export const Counter = defineComponent(() => {
+  const value = useSignal(count); // Readonly<Ref<number>>
+  return () => jsx("span", { children: value.value });
+});
+
+// 写入走原实例；绑定只读
+count.set((n) => n + 1);
+```
+
+## 接下来
+
+useSignal 提供组件绑定；六种范式通过子入口接入。
+
+- [查看完整 README 原文](/packages/actview/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/actview-vite-ts)
+- [返回包索引](/packages/)

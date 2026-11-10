@@ -1,0 +1,56 @@
+---
+title: "@slux/tab-sync · 跨标签页同步"
+description: 通过 BroadcastChannel 同步多个标签页的 Store 状态。
+---
+
+# 跨标签页同步
+
+<p className="package-lead">通过 BroadcastChannel 同步多个标签页的 Store 状态。</p>
+
+## 适用场景
+
+同一应用在多个标签页打开，需要同步状态。
+
+## 安装
+
+```sh
+pnpm add @slux/store @slux/tab-sync @slux/core limu
+```
+
+安装命令列出下面示例直接导入的包。实际发布状态与线上版本请以包管理器查询结果为准。
+
+## 开始使用
+
+```ts
+import { createStore } from "@slux/store";
+import { broadcast } from "@slux/tab-sync";
+
+type State = { theme: string; count: number; increment: () => void };
+
+const store = createStore<State>(
+  (set) => ({
+    theme: "light",
+    count: 0,
+    increment: () => set((state) => ({ count: state.count + 1 })),
+  }),
+  {
+    middleware: [
+      broadcast<State>({
+        channel: "app-state",
+        // 只发送数据字段，action 函数无法通过结构化克隆
+        filter: (state) => ({ theme: state.theme, count: state.count }),
+      }),
+    ],
+  },
+);
+
+store.setState({ theme: "dark" });
+```
+
+## 接下来
+
+broadcast 作为 Store 中间件接入；在浏览器环境使用。
+
+- [查看完整 README 原文](/packages/tab-sync/readme)
+- [查看仓库中的可运行示例](https://github.com/itmanyong/slux/tree/main/examples/tab-sync-rsbuild-ts)
+- [返回包索引](/packages/)

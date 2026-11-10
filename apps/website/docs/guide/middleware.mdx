@@ -1,0 +1,18 @@
+---
+title: 中间件
+description: 按需给 Store 组合持久化、历史、跨标签同步、遥测与开发调试能力。
+---
+
+# 中间件
+
+Store 中间件各自处理一个独立需求。先创建 Store，再按所需行为组合对应包。
+
+| 需求                     | 包                                |
+| ------------------------ | --------------------------------- |
+| 保存与恢复状态           | [Storage](/packages/storage/)     |
+| 撤销与重做               | [History](/packages/history/)     |
+| 浏览器标签页之间传播更新 | [Tab Sync](/packages/tab-sync/)   |
+| 记录状态变化与错误       | [Telemetry](/packages/telemetry/) |
+| 开发时检查与记录状态     | [DevTools](/packages/devtools/)   |
+
+各包对存储环境、订阅时序和错误处理有不同约束。使用前先看该包的指南和 API 定义，再运行其演示示例验证交互。
