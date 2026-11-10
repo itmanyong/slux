@@ -59,7 +59,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  stage:
+  publish:
     needs: prepare
     runs-on: ubuntu-latest
     strategy:
@@ -77,16 +77,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install npm with staged publishing
+      - name: Install npm with trusted publishing
         run: npm install -g npm@11.20.0
-      - name: Stage package through trusted publishing
+      - name: Publish package through trusted publishing
         env:
           PACKAGE: ${{ matrix.package }}
           VERSION: ${{ needs.prepare.outputs.version }}
-        run: npm stage publish "release-tarballs/slux-${PACKAGE}-${VERSION}.tgz" --access public --tag latest --provenance
+        run: npm publish "release-tarballs/slux-${PACKAGE}-${VERSION}.tgz" --access public --tag latest --provenance
 
   release:
-    needs: [prepare, stage]
+    needs: [prepare, publish]
     runs-on: ubuntu-latest
     permissions:
       contents: write

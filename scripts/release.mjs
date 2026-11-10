@@ -5,7 +5,7 @@ import { createInterface } from "node:readline/promises";
 import { parseChangesetPackages, renderReleaseNotes, selectChangedPackages, selectLatestReleaseTag } from "./release-lib.mjs";
 
 const root = resolve(import.meta.dirname, "..");
-const help = `用法：pnpm release\n\n请先自行撰写并提交 Changeset。脚本确认变更日志后，升级统一版本、验证、提交并推送发布标签。GitHub Actions 会暂存 npm 包，等待维护者批准。\n`;
+const help = `用法：pnpm release\n\n请先自行撰写并提交 Changeset。脚本确认变更日志后，升级统一版本、验证、提交并推送发布标签。GitHub Actions 会直接发布 npm 包。\n`;
 
 function output(command, args, cwd = root) {
   return execFileSync(command, args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 32 * 1024 * 1024 }).trim();
@@ -100,7 +100,7 @@ async function main() {
     run("git", ["commit", "-m", `chore(release): v${version}`]);
     run("git", ["tag", tag]);
     run("git", ["push", "--atomic", "origin", "main", tag]);
-    console.log(`已推送 ${tag}；GitHub Actions 会暂存 npm 包，等待维护者批准。`);
+    console.log(`已推送 ${tag}；GitHub Actions 会直接发布 npm 包。`);
   } finally {
     rl.close();
   }

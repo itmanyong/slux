@@ -7,11 +7,11 @@ import test from "node:test";
 
 const script = resolve(import.meta.dirname, "release.mjs");
 
-test("帮助命令说明人工 Changeset 和暂存发布，不触发发布", () => {
+test("帮助命令说明人工 Changeset 和直接发布，不触发发布", () => {
   const result = spawnSync(process.execPath, [script, "--help"], { encoding: "utf8" });
   assert.equal(result.status, 0);
   assert.match(result.stdout, /Changeset/);
-  assert.match(result.stdout, /暂存/);
+  assert.match(result.stdout, /直接发布/);
   assert.doesNotMatch(result.stdout, /RELEASE_AI_API_KEY/);
 });
 
