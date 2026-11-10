@@ -1,7 +1,17 @@
 import { define } from "rstack";
+import { sharedLibConfig } from "../../rstack.lib.config";
 import { sharedTestConfig } from "../../rstack.test.config";
 
-define.extends([sharedTestConfig]);
+define.extends([sharedLibConfig, sharedTestConfig]);
+define.lib({
+  source: {
+    entry: {
+      index: "./src/index.ts",
+      theme: "./src/theme.ts",
+      styles: "./src/styles.ts",
+    },
+  },
+});
 define.test({
   testEnvironment: "jsdom",
 });

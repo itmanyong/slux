@@ -5,11 +5,14 @@
   "type": "module",
   "description": "示例共享层：与框架无关的演示契约、示例逻辑与 API 分组元数据",
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./demos/*": "./src/demos/*"
   },
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "rs lib",
     "typecheck": "tsc --noEmit",
     "test": "rs test",
     "lint": "rs lint",

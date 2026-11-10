@@ -2,6 +2,7 @@
 
 每个示例 = 一页「报头 + 左侧分组索引 + 瀑布流卡片 + 底部统计」的演示站。
 页面外壳全部来自共享包 `@slux/shell-example`（`examples/_shell`），**不要复制外壳代码**。
+该包构建到 `dist`，包含入口、主题桥的 JS 与类型声明，以及供 `@slux/shell-example/styles.css` 引用的样式文件。
 
 标杆参考：`examples/react-rsbuild-ts`（已完成的试点，结构、文案、测试、README 全部以它为准）。
 
