@@ -80,9 +80,9 @@ async function main() {
     run("pnpm", ["sync:package-navigation"]);
     run("pnpm", ["test:release"]);
     run("pnpm", ["lint"]);
+    run("pnpm", ["build"]);
     run("pnpm", ["typecheck"]);
     run("pnpm", ["test"]);
-    run("pnpm", ["build"]);
     const tag = `release/v${version}`;
     if (output("git", ["tag", "--list", tag])) throw new Error(`${tag} 标签已存在`);
     mkdirSync(resolve(root, "releases"), { recursive: true });

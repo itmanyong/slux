@@ -51,9 +51,9 @@ jobs:
           test -z "$(git status --porcelain -- packages)"
       - run: pnpm test:release
       - run: pnpm lint
+      - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
-      - run: pnpm build
       - name: Pack release tarballs
         id: pack
         run: node scripts/pack-release.mjs "$RUNNER_TEMP/slux-release-tarballs"
