@@ -1,6 +1,6 @@
 {
   "name": "@slux/storage",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "支持同步和异步后端的 Store 持久化中间件",
   "sideEffects": false,
   "keywords": [

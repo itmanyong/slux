@@ -1,6 +1,6 @@
 {
   "name": "@slux/telemetry",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Store 状态变化与订阅遥测中间件",
   "sideEffects": false,
   "keywords": [
