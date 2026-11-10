@@ -1,6 +1,6 @@
 {
   "name": "@slux/shared",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "@slux/shared 零依赖的共享工具",
   "sideEffects": false,
   "keywords": [

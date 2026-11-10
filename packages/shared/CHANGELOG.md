@@ -1,3 +1,9 @@
+## 0.2.5
+
+### Other Changes 🔧
+
+- chore(shared): 完善发布元数据与包内许可证，并恢复 clean 清理包内依赖。
+
 ## 0.2.4
 
 ### Document 📖

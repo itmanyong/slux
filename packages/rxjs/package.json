@@ -1,6 +1,6 @@
 {
   "name": "@slux/rxjs",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "slux 与 RxJS 的双向桥接",
   "keywords": [
     "slux",

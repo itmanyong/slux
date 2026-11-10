@@ -1,3 +1,10 @@
+## 0.2.5
+
+### Other Changes 🔧
+
+- chore(flux): 完善发布元数据与包内许可证，并恢复 clean 清理包内依赖。
+- chore(flux): 更新本包内部依赖：@slux/core（0.2.4 → 0.2.5）、@slux/shared（0.2.4 → 0.2.5）。
+
 ## 0.2.4
 
 ### Document 📖

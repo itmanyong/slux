@@ -1,6 +1,6 @@
 {
   "name": "@slux/preact",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "为 Preact 提供的 slux 框架绑定",
   "keywords": [
     "slux",

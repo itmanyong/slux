@@ -1,3 +1,10 @@
+## 0.2.5
+
+### Other Changes 🔧
+
+- chore(tab-sync): 完善发布元数据与包内许可证，并恢复 clean 清理包内依赖。
+- chore(tab-sync): 更新本包内部依赖：@slux/store（0.2.4 → 0.2.5）、@slux/shared（0.2.4 → 0.2.5）。
+
 ## 0.2.4
 
 ### Document 📖

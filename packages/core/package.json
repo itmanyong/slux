@@ -1,6 +1,6 @@
 {
   "name": "@slux/core",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "@slux/core 框架无关的响应式核心",
   "sideEffects": false,
   "keywords": [

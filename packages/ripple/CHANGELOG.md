@@ -1,3 +1,14 @@
+## 0.2.5
+
+### Bug Fixes 🐞
+
+- fix(ripple): 统一浏览器和服务端根入口的导出集合，补齐合并类型入口，避免类型声明与实际导出不一致。
+
+### Other Changes 🔧
+
+- chore(ripple): 完善发布元数据与包内许可证，并恢复 clean 清理包内依赖。
+- chore(ripple): 同步 8 项本包内部依赖范围。
+
 ## 0.2.4
 
 ### Document 📖
