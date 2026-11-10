@@ -1,3 +1,9 @@
+## 0.2.3
+
+### Other Changes 🔧
+
+- chore(core): 跟随统一版本升级至 0.2.3；更新本包内部依赖：@slux/shared（0.2.2 → 0.2.3）。
+
 ## 0.2.2
 
 ### Document 📖

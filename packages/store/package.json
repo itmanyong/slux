@@ -1,6 +1,6 @@
 {
   "name": "@slux/store",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "基于 slux core 的 Store 范式层",
   "sideEffects": false,
   "keywords": [

@@ -1,3 +1,13 @@
+## 0.2.3
+
+### Document 📖
+
+- docs(ripple): 移除 README 安装命令中 Ripple 的指定版本，使用包名直接安装。
+
+### Other Changes 🔧
+
+- chore(ripple): 同步 8 项本包内部依赖范围。
+
 ## 0.2.2
 
 ### Document 📖

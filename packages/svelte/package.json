@@ -1,6 +1,6 @@
 {
   "name": "@slux/svelte",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "slux svelte bindings",
   "keywords": [
     "slux",

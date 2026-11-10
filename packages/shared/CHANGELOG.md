@@ -1,3 +1,9 @@
+## 0.2.3
+
+### Other Changes 🔧
+
+- chore(shared): 跟随统一版本升级至 0.2.3。
+
 ## 0.2.2
 
 ### Document 📖

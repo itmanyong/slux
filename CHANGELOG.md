@@ -1,3 +1,21 @@
+## v0.2.3
+
+### Document 📖
+
+- docs(angular): 移除 README 安装命令中 Angular 和 RxJS 的指定版本，使用包名直接安装。
+- docs(inferno): 移除 README 安装命令中 Inferno 的指定版本，使用包名直接安装。
+- docs(preact): 移除 README 安装命令中 Preact 的指定版本，使用包名直接安装。
+- docs(ripple): 移除 README 安装命令中 Ripple 的指定版本，使用包名直接安装。
+
+<details>
+<summary>相关提交（1）</summary>
+
+- docs(packages): simplify installation commands ([7f2659f](https://github.com/itmanyong/slux/commit/7f2659ff2954a34e7eaa546e4fce2cf8be0118eb))
+
+</details>
+
+**Full Changelog**: [release/v0.2.2...release/v0.2.3](https://github.com/itmanyong/slux/compare/release/v0.2.2...release/v0.2.3)
+
 ## v0.2.2
 
 ### New Features 🎉
