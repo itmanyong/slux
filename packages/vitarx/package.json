@@ -126,7 +126,7 @@
     "lint": "rs lint",
     "fmt": "rs fmt",
     "typecheck": "tsc --noEmit",
-    "clean": "node -e \"for(const p of ['dist','.turbo'])require('node:fs').rmSync(p,{recursive:true,force:true})\""
+    "clean": "node -e \"for(const p of ['dist','.turbo','node_modules'])require('node:fs').rmSync(p,{recursive:true,force:true})\""
   },
   "peerDependencies": {
     "@slux/atom": "workspace:^",
