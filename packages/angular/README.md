@@ -25,7 +25,7 @@
 ## 安装
 
 ```sh
-pnpm add @slux/core @slux/angular @angular/core@^22 rxjs@^7.8
+pnpm add @slux/core @slux/angular @angular/core rxjs
 ```
 
 - **必需 peer**：`@slux/core`（`workspace:^`）、`@angular/core@^22.0.0`、`rxjs@^7.8.0`。`rxjs` 是必需 peer，因为主入口 `bridge.ts` 直接使用 `Observable`。

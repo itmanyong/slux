@@ -24,7 +24,7 @@
 ## 安装
 
 ```sh
-pnpm add @slux/core @slux/preact preact@^11
+pnpm add @slux/core @slux/preact preact
 ```
 
 - **必需 peer**：`@slux/core`（`workspace:^`）、`preact@^11.0.0`。

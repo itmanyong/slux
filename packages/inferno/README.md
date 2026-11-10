@@ -24,7 +24,7 @@
 ## 安装
 
 ```sh
-pnpm add @slux/core @slux/inferno inferno@^10
+pnpm add @slux/core @slux/inferno inferno
 ```
 
 - **必需 peer**：`@slux/core`（`workspace:^`）、`inferno@^10.0.0`。

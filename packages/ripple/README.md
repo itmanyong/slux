@@ -25,7 +25,7 @@
 ## 安装
 
 ```sh
-pnpm add @slux/core @slux/ripple ripple@^0.6.1
+pnpm add @slux/core @slux/ripple ripple
 ```
 
 - **必需 peer**：`@slux/core`（`workspace:^`）、`ripple@^0.6.1`。
