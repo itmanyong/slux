@@ -1,6 +1,6 @@
 {
   "name": "@slux/history",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "基于 Store 快照的撤销与重做中间件",
   "sideEffects": false,
   "keywords": [
