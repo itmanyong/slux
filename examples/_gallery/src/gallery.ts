@@ -13,7 +13,16 @@
  * iframe 协议常量与示例共用 @slux/shell-example/theme，避免两份硬编码。
  */
 
-import { EMBED_FLAG, EMBED_PARAM, isEmbedded, REQUEST_MESSAGE, SYNC_MESSAGE, THEME_CHANNEL, THEME_PARAM } from "@slux/shell-example/theme";
+import {
+  CONTENT_LOADED_MESSAGE,
+  EMBED_FLAG,
+  EMBED_PARAM,
+  isEmbedded,
+  REQUEST_MESSAGE,
+  SYNC_MESSAGE,
+  THEME_CHANNEL,
+  THEME_PARAM,
+} from "@slux/shell-example/theme";
 import type { Theme } from "@slux/shell-example/theme";
 
 export interface ManifestExample {
@@ -104,14 +113,14 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
   /* ── 主区域 ───────────────────────────────────────── */
   const main = el("main", "g-main");
   const placeholder = el("div", "g-placeholder");
+  placeholder.setAttribute("role", "status");
+  placeholder.setAttribute("aria-live", "polite");
   placeholder.append(
     el("h2", "g-placeholder-title", "正在载入示例"),
     el("p", "g-placeholder-hint", "使用右上角的示例下拉框切换，或展开浮层从分组列表中选择。"),
   );
-  const frame = el("iframe", "g-frame");
-  frame.title = "示例预览";
-  frame.setAttribute("aria-label", "示例预览");
-  main.append(placeholder, frame);
+  let frame = el("iframe", "g-frame");
+  main.append(placeholder);
 
   /* ── 统一的示例浮层：标题栏始终存在 ───────────────── */
   const panel = el("aside", "g-panel");
@@ -200,7 +209,11 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
     if (!win) return;
     win.postMessage({ type: SYNC_MESSAGE, payload: { theme: themeName() } }, "*");
   }
-  frame.addEventListener("load", syncFrameTheme);
+
+  function finishLoading(): void {
+    placeholder.classList.add("hidden");
+    main.setAttribute("aria-busy", "false");
+  }
 
   /** 独立运行时把主题写回地址栏，刷新后保持。 */
   function syncGalleryUrl(): void {
@@ -261,7 +274,20 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
     if (event.source !== frame.contentWindow && (window.parent === window || event.source !== window.parent)) return;
     const data: unknown = event.data;
     if (typeof data !== "object" || data === null) return;
-    const message = data as { type?: unknown; payload?: { theme?: unknown } };
+    const message = data as { type?: unknown; payload?: { theme?: unknown; package?: unknown } };
+    if (message.type === CONTENT_LOADED_MESSAGE) {
+      if (
+        current &&
+        event.source === frame.contentWindow &&
+        event.origin === new URL(frame.src).origin &&
+        typeof message.payload === "object" &&
+        message.payload !== null &&
+        (message.payload.package === `@slux/${current.label}` || message.payload.package === `/${current.label}`)
+      ) {
+        finishLoading();
+      }
+      return;
+    }
     if (message.type === REQUEST_MESSAGE && event.source === frame.contentWindow) {
       syncFrameTheme();
     } else if (message.type === SYNC_MESSAGE && (message.payload?.theme === "light" || message.payload?.theme === "dark")) {
@@ -297,10 +323,20 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
       other.classList.toggle("active", other === btn);
     }
     dropdown.value = dir;
-    frame.src = embedUrl(item, themeName());
-    frame.title = `示例预览 · ${item.label}`;
-    frame.classList.add("ready");
-    placeholder.classList.add("hidden");
+    const nextFrame = el("iframe", "g-frame ready");
+    nextFrame.src = embedUrl(item, themeName());
+    nextFrame.title = `示例预览 · ${item.label}`;
+    nextFrame.setAttribute("aria-label", nextFrame.title);
+    nextFrame.addEventListener("load", () => {
+      if (frame !== nextFrame) return;
+      finishLoading();
+      syncFrameTheme();
+    });
+    frame.remove();
+    frame = nextFrame;
+    placeholder.classList.remove("hidden");
+    main.setAttribute("aria-busy", "true");
+    main.append(frame);
 
     currentLabel.textContent = [item.label, item.group, ...(showPorts ? [`:${item.port}`] : [])].join(" · ");
     currentLabel.title = `examples/${item.dir}`;
@@ -451,6 +487,10 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
   const initialDir = manifest.examples.some((x) => x.dir === requested) ? requested : fallback?.dir;
   // 默认选中不写入 hash：刷新始终回到 core；用户主动选择才更新地址栏。
   if (initialDir) select(initialDir, false);
+
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: CONTENT_LOADED_MESSAGE, payload: { package: "@slux/gallery-example" } }, "*");
+  }
 
   return { select };
 }

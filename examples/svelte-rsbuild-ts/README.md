@@ -1,6 +1,6 @@
 # svelte Playground
 
-`examples/svelte-rsbuild-ts` 用卡片布局演示 `@slux/svelte` 的公开 API。toReadable / toWritable 把 slux 信号读成 Svelte store，`$` 前缀自动订阅与卸载。每张卡片都可独立重置、查看源码与运行记录。
+🧪 `examples/svelte-rsbuild-ts` 用卡片布局演示 `@slux/svelte` 的公开 API。toReadable / toWritable 把 slux 信号读成 Svelte store，`$` 前缀自动订阅与卸载。每张卡片都可独立重置、查看源码与运行记录。
 
 ## 运行
 
@@ -11,18 +11,18 @@ pnpm --filter @slux/example-svelte-rsbuild-ts build    # 构建
 pnpm --filter @slux/example-svelte-rsbuild-ts test     # 挂载回归测试（jsdom + 真实运行时）
 ```
 
-构建工具：Rsbuild + `@rsbuild/plugin-svelte`（Svelte 5 编译）
+🚀 构建工具：Rsbuild + `@rsbuild/plugin-svelte`（Svelte 5 编译）
 
 ## 卡片
 
-| 卡片                               | API                  | 分类 |
+| 🧪 卡片                            | API                  | 分类 |
 | ---------------------------------- | -------------------- | ---- |
 | toReadable：信号驱动的 Svelte 组件 | `toReadable(signal)` | hook |
 | toWritable：可写信号接 store       | `toWritable(signal)` | hook |
 
 ## 技术要点
 
-每张卡片挂载的是真实 `.svelte` 组件，由 Svelte 5 编译器编译；组件内部状态在实例 `<script>` 里创建（如 `signal(0)`），重置卡片即重新挂载，`$` 前缀 store 在组件卸载时自动退订。
+💡 每张卡片挂载的是真实 `.svelte` 组件，由 Svelte 5 编译器编译；组件内部状态在实例 `<script>` 里创建（如 `signal(0)`），重置卡片即重新挂载，`$` 前缀 store 在组件卸载时自动退订。
 
 卡片用 `mount(component, { target, props })` 挂载、卸载时 `unmount(app)`（Svelte 5 API）。
 

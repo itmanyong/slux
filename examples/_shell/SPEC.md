@@ -1,6 +1,6 @@
 # SPEC：slux 示例页统一规范（子 Agent 执行契约）
 
-每个示例 = 一页「报头 + 左侧分组索引 + 瀑布流卡片 + 底部统计」的演示站。
+🧪 每个示例 = 一页「报头 + 左侧分组索引 + 瀑布流卡片 + 底部统计」的演示站。
 页面外壳全部来自共享包 `@slux/shell-example`（`examples/_shell`），**不要复制外壳代码**。
 该包构建到 `dist`，包含入口、主题桥的 JS 与类型声明，以及供 `@slux/shell-example/styles.css` 引用的样式文件。
 
@@ -25,7 +25,7 @@ createExamplePage(rootElement, {
 });
 ```
 
-`ExampleDemo`（两种内容形态二选一，`mount` 优先）：
+🧩 `ExampleDemo`（两种内容形态二选一，`mount` 优先）：
 
 ```ts
 {
@@ -62,7 +62,7 @@ examples/<pkg>-rs/
   __tests__/page.test.tsx   # rstest
 ```
 
-vite 系示例（actview-vite-ts / octane-vite-ts / ripple-vite-ts / viewfly-vite-ts / vitarx-vite-ts）：
+🗂️ vite 系示例（actview-vite-ts / octane-vite-ts / ripple-vite-ts / viewfly-vite-ts / vitarx-vite-ts）：
 
 - **保留** `vite.config.ts`（含关键 alias 与编译器插件）、根 `index.html`、vitest 测试方式；
 - 只把 `src/` 与根 `index.html` 内容替换为新设计，`package.json` scripts 不动（build=vite build，test=vitest run）。
@@ -70,7 +70,7 @@ vite 系示例（actview-vite-ts / octane-vite-ts / ripple-vite-ts / viewfly-vit
 
 ## 3. 演示内容要求
 
-- **5–8 个 demo**，按包的子入口/能力分组（groups 与子入口一一对应）。
+- 💡 **5–8 个 demo**，按包的子入口/能力分组（groups 与子入口一一对应）。
   框架绑定包统一覆盖：useSignal（含 computed）、atom、store、proxy、flux、state-machine、rxjs（按包实际子入口取舍；不存在的入口跳过并注明）。
 - demo 文件 = **最小复现**：自包含、只依赖被演示的包 + `@slux/shell-example` 的 LogTone 类型；文件内不写注释性废话；`?raw` 导入该文件作为 repro。
 - 每个操作都通过 `ctx.log(msg, tone)` 留运行记录，读数（状态值）实时可见。
@@ -79,7 +79,7 @@ vite 系示例（actview-vite-ts / octane-vite-ts / ripple-vite-ts / viewfly-vit
 
 ## 4. 测试要求（rstest，环境 jsdom）
 
-`__tests__/page.test.tsx` 至少 4 条（参照 react-rsbuild-ts）：
+🧪 `__tests__/page.test.tsx` 至少 4 条（参照 react-rsbuild-ts）：
 
 1. 渲染全部卡片且内容区非空；
 2. 某代表性 demo 交互后读数变化且产生日志；
@@ -90,7 +90,7 @@ vite 系示例（actview-vite-ts / octane-vite-ts / ripple-vite-ts / viewfly-vit
 
 ## 5. 依赖（已由编排者统一写入 package.json，无需改动）
 
-- 所有示例：`@slux/shell-example`（workspace）+ 三个 `@fontsource/*` devDeps。
+- 💡 所有示例：`@slux/shell-example`（workspace）+ 三个 `@fontsource/*` devDeps。
 - 框架示例：另含全部范式包 workspace 依赖（atom/store/proxy/flux/state-machine/rxjs）。
 - **禁止**新增其他外部依赖；缺 API 就用现有依赖组合实现。若确需改动 package.json，完成后运行 `pnpm install` 并在报告中注明。
 
@@ -104,7 +104,7 @@ rs fmt                # 无则跳过
 rs build              # vite 系为 vite build
 ```
 
-完成后在最终回复中报告：demo 清单（id/分组/一句话）、测试结果、build 产物大小、遇到的问题与取舍。
+💡 完成后在最终回复中报告：demo 清单（id/分组/一句话）、测试结果、build 产物大小、遇到的问题与取舍。
 
 ## 7. 视觉与文案基调
 
@@ -114,22 +114,24 @@ rs build              # vite 系为 vite build
 
 ## 8. iframe 主题桥（所有示例共用，禁止各自复制实现）
 
-上下层 iframe 交互只有一份实现：`@slux/shell-example/theme`（也可从 `@slux/shell-example` 引入同名导出）。
+🎨 上下层 iframe 交互只有一份实现：`@slux/shell-example/theme`（也可从 `@slux/shell-example` 引入同名导出）。
 
-- 24 个走 `createExamplePage` 的示例：外壳内部自动调用 `initTheme()`。
-- `core-rsbuild-ts`（自带外壳 UI）：入口显式 `import { initTheme } from "@slux/shell-example/theme"` 并调用。
-- 自建外壳的页面也必须调用 `initTheme()` 或 `createThemeBridge()`（后者返回卸载函数，便于测试）。
+- 24 个走 `createExamplePage` 的示例：外壳内部自动调用 `initTheme(branding.pkg)`，包名沿用 `/react` 等品牌后缀。
+- `core-rsbuild-ts`（自带外壳 UI）：入口显式 `import { initTheme } from "@slux/shell-example/theme"` 并调用 `initTheme("@slux/core")`。
+- 自建外壳的页面也必须调用 `initTheme(packageName)` 或 `createThemeBridge(packageName)`（后者返回卸载函数，便于测试）。
 
 协议常量同样从该模块导出，总览页 `_gallery` 复用，避免多处硬编码：
 
-| 通道 | 值                                                                 | 作用                                                                                                                                          |
-| ---- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| URL  | `?theme=light\|dark`                                               | 指定首次加载的主题；非 iframe 场景下切换主题后也会写回该参数（嵌入态由父页面掌管，自身不写）                                                  |
-| URL  | `?embed=1`                                                         | 嵌入总览时隐藏示例自身顶栏                                                                                                                    |
-| 消息 | `{ type: "THEME_CHANGED", payload: { theme: "light" \| "dark" } }` | ① 文档、总览、示例之间双向同步主题；② 同源多标签页经 `BroadcastChannel("slux-theme-sync")` 互相同步（只比对 `type` 对得上即应用，不校验来源） |
-| 消息 | `slux-example-theme-request`                                       | 下层加载后向上层索取当前主题                                                                                                                  |
-| 事件 | `slux-theme-change`                                                | 主题变化后刷新示例按钮文案                                                                                                                    |
+| 🎨 通道 | 值                                                                 | 作用                                                                                                                                          |
+| ------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| URL     | `?theme=light\|dark`                                               | 指定首次加载的主题；非 iframe 场景下切换主题后也会写回该参数（嵌入态由父页面掌管，自身不写）                                                  |
+| URL     | `?embed=1`                                                         | 嵌入总览时隐藏示例自身顶栏                                                                                                                    |
+| 消息    | `{ type: "THEME_CHANGED", payload: { theme: "light" \| "dark" } }` | ① 文档、总览、示例之间双向同步主题；② 同源多标签页经 `BroadcastChannel("slux-theme-sync")` 互相同步（只比对 `type` 对得上即应用，不校验来源） |
+| 消息    | `slux-example-theme-request`                                       | 下层加载后向上层索取当前主题                                                                                                                  |
+| 消息    | `{ type: "CONTENT_LOADED", payload: { package: string } }`         | 子页面（示例）注册监听（即加载完成）后，延迟 `1024 * 0.5`ms 主动向父页面（总览）通告自身已就绪与包名；仅嵌入态发送，独立运行不发送            |
+| 事件    | `slux-theme-change`                                                | 主题变化后刷新示例按钮文案                                                                                                                    |
 
+- ⏳ 文档与总览父页面在加载及切换示例时显示适配明暗主题的半透明模糊层；当前 iframe 的 `load`，或窗口、来源和包名均匹配的 `CONTENT_LOADED`，任一完成就撤层。旧 iframe 或其他包的消息不会结束当前加载。
 - 初始主题优先级：`?theme=` > localStorage > `prefers-color-scheme`。
 - **非 iframe 场景（独立运行）切换主题**：更新 `data-theme`、写回 `?theme=` 地址栏（刷新后保持）、并广播给同来源其他标签页；**嵌入场景（在总览 iframe 内）**：地址栏由父页面掌管，只把主题回传给父页面，不写自身 URL。
 - **同源多标签页同步**：通过 `BroadcastChannel("slux-theme-sync")`。任一标签页本地切换主题即广播 `THEME_CHANGED`；其余标签页收到后只要 `type` 对得上就应用（不依赖来源），并同样写回各自的 `?theme=`；收到方不再二次转发，避免回环。总览（:9000）与示例（:90xx）各按来源独立成网，互不干扰。

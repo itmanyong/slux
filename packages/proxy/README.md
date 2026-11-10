@@ -1,10 +1,10 @@
 # @slux/proxy
 
-基于 `@slux/core` 的可变对象范式。`observable` 用 `Proxy` 包装普通对象 / 数组，属性赋值、删除与数组操作直接触发 core 的依赖通知；`observe` 按读取的属性自动追踪；`snapshot` 产出冻结、缓存、结构共享的只读快照；`ref` 用于把不想被代理的值按原引用嵌入状态。
+🪞 基于 `@slux/core` 的可变对象范式。`observable` 用 `Proxy` 包装普通对象 / 数组，属性赋值、删除与数组操作直接触发 core 的依赖通知；`observe` 按读取的属性自动追踪；`snapshot` 产出冻结、缓存、结构共享的只读快照；`ref` 用于把不想被代理的值按原引用嵌入状态。
 
 代理不是 `Signal` 或 `Subscribable`：它没有 `get()` / `set()`，但读取属性会登记到 core 的依赖图，因此可以和 `@slux/core` 的 `computed`、`effect`、`batch` 混用。
 
-| 项               | 值                                                                | 来源                          |
+| 💡 项            | 值                                                                | 来源                          |
 | ---------------- | ----------------------------------------------------------------- | ----------------------------- |
 | 包名 / 版本      | `@slux/proxy` `0.1.0`                                             | `package.json`                |
 | 运行时依赖       | `@slux/core`、`@slux/shared`（`workspace:*`）                     | `package.json` `dependencies` |
@@ -16,7 +16,7 @@
 
 ## 特性与适用场景
 
-| 场景                                               | 是否适合 | 说明                                                              |
+| 🧭 场景                                            | 是否适合 | 说明                                                              |
 | -------------------------------------------------- | -------- | ----------------------------------------------------------------- |
 | 希望直接 `state.user.name = "Bob"` 更新状态        | 适合     | 写入经代理的 `set` / `defineProperty` / `deleteProperty` 进入追踪 |
 | 按实际读取的属性细粒度重跑副作用                   | 适合     | `observe(fn)` 基于 core `effect`，动态收集依赖                    |
@@ -31,14 +31,14 @@
 pnpm add @slux/core @slux/proxy
 ```
 
-| 项                                          | 情况                                         |
+| 📦 项                                       | 情况                                         |
 | ------------------------------------------- | -------------------------------------------- |
 | `dependencies`                              | `@slux/core`、`@slux/shared`，安装时一并带入 |
 | `peerDependencies` / `peerDependenciesMeta` | 无                                           |
 | 可选 peer                                   | 无                                           |
 | 子入口                                      | 无；全部导出从 `@slux/proxy` 主入口导入      |
 
-上例显式写出 `@slux/core`，是因为下文示例直接使用了它的 `batch` / `computed` / `effect`——**应用代码直接 import 的依赖应显式声明**；`@slux/shared` 只作间接依赖。仓库内验证命令集中在仓库根 [README](../../README.md) 的「本地开发」一节，本包不重复。
+📦 上例显式写出 `@slux/core`，是因为下文示例直接使用了它的 `batch` / `computed` / `effect`——**应用代码直接 import 的依赖应显式声明**；`@slux/shared` 只作间接依赖。仓库内验证命令集中在仓库根 [README](../../README.md) 的「本地开发」一节，本包不重复。
 
 ## 快速开始
 
@@ -76,7 +76,7 @@ dispose();
 
 ## 核心 API
 
-| 导出                   | 签名                                                | 行为                                           |
+| 🧩 导出                | 签名                                                | 行为                                           |
 | ---------------------- | --------------------------------------------------- | ---------------------------------------------- |
 | `observable`           | `<T extends object>(initialObj: T): T`              | 包装普通对象、数组或无原型对象，保留输入类型   |
 | `subscribe`            | `(proxy: object, callback: () => void): () => void` | 订阅自身与任意后代的变更，返回退订函数         |
@@ -96,7 +96,7 @@ dispose();
 
 ### `observe(fn)` → 停止观察函数
 
-`observe` 等价于 `effect(() => { fn(); })`，完全同步：创建时立即执行一次，依赖变化后在写入返回前同步重跑，受 core `batch` 合并约束，**不使用微任务队列**。条件分支动态收集依赖，下次执行只保留实际读取的属性。
+💡 `observe` 等价于 `effect(() => { fn(); })`，完全同步：创建时立即执行一次，依赖变化后在写入返回前同步重跑，受 core `batch` 合并约束，**不使用微任务队列**。条件分支动态收集依赖，下次执行只保留实际读取的属性。
 
 - 可与 core `computed` / `effect` 混用：`computed(() => state.count * 2)` 按属性追踪，`computed(() => snapshot(state))` 追踪整个对象图。
 - **忽略回调返回值**：`fn` 返回的函数不会作为清理函数执行；只有 `observe` 返回的 `dispose()` 会停止追踪。`dispose()` 可重复调用（幂等）。
@@ -122,7 +122,7 @@ dispose();
 - 通知期间退订 / 新增订阅不破坏当前遍历，新增订阅从**后续变更**开始生效；退订可重复调用。
 - **错误**：回调抛错不阻断同轮其他订阅与 core `effect`，已写入的状态保留；`runAll` 汇总后单个错误原样抛出、多个错误以 `AggregateError` 报告。
 
-| 写入方式         | 未用 `batch`                  | 显式 `batch` 内                                 |
+| 🧭 写入方式      | 未用 `batch`                  | 显式 `batch` 内                                 |
 | ---------------- | ----------------------------- | ----------------------------------------------- |
 | `observe` 重跑   | 写入返回前同步完成            | 合并到最外层 `batch` 结束，只重跑一次（最终值） |
 | `subscribe` 回调 | 每次实际写入 / 删除后同步通知 | **仍逐次同步通知**，每次写入各一次              |
@@ -165,7 +165,7 @@ state.connection = ref({ connected: false }); // 替换属性，通知
 
 ## 关键语义与边界
 
-- **直接修改原 proxy 才触发通知**（本包最重要的边界）：只有对 `observable()` 返回的代理执行赋值、删除、`defineProperty` 或数组变更，才会进入 `Proxy` handler 并发布通知。直接修改**初始原始对象**、内建对象内部、`ref.current` 或**快照**都不触发响应式更新，也不会使快照缓存失效。
+- ⚠️ **直接修改原 proxy 才触发通知**（本包最重要的边界）：只有对 `observable()` 返回的代理执行赋值、删除、`defineProperty` 或数组变更，才会进入 `Proxy` handler 并发布通知。直接修改**初始原始对象**、内建对象内部、`ref.current` 或**快照**都不触发响应式更新，也不会使快照缓存失效。
 - **依赖收集与通知时机**：读取属性登记依赖，分支切换后释放旧依赖；`observe` 与 core `computed` / `effect` 同步重跑，`subscribe` 每次实际写入同步通知；两者在 `batch` 内的差异见上表。
 - **错误处理**：通知与 effect 的错误由 `@slux/shared` 的 `runAll` 汇总——单个原样抛、多个 `AggregateError`；抛错不回滚已提交的状态，也不阻断同轮其他回调。
 - **清理**：`observe` 返回的 `dispose` 与 `subscribe` 返回的退订函数都可重复调用；`observe` 的回调返回值被忽略，不能在回调里返回清理函数。
@@ -183,7 +183,7 @@ export default {
 };
 ```
 
-`createAutoImportApis(prefix?)` 基于 `@slux/shared` 的 `generateBatchAutoImports` 生成 `ImportsMap`，来源名为 `@slux/proxy`。`src/auto-import-api.ts` 的登记清单（`allImportApis`）为：
+🔌 `createAutoImportApis(prefix?)` 基于 `@slux/shared` 的 `generateBatchAutoImports` 生成 `ImportsMap`，来源名为 `@slux/proxy`。`src/auto-import-api.ts` 的登记清单（`allImportApis`）为：
 
 ```ts
 const allImportApis: string[] = ["observable", "observe", "ref", "snapshot", "subscribe"];
@@ -193,9 +193,9 @@ const allImportApis: string[] = ["observable", "observe", "ref", "snapshot", "su
 
 ## 类型导出
 
-`src/index.ts` 的 `export type` 共 2 个：
+💡 `src/index.ts` 的 `export type` 共 2 个：
 
-| 类型          | 用途                                                                                                                                              |
+| 💡 类型       | 用途                                                                                                                                              |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Ref<T>`      | `{ current: T }` 加一个内部只读 symbol 标记；`ref(value)` 的返回类型，属性访问需经 `.current`                                                     |
 | `Snapshot<T>` | 把对象属性递归标记为只读的函数类型除外：`T extends (...args) => unknown ? T : T extends object ? { readonly [K in keyof T]: Snapshot<T[K]> } : T` |
@@ -209,7 +209,7 @@ type Snapshot<T> = T extends (...args: never[]) => unknown ? T : T extends objec
 
 ## 不适用的场景 / 与其他包分工
 
-| 需求                                      | 应使用的包                        |
+| ⚠️ 需求                                   | 应使用的包                        |
 | ----------------------------------------- | --------------------------------- |
 | 草稿式不可变更新、显式 `Scope` 覆盖       | `@slux/core`                      |
 | 小型独立状态、派生 atom、请求级 atom 隔离 | `@slux/atom`                      |
@@ -221,7 +221,7 @@ type Snapshot<T> = T extends (...args: never[]) => unknown ? T : T extends objec
 
 ## 版本、许可与反馈
 
-- 版本：`0.1.0`（`package.json`）。
+- 📚 版本：`0.1.0`（`package.json`）。
 - 许可：MIT，见仓库根 [LICENSE](../../LICENSE)。
 - 问题反馈：[GitHub Issues](https://github.com/itmanyong/slux/issues)（`package.json` `bugs.url`）。
 
@@ -233,7 +233,7 @@ type Snapshot<T> = T extends (...args: never[]) => unknown ? T : T extends objec
 
 响应式运行时与零依赖工具，其余各层都建立在 core 之上。
 
-| 包名                                                                          | 版本                                                                                                                                                                                                                                  | 在线文档                                                     | 功能                   |
+| 📦 包名                                                                       | 版本                                                                                                                                                                                                                                  | 在线文档                                                     | 功能                   |
 | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- |
 | [`@slux/core`](https://github.com/itmanyong/slux/tree/main/packages/core)     | [![npm version](https://img.shields.io/npm/v/@slux/core)](https://www.npmjs.com/package/@slux/core) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/core?label=npmx)](https://npmx.dev/package/@slux/core)         | [在线文档](https://itmanyong.github.io/slux/packages/core)   | 框架无关的响应式运行时 |
 | [`@slux/shared`](https://github.com/itmanyong/slux/tree/main/packages/shared) | [![npm version](https://img.shields.io/npm/v/@slux/shared)](https://www.npmjs.com/package/@slux/shared) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/shared?label=npmx)](https://npmx.dev/package/@slux/shared) | [在线文档](https://itmanyong.github.io/slux/packages/shared) | 零依赖的共享工具       |
@@ -242,7 +242,7 @@ type Snapshot<T> = T extends (...args: never[]) => unknown ? T : T extends objec
 
 六种组织状态的方式，共享 core 的运行时，可在同一个依赖图中混用。
 
-| 包名                                                                                        | 版本                                                                                                                                                                                                                                                              | 在线文档                                                            | 功能                               |
+| 📦 包名                                                                                     | 版本                                                                                                                                                                                                                                                              | 在线文档                                                            | 功能                               |
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------- |
 | [`@slux/store`](https://github.com/itmanyong/slux/tree/main/packages/store)                 | [![npm version](https://img.shields.io/npm/v/@slux/store)](https://www.npmjs.com/package/@slux/store) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/store?label=npmx)](https://npmx.dev/package/@slux/store)                                 | [在线文档](https://itmanyong.github.io/slux/packages/store)         | 状态与 action 集中管理，支持中间件 |
 | [`@slux/atom`](https://github.com/itmanyong/slux/tree/main/packages/atom)                   | [![npm version](https://img.shields.io/npm/v/@slux/atom)](https://www.npmjs.com/package/@slux/atom) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/atom?label=npmx)](https://npmx.dev/package/@slux/atom)                                     | [在线文档](https://itmanyong.github.io/slux/packages/atom)          | 细粒度原子状态与派生               |
@@ -255,7 +255,7 @@ type Snapshot<T> = T extends (...args: never[]) => unknown ? T : T extends objec
 
 挂载到 Store 的横切能力，五个包共用同一套契约。
 
-| 包名                                                                                | 版本                                                                                                                                                                                                                                              | 在线文档                                                        | 功能                 |
+| 📦 包名                                                                             | 版本                                                                                                                                                                                                                                              | 在线文档                                                        | 功能                 |
 | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------- |
 | [`@slux/storage`](https://github.com/itmanyong/slux/tree/main/packages/storage)     | [![npm version](https://img.shields.io/npm/v/@slux/storage)](https://www.npmjs.com/package/@slux/storage) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/storage?label=npmx)](https://npmx.dev/package/@slux/storage)         | [在线文档](https://itmanyong.github.io/slux/packages/storage)   | 状态持久化与恢复     |
 | [`@slux/history`](https://github.com/itmanyong/slux/tree/main/packages/history)     | [![npm version](https://img.shields.io/npm/v/@slux/history)](https://www.npmjs.com/package/@slux/history) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/history?label=npmx)](https://npmx.dev/package/@slux/history)         | [在线文档](https://itmanyong.github.io/slux/packages/history)   | 撤销与重做           |
@@ -267,20 +267,20 @@ type Snapshot<T> = T extends (...args: never[]) => unknown ? T : T extends objec
 
 十二个绑定包都提供 core 主入口与六个范式子入口，使用框架原生响应式与生命周期。范式包是**可选** peer，只装实际使用的；`@slux/core` 与框架本身是**必需** peer。
 
-| 包名                                                                            | 版本                                                                                                                                                                                                                                      | 在线文档                                                      | 适配框架                                        | 适配版本                                   | 功能                   |
-| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------ | ---------------------- |
-| [`@slux/react`](https://github.com/itmanyong/slux/tree/main/packages/react)     | [![npm version](https://img.shields.io/npm/v/@slux/react)](https://www.npmjs.com/package/@slux/react) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/react?label=npmx)](https://npmx.dev/package/@slux/react)         | [在线文档](https://itmanyong.github.io/slux/packages/react)   | [React](https://github.com/react/react)         | `^18.0.0 ‖ ^19.0.0`                        | React 组件状态绑定     |
-| [`@slux/vue`](https://github.com/itmanyong/slux/tree/main/packages/vue)         | [![npm version](https://img.shields.io/npm/v/@slux/vue)](https://www.npmjs.com/package/@slux/vue) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/vue?label=npmx)](https://npmx.dev/package/@slux/vue)                 | [在线文档](https://itmanyong.github.io/slux/packages/vue)     | [Vue](https://github.com/vuejs/core)            | `>= 3.2.0`                                 | Vue 组合式 API 绑定    |
-| [`@slux/solid`](https://github.com/itmanyong/slux/tree/main/packages/solid)     | [![npm version](https://img.shields.io/npm/v/@slux/solid)](https://www.npmjs.com/package/@slux/solid) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/solid?label=npmx)](https://npmx.dev/package/@slux/solid)         | [在线文档](https://itmanyong.github.io/slux/packages/solid)   | [Solid](https://github.com/solidjs/solid)       | `>= 1.0.0`                                 | Solid 细粒度响应式绑定 |
-| [`@slux/svelte`](https://github.com/itmanyong/slux/tree/main/packages/svelte)   | [![npm version](https://img.shields.io/npm/v/@slux/svelte)](https://www.npmjs.com/package/@slux/svelte) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/svelte?label=npmx)](https://npmx.dev/package/@slux/svelte)     | [在线文档](https://itmanyong.github.io/slux/packages/svelte)  | [Svelte](https://github.com/sveltejs/svelte)    | `>= 4.0.0`                                 | Svelte 原生 store 绑定 |
-| [`@slux/angular`](https://github.com/itmanyong/slux/tree/main/packages/angular) | [![npm version](https://img.shields.io/npm/v/@slux/angular)](https://www.npmjs.com/package/@slux/angular) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/angular?label=npmx)](https://npmx.dev/package/@slux/angular) | [在线文档](https://itmanyong.github.io/slux/packages/angular) | [Angular](https://github.com/angular/angular)   | `@angular/core >= 16.0.0`、`rxjs >= 7.8.0` | Angular 注入上下文绑定 |
-| [`@slux/preact`](https://github.com/itmanyong/slux/tree/main/packages/preact)   | [![npm version](https://img.shields.io/npm/v/@slux/preact)](https://www.npmjs.com/package/@slux/preact) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/preact?label=npmx)](https://npmx.dev/package/@slux/preact)     | [在线文档](https://itmanyong.github.io/slux/packages/preact)  | [Preact](https://github.com/preactjs/preact)    | `>= 10.5.0`                                | Preact 组件状态绑定    |
-| [`@slux/ripple`](https://github.com/itmanyong/slux/tree/main/packages/ripple)   | [![npm version](https://img.shields.io/npm/v/@slux/ripple)](https://www.npmjs.com/package/@slux/ripple) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/ripple?label=npmx)](https://npmx.dev/package/@slux/ripple)     | [在线文档](https://itmanyong.github.io/slux/packages/ripple)  | [Ripple](https://github.com/Ripple-TS/ripple)   | `>= 0.6.0`                                 | Ripple 组件状态绑定    |
-| [`@slux/inferno`](https://github.com/itmanyong/slux/tree/main/packages/inferno) | [![npm version](https://img.shields.io/npm/v/@slux/inferno)](https://www.npmjs.com/package/@slux/inferno) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/inferno?label=npmx)](https://npmx.dev/package/@slux/inferno) | [在线文档](https://itmanyong.github.io/slux/packages/inferno) | [Inferno](https://github.com/infernojs/inferno) | `>= 7.0.0`                                 | Inferno 组件状态绑定   |
-| [`@slux/octane`](https://github.com/itmanyong/slux/tree/main/packages/octane)   | [![npm version](https://img.shields.io/npm/v/@slux/octane)](https://www.npmjs.com/package/@slux/octane) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/octane?label=npmx)](https://npmx.dev/package/@slux/octane)     | [在线文档](https://itmanyong.github.io/slux/packages/octane)  | [Octane](https://github.com/octanejs/octane)    | `>= 0.16.0`                                | Octane 编译器绑定      |
-| [`@slux/vitarx`](https://github.com/itmanyong/slux/tree/main/packages/vitarx)   | [![npm version](https://img.shields.io/npm/v/@slux/vitarx)](https://www.npmjs.com/package/@slux/vitarx) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/vitarx?label=npmx)](https://npmx.dev/package/@slux/vitarx)     | [在线文档](https://itmanyong.github.io/slux/packages/vitarx)  | [Vitarx](https://github.com/vitarx-lib/core)    | `>= 4.0.0`                                 | Vitarx 组件状态绑定    |
-| [`@slux/actview`](https://github.com/itmanyong/slux/tree/main/packages/actview) | [![npm version](https://img.shields.io/npm/v/@slux/actview)](https://www.npmjs.com/package/@slux/actview) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/actview?label=npmx)](https://npmx.dev/package/@slux/actview) | [在线文档](https://itmanyong.github.io/slux/packages/actview) | [ActView](https://github.com/actview/actview)   | `>= 1.0.0`                                 | ActView 组件状态绑定   |
-| [`@slux/viewfly`](https://github.com/itmanyong/slux/tree/main/packages/viewfly) | [![npm version](https://img.shields.io/npm/v/@slux/viewfly)](https://www.npmjs.com/package/@slux/viewfly) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/viewfly?label=npmx)](https://npmx.dev/package/@slux/viewfly) | [在线文档](https://itmanyong.github.io/slux/packages/viewfly) | [Viewfly](https://github.com/viewfly/viewfly)   | `>= 3.0.0`                                 | Viewfly 组件状态绑定   |
+| 📦 包名                                                                         | 版本                                                                                                                                                                                                                                      | 在线文档                                                      | 适配框架                                        | 适配版本                                   |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------ |
+| [`@slux/react`](https://github.com/itmanyong/slux/tree/main/packages/react)     | [![npm version](https://img.shields.io/npm/v/@slux/react)](https://www.npmjs.com/package/@slux/react) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/react?label=npmx)](https://npmx.dev/package/@slux/react)         | [在线文档](https://itmanyong.github.io/slux/packages/react)   | [React](https://github.com/react/react)         | `^18.0.0 ‖ ^19.0.0`                        |
+| [`@slux/vue`](https://github.com/itmanyong/slux/tree/main/packages/vue)         | [![npm version](https://img.shields.io/npm/v/@slux/vue)](https://www.npmjs.com/package/@slux/vue) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/vue?label=npmx)](https://npmx.dev/package/@slux/vue)                 | [在线文档](https://itmanyong.github.io/slux/packages/vue)     | [Vue](https://github.com/vuejs/core)            | `>= 3.2.0`                                 |
+| [`@slux/solid`](https://github.com/itmanyong/slux/tree/main/packages/solid)     | [![npm version](https://img.shields.io/npm/v/@slux/solid)](https://www.npmjs.com/package/@slux/solid) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/solid?label=npmx)](https://npmx.dev/package/@slux/solid)         | [在线文档](https://itmanyong.github.io/slux/packages/solid)   | [Solid](https://github.com/solidjs/solid)       | `>= 1.0.0`                                 |
+| [`@slux/svelte`](https://github.com/itmanyong/slux/tree/main/packages/svelte)   | [![npm version](https://img.shields.io/npm/v/@slux/svelte)](https://www.npmjs.com/package/@slux/svelte) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/svelte?label=npmx)](https://npmx.dev/package/@slux/svelte)     | [在线文档](https://itmanyong.github.io/slux/packages/svelte)  | [Svelte](https://github.com/sveltejs/svelte)    | `>= 4.0.0`                                 |
+| [`@slux/angular`](https://github.com/itmanyong/slux/tree/main/packages/angular) | [![npm version](https://img.shields.io/npm/v/@slux/angular)](https://www.npmjs.com/package/@slux/angular) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/angular?label=npmx)](https://npmx.dev/package/@slux/angular) | [在线文档](https://itmanyong.github.io/slux/packages/angular) | [Angular](https://github.com/angular/angular)   | `@angular/core >= 16.0.0`、`rxjs >= 7.8.0` |
+| [`@slux/preact`](https://github.com/itmanyong/slux/tree/main/packages/preact)   | [![npm version](https://img.shields.io/npm/v/@slux/preact)](https://www.npmjs.com/package/@slux/preact) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/preact?label=npmx)](https://npmx.dev/package/@slux/preact)     | [在线文档](https://itmanyong.github.io/slux/packages/preact)  | [Preact](https://github.com/preactjs/preact)    | `>= 10.5.0`                                |
+| [`@slux/ripple`](https://github.com/itmanyong/slux/tree/main/packages/ripple)   | [![npm version](https://img.shields.io/npm/v/@slux/ripple)](https://www.npmjs.com/package/@slux/ripple) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/ripple?label=npmx)](https://npmx.dev/package/@slux/ripple)     | [在线文档](https://itmanyong.github.io/slux/packages/ripple)  | [Ripple](https://github.com/Ripple-TS/ripple)   | `>= 0.6.0`                                 |
+| [`@slux/inferno`](https://github.com/itmanyong/slux/tree/main/packages/inferno) | [![npm version](https://img.shields.io/npm/v/@slux/inferno)](https://www.npmjs.com/package/@slux/inferno) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/inferno?label=npmx)](https://npmx.dev/package/@slux/inferno) | [在线文档](https://itmanyong.github.io/slux/packages/inferno) | [Inferno](https://github.com/infernojs/inferno) | `>= 7.0.0`                                 |
+| [`@slux/octane`](https://github.com/itmanyong/slux/tree/main/packages/octane)   | [![npm version](https://img.shields.io/npm/v/@slux/octane)](https://www.npmjs.com/package/@slux/octane) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/octane?label=npmx)](https://npmx.dev/package/@slux/octane)     | [在线文档](https://itmanyong.github.io/slux/packages/octane)  | [Octane](https://github.com/octanejs/octane)    | `>= 0.16.0`                                |
+| [`@slux/vitarx`](https://github.com/itmanyong/slux/tree/main/packages/vitarx)   | [![npm version](https://img.shields.io/npm/v/@slux/vitarx)](https://www.npmjs.com/package/@slux/vitarx) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/vitarx?label=npmx)](https://npmx.dev/package/@slux/vitarx)     | [在线文档](https://itmanyong.github.io/slux/packages/vitarx)  | [Vitarx](https://github.com/vitarx-lib/core)    | `>= 4.0.0`                                 |
+| [`@slux/actview`](https://github.com/itmanyong/slux/tree/main/packages/actview) | [![npm version](https://img.shields.io/npm/v/@slux/actview)](https://www.npmjs.com/package/@slux/actview) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/actview?label=npmx)](https://npmx.dev/package/@slux/actview) | [在线文档](https://itmanyong.github.io/slux/packages/actview) | [ActView](https://github.com/actview/actview)   | `>= 1.0.0`                                 |
+| [`@slux/viewfly`](https://github.com/itmanyong/slux/tree/main/packages/viewfly) | [![npm version](https://img.shields.io/npm/v/@slux/viewfly)](https://www.npmjs.com/package/@slux/viewfly) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/viewfly?label=npmx)](https://npmx.dev/package/@slux/viewfly) | [在线文档](https://itmanyong.github.io/slux/packages/viewfly) | [Viewfly](https://github.com/viewfly/viewfly)   | `>= 3.0.0`                                 |
 
 格式差异：**Octane** 的公开入口是 TypeScript 源码，需消费端 Octane 编译器处理且不提供 CJS；**Ripple** 只发布 ESM，另有 `./server` 服务端入口。其余边界见各包文档。
 

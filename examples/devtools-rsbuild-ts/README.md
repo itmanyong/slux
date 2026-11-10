@@ -1,6 +1,6 @@
 # devtools Playground
 
-`examples/devtools-rsbuild-ts` 用卡片布局演示 `@slux/devtools` 的公开 API：`logger` 控制台中间件、`inspect` 全局检查器与 `devtools` Redux DevTools 桥接。每张卡片都可独立重置、查看源码与运行记录。
+🧪 `examples/devtools-rsbuild-ts` 用卡片布局演示 `@slux/devtools` 的公开 API：`logger` 控制台中间件、`inspect` 全局检查器与 `devtools` Redux DevTools 桥接。每张卡片都可独立重置、查看源码与运行记录。
 
 ## 运行
 
@@ -11,11 +11,11 @@ pnpm --filter @slux/example-devtools-rsbuild-ts build    # 构建
 pnpm --filter @slux/example-devtools-rsbuild-ts test     # 挂载回归测试（jsdom + 真实运行时）
 ```
 
-构建工具：Rsbuild
+🚀 构建工具：Rsbuild
 
 ## 卡片
 
-| 卡片                            | API                                  | 分类          |
+| 🧪 卡片                         | API                                  | 分类          |
 | ------------------------------- | ------------------------------------ | ------------- |
 | logger：拦截每次 setState       | `logger({ name, logger })`           | 日志中间件    |
 | logger：diff 与自定义 action 名 | `logger({ diff, actionName })`       | 日志中间件    |
@@ -26,7 +26,7 @@ pnpm --filter @slux/example-devtools-rsbuild-ts test     # 挂载回归测试（
 
 ## 技术要点
 
-logger 中间件的输出通过自定义 `LoggerInterface` 捕获到卡片里（jsdom 与无扩展环境同样可见），而不是只打进控制台。inspect 是模块级注册表：demo 在 `create` 里注册、`dispose` 里注销，事件由 `devtools` 中间件在 init / set / destroy 时发出。
+💡 logger 中间件的输出通过自定义 `LoggerInterface` 捕获到卡片里（jsdom 与无扩展环境同样可见），而不是只打进控制台。inspect 是模块级注册表：demo 在 `create` 里注册、`dispose` 里注销，事件由 `devtools` 中间件在 init / set / destroy 时发出。
 
 `devtools-connect` 卡片演示扩展缺失时的降级路径：`getExtension()` 返回 `undefined`，连接静默跳过，Store 与 inspect 事件流不受影响。
 

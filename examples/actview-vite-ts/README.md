@@ -1,6 +1,6 @@
 # slux actview · 示例
 
-`examples/actview-vite-ts` 演示 `@slux/actview` 的全部子入口：页面由共享外壳 `@slux/shell-example` 渲染（报头 + 分组索引 + 瀑布流卡片 + 统计），每张卡片挂载一个真实 ActView 组件，可独立重置、查看源码与运行日志。
+🧪 `examples/actview-vite-ts` 演示 `@slux/actview` 的全部子入口：页面由共享外壳 `@slux/shell-example` 渲染（报头 + 分组索引 + 瀑布流卡片 + 统计），每张卡片挂载一个真实 ActView 组件，可独立重置、查看源码与运行日志。
 
 ## 运行
 
@@ -11,11 +11,11 @@ pnpm --filter @slux/example-actview-vite-ts build    # 构建
 pnpm --filter @slux/example-actview-vite-ts test     # 挂载回归测试（vitest + jsdom + 真实运行时）
 ```
 
-构建工具：Vite + `@actview/plugin-vite`（ActView 官方 Vite 插件，负责 TSX 编译）
+🚀 构建工具：Vite + `@actview/plugin-vite`（ActView 官方 Vite 插件，负责 TSX 编译）
 
 ## 示例
 
-| 示例                      | API                         | 分组    |
+| 🧪 示例                   | API                         | 分组    |
 | ------------------------- | --------------------------- | ------- |
 | useSignal：信号驱动重渲染 | `useSignal(signal)`         | signal  |
 | useSignal：订阅派生值     | `useSignal(computed)`       | signal  |
@@ -28,6 +28,6 @@ pnpm --filter @slux/example-actview-vite-ts test     # 挂载回归测试（vite
 
 ## 技术要点
 
-- ActView 组件遵循 setup 语义：函数体只执行一次，JSX 表达式细粒度追踪依赖。
+- 💡 ActView 组件遵循 setup 语义：函数体只执行一次，JSX 表达式细粒度追踪依赖。
 - 绑定层 `bindExternal` 在组件实例里用 onMounted/onUnmounted 管理订阅，卡片重置 = 卸载重挂 = 全新状态。
 - 每个示例文件都是自包含最小复现，`?raw` 导入同文件作为「源码」面板内容。

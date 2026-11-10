@@ -5,7 +5,7 @@ description: 理解 signal、computed、effect、batch 与作用域的职责及�
 
 # 核心
 
-`@slux/core` 的状态可以独立于 UI 框架创建。`signal` 保存可写值，`computed` 根据读取的状态派生结果，`effect` 执行并追踪副作用，`batch` 合并批内通知。
+⚡ `@slux/core` 的状态可以独立于 UI 框架创建。`signal` 保存可写值，`computed` 根据读取的状态派生结果，`effect` 执行并追踪副作用，`batch` 合并批内通知。
 
 ```ts
 import { batch, computed, effect, signal } from "@slux/core";
@@ -22,4 +22,4 @@ batch(() => {
 stop();
 ```
 
-作用域 API 允许在同步回调期间覆盖读取值。了解行为边界和完整签名，请看 [Core 使用指南](/packages/core/)与 [API 定义](/packages/core/api)。
+💡 作用域 API 允许在同步回调期间覆盖读取值。了解行为边界和完整签名，请看 [Core 使用指南](/packages/core/)与 [API 定义](/packages/core/api)。

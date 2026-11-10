@@ -13,19 +13,27 @@
 
 改动代码后，先对比上次发布标签与当前 `main`（例如 `git diff release/v0.1.1..HEAD`），由维护者自行选择 AI 工具根据实际差异撰写专业的变更说明，然后人工核对事实。使用 `pnpm changeset` 创建 Changeset，选择受影响的包和 `patch`、`minor` 或 `major` 级别，将核对后的说明写入生成的 `.changeset/*.md` 文件并提交。不要使用空 Changeset。发布脚本不会调用 AI 服务，也不需要 AI 密钥。
 
-正文按实际改动使用以下三级标题，省略没有内容的分类：`### New Features`、`### Performance`、`### Bug Fixes`、`### Refactor`、`### Document`、`### Other Changes`。生成后的分类标题采用 Rspress 的名称和图标，依次为 New Features 🎉、Performance 🚀、Bug Fixes 🐞、Refactor 🔨、Document 📖、Other Changes。每一项说明具体行为及影响，不能把发布设施改进写成运行时 API 更新。
+每条变更必须写成 `type(scope): 描述`，例如 `fix(core): 释放已取消的订阅`。支持 `feat`、`fix`、`docs`、`perf`、`refactor`、`chore`、`test`、`ci`、`build`、`style`、`revert`，缺少 scope 的条目会在升级版本前报错。可以使用三级分类标题；输出始终按条目类型生成独立标题：New Features 🎉、Performance 🚀、Bug Fixes 🐞、Refactor 🔨、Document 📖、Other Changes 🔧，只显示非空分类。
+
+scope 决定包归属。使用 `core`、`react` 等包目录名时，该包必须出现在当前 Changeset 的 frontmatter 中；共享变更可以写 `fix(core,react): ...`，生成每个包的日志时会归一为本包 scope。`release`、`website`、`repo`、`ci`、`docs`、`examples`、`build`、`deps`、`test` 是仓库级 scope，只进入整体发行说明。全库发布设施改进不能写成每个包的功能变更；可以选择一个包申请固定组升级，并将正文写为 `ci(release): ...`。
 
 ```md
-### Bug Fixes
+---
+"@slux/core": patch
+---
 
-- 修正具体问题，说明触发条件及修复后的行为。
+### Bug Fixes 🐞
 
-### Document
+- fix(core): 释放已取消的订阅，避免后续写入继续通知它。
 
-- 说明新增或更新的使用指南。
+### Document 📖
+
+- docs(core): 补充订阅清理示例和作用域生命周期说明。
 ```
 
-发行说明保留完整 Changeset 正文，并把实际提交按 Conventional Commits 的 `feat`、`perf`、`fix`、`refactor`、`docs` 分类；其他提交进入 Other Changes。存在详细正文的分类将提交链接折叠为“相关提交”，没有正文的分类直接显示提交条目。发布版本提交会被省略。旧 Changeset 没有分类标题时保留在 Other Changes，不根据版本升级级别猜测功能分类，也不凭空生成 PR 链接。
+整体发行说明保留全部经过核对的细化条目，并关联真实 Git 提交。存在详细正文的分类将提交链接折叠为“相关提交”，没有正文的分类直接显示提交条目。没有 scope 的旧提交补为 `type(repo): ...`，非 Conventional Commit 标题补为 `chore(repo): ...`；原始描述和提交链接保留，不猜测 PR。
+
+各包 CHANGELOG 只收录属于本包的条目。固定组跟随升版且没有独立变更时仅记一条 `chore(包名): 跟随统一版本升级至 X.Y.Z`。生成器对比前后包清单，将 `workspace:*`、`workspace:^` 和 `workspace:~` 解析为对应发布范围，只记录实际改变的运行时、可选和 peer 内部依赖；超过三项时用变更项数汇总，并与跟随升版合成一条。版本没有变化的包不会重写日志。
 
 ## 后续发布
 
@@ -35,7 +43,9 @@
 pnpm release
 ```
 
-脚本先检查 Git 工作区和远端版本，再列出本次改动包及待发布 Changeset。确认变更日志已经写好后，脚本执行 `changeset status` 和 `changeset version`，更新锁文件，从 Changeset 和本次 Git 提交范围生成 `releases/vX.Y.Z.md`，并从全部版本说明汇总根 `CHANGELOG.md`。各包 `CHANGELOG.md` 由 Changesets 生成，包含版本变更和依赖升级明细。这三类文件均为生成结果，请修改 Changeset 源文件后重新生成，不直接编辑输出。
+脚本先检查 Git 工作区和远端版本，再列出本次改动包及待发布 Changeset。确认后执行 `changeset status` 和统一的 `pnpm version:packages`。后者在升版前保存 Changeset 与包清单、校验条目归属，再调用 Changesets 更新版本，最后生成各包 CHANGELOG、`releases/vX.Y.Z.md` 及根 `CHANGELOG.md`，并把规范化正文归档到 `releases/sources/vX.Y.Z.md`。Changesets 的默认 changelog 已关闭，避免将 Markdown 分类标题包进提交列表项；直接调用 `changeset version` 不会生成日志，应始终用 `pnpm version:packages`。没有有效 Changeset 时命令报错，不改版本或日志。
+
+根和各包 CHANGELOG 都直接以版本记录开头，不再添加包名、项目标题或生成说明。随后发布命令更新锁文件，继续执行其余检查。尚未升版时修改 `.changeset/*.md`；修订已经发布的历史文案时修改 `releases/sources/vX.Y.Z.md` 后重生成，不直接修改生成输出。
 
 随后运行 `pnpm generate:apis` 同步各包自动导入 API 清单，再运行 `pnpm sync:package-navigation` 同步包导航，最后运行发布脚本测试、lint、完整构建、类型检查、项目测试及文档构建。发行说明会先于文档构建生成，确保新版本可进入文档站。
 
@@ -53,14 +63,22 @@ npm 安装和发布步骤从仓库外的 `${{ runner.temp }}` 运行，产物也
 
 ## 历史版本补齐
 
-可以从真实标签范围重新生成历史说明及根 CHANGELOG：
+按 Git 发布标签和已核对的历史源记录重生成全部发行说明、根和各包 CHANGELOG：
+
+```sh
+pnpm changelog:generate
+```
+
+命令读取 `releases/sources/vX.Y.Z.md`，并按真实标签读取当时各包的清单、比较依赖范围和关联提交；不升级版本、不发布、不移动标签。初始四个版本的源记录均标明史料：`0.1.0` 来自当时各包 README 和公开入口，`0.1.1` 来自包 README、Viewfly 清单差异及原 Changeset，`0.2.0` 和 `0.2.1` 来自原 Changeset 与 Git 差异。后两个版本只有发布设施或网站变更，包日志只记录统一升版和真实依赖联动。
+
+如只需要重生成单个版本的整体说明，可运行：
 
 ```sh
 pnpm release:notes --version 0.1.0 --to v0.1.0
 pnpm release:notes --version 0.1.1 --from v0.1.0 --to release/v0.1.1
 ```
 
-脚本读取该范围内新增或消费的 Changeset，采用删除前最后一次修订正文；此前已经提交、这个版本才消费的 Changeset 也会纳入。没有保留 Changeset 的最初版本从对应标签下的各包 CHANGELOG 提取并去重。`--from` 默认选择目标提交可达的最新其他发布标签，`--to` 默认为 `HEAD`，`--tag` 可显式指定说明中的标签。首次发布标签 `v0.1.0` 与后续 `release/vX.Y.Z` 都可以识别。
+该命令优先读取归档源；尚未归档时读取该 Git 范围内新增或消费的 Changeset，采用删除前最后一次修订正文，并执行同样的条目格式校验。`--from` 默认选择目标提交可达的最新其他发布标签，`--to` 默认为 `HEAD`，`--tag` 可显式指定说明中的标签。首次发布标签 `v0.1.0` 与后续 `release/vX.Y.Z` 都可以识别。
 
 历史版本附件必须复用 npm 已发布的原始包。以下命令不会修改工作区版本，也不会发布 npm：
 

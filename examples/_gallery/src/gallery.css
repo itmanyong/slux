@@ -101,6 +101,7 @@ html[data-embed="1"] .g-bar {
 
 .g-placeholder {
   position: absolute;
+  z-index: 1;
   inset: 0;
   display: flex;
   flex-direction: column;
@@ -109,6 +110,8 @@ html[data-embed="1"] .g-bar {
   gap: 10px;
   text-align: center;
   padding: 24px;
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  backdrop-filter: blur(8px);
 }
 
 .g-placeholder.hidden {

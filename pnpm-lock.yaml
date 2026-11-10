@@ -397,6 +397,9 @@ importers:
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.3.0(@types/react@19.3.0)
       limu:
         specifier: 'catalog:'
         version: 4.2.1(patch_hash=8ec8fb2dbcc42300a36fdddd2485dd725f75b3d2076ec3b8d76098ea503ec06f)

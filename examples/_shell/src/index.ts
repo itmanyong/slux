@@ -9,6 +9,7 @@ export type { ExampleDemo, ExampleGroup, LogTone } from "./types.js";
 export { DemoCard } from "./card.js";
 /** 上下层 iframe 主题桥：所有示例共用，也可单独从 @slux/shell-example/theme 引入。 */
 export {
+  CONTENT_LOADED_MESSAGE,
   EMBED_FLAG,
   EMBED_PARAM,
   REQUEST_MESSAGE,
@@ -22,7 +23,7 @@ export {
   setTheme,
   toggleTheme,
 } from "./theme.js";
-export type { Theme } from "./theme.js";
+export type { ContentLoadedPayload, Theme } from "./theme.js";
 
 type Filter = "all" | string;
 
@@ -33,7 +34,8 @@ type Filter = "all" | string;
 export function createExamplePage(root: HTMLElement, options: ExamplePageOptions): void {
   const { branding, groups, demos } = options;
 
-  initTheme();
+  // 把示例包名（branding.pkg）交给主题桥，加载完成后随 CONTENT_LOADED 通告给父页面。
+  initTheme(branding.pkg);
 
   const page = createPage(root, branding, {
     demoCount: demos.length,

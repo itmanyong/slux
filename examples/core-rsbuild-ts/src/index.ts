@@ -10,7 +10,7 @@ import { THEME_CHANGE_EVENT, currentTheme, initTheme, toggleTheme } from "@slux/
 
 type Filter = "all" | DemoApiId;
 
-initTheme();
+initTheme("@slux/core");
 
 const root = document.querySelector<HTMLDivElement>("#root");
 if (!root) throw new Error("页面缺少 #root 容器");

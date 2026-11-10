@@ -32,7 +32,7 @@ test("已有 Changeset 的包会被识别，README 文本不会冒充变更", ()
 });
 
 test("发行说明从人工核对的 Changeset 正文生成", () => {
-  const notes = renderReleaseNotes("0.2.0", ['---\n"@slux/core": minor\n---\n\n新增订阅 API\n\n- 支持组件卸载时清理订阅\n']);
+  const notes = renderReleaseNotes("0.2.0", ['---\n"@slux/core": minor\n---\n\n- feat(core): 新增订阅 API，支持组件卸载时清理订阅\n']);
   assert.doesNotMatch(notes, /"@slux\/core": minor/);
   assert.match(notes, /新增订阅 API/);
   assert.match(notes, /支持组件卸载时清理订阅/);

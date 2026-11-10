@@ -4,12 +4,21 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import test from "node:test";
-import { classifyCommit, renderReleaseNotes } from "./release-lib.mjs";
-import { collectPackageChangelogNotes, collectReleaseHistory, writeReleaseNotes } from "./release-notes.mjs";
+import { classifyCommit, renderChangelog, renderReleaseNotes } from "./release-lib.mjs";
+import { collectReleaseHistory, writeReleaseNotes } from "./release-notes.mjs";
+
+test("Windows 检出的 CRLF 历史说明与新生成的 LF 说明汇总结果一致", () => {
+  const content = renderReleaseNotes("0.2.1", ["- fix(release): 修复发布目录"]);
+  const expected = renderChangelog([{ version: "0.2.1", content }]);
+  const actual = renderChangelog([{ version: "0.2.1", content: content.replace(/\n/g, "\r\n") }]);
+  assert.equal(actual, expected);
+  assert.match(actual, /^## v0\.2\.1\n\n### Bug Fixes 🐞/);
+  assert.doesNotMatch(actual, /What's Changed/);
+});
 
 test("分类说明保留 Changeset 细节和真实提交链接，省略空分类，不凭空生成 PR", () => {
   const content =
-    '---\n"@slux/core": minor\n---\n\n### New Features 🎉\n\n- 新增订阅。\n  - 卸载组件时清理。\n\n### Document\n\n- 补充订阅示例。';
+    '---\n"@slux/core": minor\n---\n\n### New Features 🎉\n\n- feat(core): 新增订阅。\n- feat(core): 卸载组件时清理。\n\n### Document\n\n- docs(core): 补充订阅示例。';
   const notes = renderReleaseNotes("0.2.0", [content, content], {
     previousTag: "release/v0.1.1",
     commits: [
@@ -18,7 +27,7 @@ test("分类说明保留 Changeset 细节和真实提交链接，省略空分类
       { hash: "cde3456", subject: "chore(release): v0.2.0" },
     ],
   });
-  assert.match(notes, /### New Features 🎉\n\n- 新增订阅。\n {2}- 卸载组件时清理。/);
+  assert.match(notes, /### New Features 🎉\n\n- feat\(core\): 新增订阅。\n- feat\(core\): 卸载组件时清理。/);
   assert.equal(notes.match(/新增订阅/g).length, 1);
   assert.match(notes, /### Bug Fixes 🐞/);
   assert.match(notes, /commit\/abc1234/);
@@ -41,12 +50,12 @@ test("真实 Git 区间还原已删除 Changeset 的最终修订，包括上一�
   try {
     git("init", "-q", "-b", "main");
     mkdirSync(resolve(cwd, ".changeset"));
-    writeFileSync(resolve(cwd, ".changeset/early.md"), '---\n"@slux/core": patch\n---\n\n待发布的更改');
+    writeFileSync(resolve(cwd, ".changeset/early.md"), '---\n"@slux/core": patch\n---\n\n- fix(core): 待发布的更改');
     commit("fix: previous change");
     git("tag", "release/v0.1.0");
-    writeFileSync(resolve(cwd, ".changeset/new.md"), '---\n"@slux/core": minor\n---\n\n最初的说明');
+    writeFileSync(resolve(cwd, ".changeset/new.md"), '---\n"@slux/core": minor\n---\n\n- feat(core): 最初的说明');
     commit("feat(core): add subscription");
-    writeFileSync(resolve(cwd, ".changeset/new.md"), '---\n"@slux/core": minor\n---\n\n核对后的详细说明');
+    writeFileSync(resolve(cwd, ".changeset/new.md"), '---\n"@slux/core": minor\n---\n\n- feat(core): 核对后的详细说明');
     commit("docs: refine changeset");
     rmSync(resolve(cwd, ".changeset/new.md"));
     rmSync(resolve(cwd, ".changeset/early.md"));
@@ -62,7 +71,6 @@ test("真实 Git 区间还原已删除 Changeset 的最终修订，包括上一�
     assert.equal(history.changesets.length, 2);
     assert.ok(history.changesets.some(({ content }) => content.includes("核对后的详细说明")));
     assert.ok(history.changesets.some(({ content }) => content.includes("待发布的更改")));
-    assert.deepEqual(collectPackageChangelogNotes(cwd, "0.2.0", "release/v0.2.0"), ["- 功能详情"]);
     writeReleaseNotes(cwd, "0.2.0", history.changesets, { ...history, previousTag: "release/v0.1.0" });
     const first = readFileSync(resolve(cwd, "CHANGELOG.md"), "utf8");
     writeReleaseNotes(cwd, "0.2.0", history.changesets, { ...history, previousTag: "release/v0.1.0" });

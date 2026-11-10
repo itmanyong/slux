@@ -28,6 +28,14 @@ const releaseFiles = readdirSync(releasesRoot)
   .filter((name) => /^v\d+\.\d+\.\d+(?:[-.][\w.-]+)?\.md$/.test(name))
   .sort((a, b) => b.localeCompare(a, "en", { numeric: true }));
 
+define.test({
+  testEnvironment: "jsdom",
+  include: ["__tests__/**/*.test.tsx"],
+  tools: {
+    swc: { jsc: { transform: { react: { runtime: "automatic" } } } },
+  },
+});
+
 define.doc({
   root: docsRoot,
   title: "slux",
@@ -67,7 +75,7 @@ define.doc({
         const sidebar = `${JSON.stringify(
           releaseFiles.map((file) => ({
             type: "custom-link",
-            label: file,
+            label: file.slice(0, -3),
             link: `/releases/${file.slice(0, -3)}`,
           })),
           null,
@@ -139,7 +147,7 @@ import { ExampleFrame } from "@rspress/core/theme";
 
 下方展示 @slux/${name} 在独立项目中的运行效果。你可以直接体验，也可以查看项目源码或在新标签页打开完整页面。
 
-<ExampleFrame title="@slux/${name} 交互演示" src={normalizeImagePath("/examples/${example}/")} sourcePath="examples/${example}" />
+<ExampleFrame packageName="${name}" title="@slux/${name} 交互演示" src={normalizeImagePath("/examples/${example}/")} sourcePath="examples/${example}" />
 `,
           };
         });
@@ -159,7 +167,7 @@ import { ExampleFrame } from "@rspress/core/theme";
 
 下方展示 @slux/${name} 在独立项目中的运行效果。你可以直接体验，也可以查看项目源码或在新标签页打开完整页面。
 
-<ExampleFrame title="@slux/${name} 交互示例" src={normalizeImagePath("/examples/${example}/")} sourcePath="examples/${example}" />
+<ExampleFrame packageName="${name}" title="@slux/${name} 交互示例" src={normalizeImagePath("/examples/${example}/")} sourcePath="examples/${example}" />
 `,
           };
         });

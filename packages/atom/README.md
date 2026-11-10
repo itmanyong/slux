@@ -1,10 +1,10 @@
 # @slux/atom
 
-基于 `@slux/core` 的原子状态范式：用小型 atom 组合状态、`derived` 表达派生、`writableAtom` 自定义写入、`atomFamily` 参数化缓存、`createAtomScope` 隔离取值。
+⚛️ 基于 `@slux/core` 的原子状态范式：用小型 atom 组合状态、`derived` 表达派生、`writableAtom` 自定义写入、`atomFamily` 参数化缓存、`createAtomScope` 隔离取值。
 
 atom 对象本身只是「配置描述 + 默认作用域的代理」：真正的响应式节点由每个作用域按需创建的 core `signal` / `computed` 承载，因此 atom 可被 core 的 `computed`、`effect`、`batch` 直接读取。六个范式包共享 core 运行时，可放在同一个依赖图中使用。
 
-| 项               | 值                                                                | 来源                          |
+| 💡 项            | 值                                                                | 来源                          |
 | ---------------- | ----------------------------------------------------------------- | ----------------------------- |
 | 包名 / 版本      | `@slux/atom` `0.1.0`                                              | `package.json`                |
 | 运行时依赖       | `@slux/core`、`@slux/shared`（`workspace:*`）                     | `package.json` `dependencies` |
@@ -16,7 +16,7 @@ atom 对象本身只是「配置描述 + 默认作用域的代理」：真正的
 
 ## 特性与适用场景
 
-| 场景                                 | 是否适合 | 说明                                                   |
+| 🧭 场景                              | 是否适合 | 说明                                                   |
 | ------------------------------------ | -------- | ------------------------------------------------------ |
 | 一组小型、彼此独立的读写状态         | 适合     | `atom(initialValue)` 是最小的可写单元                  |
 | 由多个状态算出的派生值               | 适合     | `derived(read)` 惰性、缓存、动态依赖追踪               |
@@ -33,14 +33,14 @@ atom 对象本身只是「配置描述 + 默认作用域的代理」：真正的
 pnpm add @slux/core @slux/atom
 ```
 
-| 项                                          | 情况                                         |
+| 📦 项                                       | 情况                                         |
 | ------------------------------------------- | -------------------------------------------- |
 | `dependencies`                              | `@slux/core`、`@slux/shared`，安装时一并带入 |
 | `peerDependencies` / `peerDependenciesMeta` | 无                                           |
 | 可选 peer                                   | 无                                           |
 | 子入口                                      | 无；全部导出从 `@slux/atom` 主入口导入       |
 
-上例显式写出 `@slux/core`，是因为下文示例直接使用了它的 `batch` / `computed` / `effect`——**应用代码直接 import 的依赖应显式声明**；`@slux/shared` 只作间接依赖。仓库内验证命令集中在仓库根 [README](../../README.md) 的「本地开发」一节，本包不重复。
+📦 上例显式写出 `@slux/core`，是因为下文示例直接使用了它的 `batch` / `computed` / `effect`——**应用代码直接 import 的依赖应显式声明**；`@slux/shared` 只作间接依赖。仓库内验证命令集中在仓库根 [README](../../README.md) 的「本地开发」一节，本包不重复。
 
 ## 快速开始
 
@@ -66,7 +66,7 @@ stop();
 
 ## 核心 API
 
-| 导出                   | 签名                                                                                   | 返回               |
+| 🧩 导出                | 签名                                                                                   | 返回               |
 | ---------------------- | -------------------------------------------------------------------------------------- | ------------------ |
 | `atom`                 | `atom<T>(initialValue: T): Atom<T>`                                                    | 基础可写 atom      |
 | `derived`              | `derived<T>(read: (get: AtomGetter) => T): ReadonlyAtom<T>`                            | 只读派生 atom      |
@@ -77,7 +77,7 @@ stop();
 
 ### `atom(initialValue)` → `Atom<T>`
 
-| 成员            | 签名                                     | 行为                                                                                 |
+| 💡 成员         | 签名                                     | 行为                                                                                 |
 | --------------- | ---------------------------------------- | ------------------------------------------------------------------------------------ |
 | `get()`         | `() => T`                                | 读取默认作用域中的当前值；在 `derived` / core `computed` / `effect` 内读取会收集依赖 |
 | `set(value)`    | `(value: T) => void`                     | **整体替换**，包括函数值；不接受 core 的 draft recipe                                |
@@ -86,7 +86,7 @@ stop();
 
 **`set(value)` 与 `update(fn)` 的区别**：`set` 直接把入参作为新值保存（内部对函数值用 `target.set(() => value)`，避免 core 把函数当作 recipe 执行）；`update` 等价于 `value.set(fn(value.get()))`，只是「读当前值 + 计算 + 替换」的组合。二者写入的都是**整体值**，对象 / 数组按引用保存，直接修改 `get()` 返回的对象不会触发通知。
 
-> 注意：`update` 是本包 `Atom<T>` 自己实现的方法（基于 `get()` + `set()`）。`@slux/core` 的 `Signal` **不提供 `update`**，其基础类型通过 `set((current) => ...)` 更新；不要把 core 的 `set(recipe)` 草稿写法套到 atom 上，也不要用 `atom.set((draft) => ...)` 期待局部修改。
+> ⚠️ 注意：`update` 是本包 `Atom<T>` 自己实现的方法（基于 `get()` + `set()`）。`@slux/core` 的 `Signal` **不提供 `update`**，其基础类型通过 `set((current) => ...)` 更新；不要把 core 的 `set(recipe)` 草稿写法套到 atom 上，也不要用 `atom.set((draft) => ...)` 期待局部修改。
 
 ```ts
 import { atom } from "@slux/atom";
@@ -201,7 +201,7 @@ request.set(count, 6); // 通知 12
 stop();
 ```
 
-| 成员               | 签名                                                                  | 行为                                                              |
+| 💡 成员            | 签名                                                                  | 行为                                                              |
 | ------------------ | --------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | `get(atom)`        | `<T>(atom: AnyReadableAtom<T>) => T`                                  | 读取本作用域中的值；首次访问时按需创建 core `signal` / `computed` |
 | `set(atom, value)` | `<T>(atom: Atom<T>, value: T) => void`                                | 写入**基础 atom**；只读 atom / 派生 atom 在类型上被禁止           |
@@ -211,7 +211,7 @@ stop();
 
 ## 关键语义与边界
 
-- **依赖收集与通知时机**：`get()` 在派生 / core 计算 / effect 内自动收集依赖；`subscribe` 不立即发送当前值；订阅回调内的其他读取不会成为该订阅的依赖；最后一个订阅清理后，派生计算恢复惰性。
+- ⚠️ **依赖收集与通知时机**：`get()` 在派生 / core 计算 / effect 内自动收集依赖；`subscribe` 不立即发送当前值；订阅回调内的其他读取不会成为该订阅的依赖；最后一个订阅清理后，派生计算恢复惰性。
 - **相等判定**：core `signal` 与订阅过滤都用 `Object.is`，`NaN` 相等、`0` / `-0` 不同；派生结果 `Object.is` 相等时不通知下游。
 - **批处理**：写入与通知受 core `batch` 约束，最外层结束统一刷新；`writableAtom.write` 自动包在 `batch` 中并支持嵌套；批处理内创建订阅不会收到初始值。
 - **错误**：`writableAtom.write` 抛错**不回滚**已完成的写入，后续写入与通知恢复正常；`derived` 计算抛错可在依赖修复后重试；通知阶段的错误由 core / `@slux/shared` 的 `runAll` 汇总，单个原样抛、多个 `AggregateError`。
@@ -231,7 +231,7 @@ export default {
 };
 ```
 
-`createAutoImportApis(prefix?)` 基于 `@slux/shared` 的 `generateBatchAutoImports` 生成 `ImportsMap`，来源名为 `@slux/atom`。`src/auto-import-api.ts` 的登记清单（`allImportApis`）为：
+🔌 `createAutoImportApis(prefix?)` 基于 `@slux/shared` 的 `generateBatchAutoImports` 生成 `ImportsMap`，来源名为 `@slux/atom`。`src/auto-import-api.ts` 的登记清单（`allImportApis`）为：
 
 ```ts
 const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "derived", "writableAtom"];
@@ -241,9 +241,9 @@ const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "deriv
 
 ## 类型导出
 
-`src/index.ts` 的 `export type` 共 7 个：
+💡 `src/index.ts` 的 `export type` 共 7 个：
 
-| 类型                                | 用途                                                                                            |
+| 💡 类型                             | 用途                                                                                            |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------- |
 | `Atom<T>`                           | 基础可写 atom：`Subscribable<T> & { set(value: T): void; update(fn: (current: T) => T): void }` |
 | `ReadonlyAtom<T>`                   | 只读 atom，等价于 `Subscribable<T>`                                                             |
@@ -257,7 +257,7 @@ const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "deriv
 
 ## 不适用的场景 / 与其他包分工
 
-| 需求                                  | 应使用的包                           |
+| ⚠️ 需求                               | 应使用的包                           |
 | ------------------------------------- | ------------------------------------ |
 | 草稿式局部修改、不可变结构共享        | `@slux/core` 的 `signal.set(recipe)` |
 | 关联状态 + action 放一起、中间件链    | `@slux/store`                        |
@@ -281,7 +281,7 @@ const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "deriv
 
 响应式运行时与零依赖工具，其余各层都建立在 core 之上。
 
-| 包名                                                                          | 版本                                                                                                                                                                                                                                  | 在线文档                                                     | 功能                   |
+| 📦 包名                                                                       | 版本                                                                                                                                                                                                                                  | 在线文档                                                     | 功能                   |
 | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- |
 | [`@slux/core`](https://github.com/itmanyong/slux/tree/main/packages/core)     | [![npm version](https://img.shields.io/npm/v/@slux/core)](https://www.npmjs.com/package/@slux/core) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/core?label=npmx)](https://npmx.dev/package/@slux/core)         | [在线文档](https://itmanyong.github.io/slux/packages/core)   | 框架无关的响应式运行时 |
 | [`@slux/shared`](https://github.com/itmanyong/slux/tree/main/packages/shared) | [![npm version](https://img.shields.io/npm/v/@slux/shared)](https://www.npmjs.com/package/@slux/shared) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/shared?label=npmx)](https://npmx.dev/package/@slux/shared) | [在线文档](https://itmanyong.github.io/slux/packages/shared) | 零依赖的共享工具       |
@@ -290,7 +290,7 @@ const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "deriv
 
 六种组织状态的方式，共享 core 的运行时，可在同一个依赖图中混用。
 
-| 包名                                                                                        | 版本                                                                                                                                                                                                                                                              | 在线文档                                                            | 功能                               |
+| 📦 包名                                                                                     | 版本                                                                                                                                                                                                                                                              | 在线文档                                                            | 功能                               |
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------- |
 | [`@slux/store`](https://github.com/itmanyong/slux/tree/main/packages/store)                 | [![npm version](https://img.shields.io/npm/v/@slux/store)](https://www.npmjs.com/package/@slux/store) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/store?label=npmx)](https://npmx.dev/package/@slux/store)                                 | [在线文档](https://itmanyong.github.io/slux/packages/store)         | 状态与 action 集中管理，支持中间件 |
 | [`@slux/atom`](https://github.com/itmanyong/slux/tree/main/packages/atom)                   | [![npm version](https://img.shields.io/npm/v/@slux/atom)](https://www.npmjs.com/package/@slux/atom) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/atom?label=npmx)](https://npmx.dev/package/@slux/atom)                                     | [在线文档](https://itmanyong.github.io/slux/packages/atom)          | 细粒度原子状态与派生               |
@@ -303,7 +303,7 @@ const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "deriv
 
 挂载到 Store 的横切能力，五个包共用同一套契约。
 
-| 包名                                                                                | 版本                                                                                                                                                                                                                                              | 在线文档                                                        | 功能                 |
+| 📦 包名                                                                             | 版本                                                                                                                                                                                                                                              | 在线文档                                                        | 功能                 |
 | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------- |
 | [`@slux/storage`](https://github.com/itmanyong/slux/tree/main/packages/storage)     | [![npm version](https://img.shields.io/npm/v/@slux/storage)](https://www.npmjs.com/package/@slux/storage) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/storage?label=npmx)](https://npmx.dev/package/@slux/storage)         | [在线文档](https://itmanyong.github.io/slux/packages/storage)   | 状态持久化与恢复     |
 | [`@slux/history`](https://github.com/itmanyong/slux/tree/main/packages/history)     | [![npm version](https://img.shields.io/npm/v/@slux/history)](https://www.npmjs.com/package/@slux/history) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/history?label=npmx)](https://npmx.dev/package/@slux/history)         | [在线文档](https://itmanyong.github.io/slux/packages/history)   | 撤销与重做           |
@@ -315,20 +315,20 @@ const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "deriv
 
 十二个绑定包都提供 core 主入口与六个范式子入口，使用框架原生响应式与生命周期。范式包是**可选** peer，只装实际使用的；`@slux/core` 与框架本身是**必需** peer。
 
-| 包名                                                                            | 版本                                                                                                                                                                                                                                      | 在线文档                                                      | 适配框架                                        | 适配版本                                   | 功能                   |
-| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------ | ---------------------- |
-| [`@slux/react`](https://github.com/itmanyong/slux/tree/main/packages/react)     | [![npm version](https://img.shields.io/npm/v/@slux/react)](https://www.npmjs.com/package/@slux/react) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/react?label=npmx)](https://npmx.dev/package/@slux/react)         | [在线文档](https://itmanyong.github.io/slux/packages/react)   | [React](https://github.com/react/react)         | `^18.0.0 ‖ ^19.0.0`                        | React 组件状态绑定     |
-| [`@slux/vue`](https://github.com/itmanyong/slux/tree/main/packages/vue)         | [![npm version](https://img.shields.io/npm/v/@slux/vue)](https://www.npmjs.com/package/@slux/vue) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/vue?label=npmx)](https://npmx.dev/package/@slux/vue)                 | [在线文档](https://itmanyong.github.io/slux/packages/vue)     | [Vue](https://github.com/vuejs/core)            | `>= 3.2.0`                                 | Vue 组合式 API 绑定    |
-| [`@slux/solid`](https://github.com/itmanyong/slux/tree/main/packages/solid)     | [![npm version](https://img.shields.io/npm/v/@slux/solid)](https://www.npmjs.com/package/@slux/solid) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/solid?label=npmx)](https://npmx.dev/package/@slux/solid)         | [在线文档](https://itmanyong.github.io/slux/packages/solid)   | [Solid](https://github.com/solidjs/solid)       | `>= 1.0.0`                                 | Solid 细粒度响应式绑定 |
-| [`@slux/svelte`](https://github.com/itmanyong/slux/tree/main/packages/svelte)   | [![npm version](https://img.shields.io/npm/v/@slux/svelte)](https://www.npmjs.com/package/@slux/svelte) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/svelte?label=npmx)](https://npmx.dev/package/@slux/svelte)     | [在线文档](https://itmanyong.github.io/slux/packages/svelte)  | [Svelte](https://github.com/sveltejs/svelte)    | `>= 4.0.0`                                 | Svelte 原生 store 绑定 |
-| [`@slux/angular`](https://github.com/itmanyong/slux/tree/main/packages/angular) | [![npm version](https://img.shields.io/npm/v/@slux/angular)](https://www.npmjs.com/package/@slux/angular) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/angular?label=npmx)](https://npmx.dev/package/@slux/angular) | [在线文档](https://itmanyong.github.io/slux/packages/angular) | [Angular](https://github.com/angular/angular)   | `@angular/core >= 16.0.0`、`rxjs >= 7.8.0` | Angular 注入上下文绑定 |
-| [`@slux/preact`](https://github.com/itmanyong/slux/tree/main/packages/preact)   | [![npm version](https://img.shields.io/npm/v/@slux/preact)](https://www.npmjs.com/package/@slux/preact) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/preact?label=npmx)](https://npmx.dev/package/@slux/preact)     | [在线文档](https://itmanyong.github.io/slux/packages/preact)  | [Preact](https://github.com/preactjs/preact)    | `>= 10.5.0`                                | Preact 组件状态绑定    |
-| [`@slux/ripple`](https://github.com/itmanyong/slux/tree/main/packages/ripple)   | [![npm version](https://img.shields.io/npm/v/@slux/ripple)](https://www.npmjs.com/package/@slux/ripple) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/ripple?label=npmx)](https://npmx.dev/package/@slux/ripple)     | [在线文档](https://itmanyong.github.io/slux/packages/ripple)  | [Ripple](https://github.com/Ripple-TS/ripple)   | `>= 0.6.0`                                 | Ripple 组件状态绑定    |
-| [`@slux/inferno`](https://github.com/itmanyong/slux/tree/main/packages/inferno) | [![npm version](https://img.shields.io/npm/v/@slux/inferno)](https://www.npmjs.com/package/@slux/inferno) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/inferno?label=npmx)](https://npmx.dev/package/@slux/inferno) | [在线文档](https://itmanyong.github.io/slux/packages/inferno) | [Inferno](https://github.com/infernojs/inferno) | `>= 7.0.0`                                 | Inferno 组件状态绑定   |
-| [`@slux/octane`](https://github.com/itmanyong/slux/tree/main/packages/octane)   | [![npm version](https://img.shields.io/npm/v/@slux/octane)](https://www.npmjs.com/package/@slux/octane) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/octane?label=npmx)](https://npmx.dev/package/@slux/octane)     | [在线文档](https://itmanyong.github.io/slux/packages/octane)  | [Octane](https://github.com/octanejs/octane)    | `>= 0.16.0`                                | Octane 编译器绑定      |
-| [`@slux/vitarx`](https://github.com/itmanyong/slux/tree/main/packages/vitarx)   | [![npm version](https://img.shields.io/npm/v/@slux/vitarx)](https://www.npmjs.com/package/@slux/vitarx) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/vitarx?label=npmx)](https://npmx.dev/package/@slux/vitarx)     | [在线文档](https://itmanyong.github.io/slux/packages/vitarx)  | [Vitarx](https://github.com/vitarx-lib/core)    | `>= 4.0.0`                                 | Vitarx 组件状态绑定    |
-| [`@slux/actview`](https://github.com/itmanyong/slux/tree/main/packages/actview) | [![npm version](https://img.shields.io/npm/v/@slux/actview)](https://www.npmjs.com/package/@slux/actview) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/actview?label=npmx)](https://npmx.dev/package/@slux/actview) | [在线文档](https://itmanyong.github.io/slux/packages/actview) | [ActView](https://github.com/actview/actview)   | `>= 1.0.0`                                 | ActView 组件状态绑定   |
-| [`@slux/viewfly`](https://github.com/itmanyong/slux/tree/main/packages/viewfly) | [![npm version](https://img.shields.io/npm/v/@slux/viewfly)](https://www.npmjs.com/package/@slux/viewfly) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/viewfly?label=npmx)](https://npmx.dev/package/@slux/viewfly) | [在线文档](https://itmanyong.github.io/slux/packages/viewfly) | [Viewfly](https://github.com/viewfly/viewfly)   | `>= 3.0.0`                                 | Viewfly 组件状态绑定   |
+| 📦 包名                                                                         | 版本                                                                                                                                                                                                                                      | 在线文档                                                      | 适配框架                                        | 适配版本                                   |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------ |
+| [`@slux/react`](https://github.com/itmanyong/slux/tree/main/packages/react)     | [![npm version](https://img.shields.io/npm/v/@slux/react)](https://www.npmjs.com/package/@slux/react) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/react?label=npmx)](https://npmx.dev/package/@slux/react)         | [在线文档](https://itmanyong.github.io/slux/packages/react)   | [React](https://github.com/react/react)         | `^18.0.0 ‖ ^19.0.0`                        |
+| [`@slux/vue`](https://github.com/itmanyong/slux/tree/main/packages/vue)         | [![npm version](https://img.shields.io/npm/v/@slux/vue)](https://www.npmjs.com/package/@slux/vue) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/vue?label=npmx)](https://npmx.dev/package/@slux/vue)                 | [在线文档](https://itmanyong.github.io/slux/packages/vue)     | [Vue](https://github.com/vuejs/core)            | `>= 3.2.0`                                 |
+| [`@slux/solid`](https://github.com/itmanyong/slux/tree/main/packages/solid)     | [![npm version](https://img.shields.io/npm/v/@slux/solid)](https://www.npmjs.com/package/@slux/solid) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/solid?label=npmx)](https://npmx.dev/package/@slux/solid)         | [在线文档](https://itmanyong.github.io/slux/packages/solid)   | [Solid](https://github.com/solidjs/solid)       | `>= 1.0.0`                                 |
+| [`@slux/svelte`](https://github.com/itmanyong/slux/tree/main/packages/svelte)   | [![npm version](https://img.shields.io/npm/v/@slux/svelte)](https://www.npmjs.com/package/@slux/svelte) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/svelte?label=npmx)](https://npmx.dev/package/@slux/svelte)     | [在线文档](https://itmanyong.github.io/slux/packages/svelte)  | [Svelte](https://github.com/sveltejs/svelte)    | `>= 4.0.0`                                 |
+| [`@slux/angular`](https://github.com/itmanyong/slux/tree/main/packages/angular) | [![npm version](https://img.shields.io/npm/v/@slux/angular)](https://www.npmjs.com/package/@slux/angular) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/angular?label=npmx)](https://npmx.dev/package/@slux/angular) | [在线文档](https://itmanyong.github.io/slux/packages/angular) | [Angular](https://github.com/angular/angular)   | `@angular/core >= 16.0.0`、`rxjs >= 7.8.0` |
+| [`@slux/preact`](https://github.com/itmanyong/slux/tree/main/packages/preact)   | [![npm version](https://img.shields.io/npm/v/@slux/preact)](https://www.npmjs.com/package/@slux/preact) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/preact?label=npmx)](https://npmx.dev/package/@slux/preact)     | [在线文档](https://itmanyong.github.io/slux/packages/preact)  | [Preact](https://github.com/preactjs/preact)    | `>= 10.5.0`                                |
+| [`@slux/ripple`](https://github.com/itmanyong/slux/tree/main/packages/ripple)   | [![npm version](https://img.shields.io/npm/v/@slux/ripple)](https://www.npmjs.com/package/@slux/ripple) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/ripple?label=npmx)](https://npmx.dev/package/@slux/ripple)     | [在线文档](https://itmanyong.github.io/slux/packages/ripple)  | [Ripple](https://github.com/Ripple-TS/ripple)   | `>= 0.6.0`                                 |
+| [`@slux/inferno`](https://github.com/itmanyong/slux/tree/main/packages/inferno) | [![npm version](https://img.shields.io/npm/v/@slux/inferno)](https://www.npmjs.com/package/@slux/inferno) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/inferno?label=npmx)](https://npmx.dev/package/@slux/inferno) | [在线文档](https://itmanyong.github.io/slux/packages/inferno) | [Inferno](https://github.com/infernojs/inferno) | `>= 7.0.0`                                 |
+| [`@slux/octane`](https://github.com/itmanyong/slux/tree/main/packages/octane)   | [![npm version](https://img.shields.io/npm/v/@slux/octane)](https://www.npmjs.com/package/@slux/octane) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/octane?label=npmx)](https://npmx.dev/package/@slux/octane)     | [在线文档](https://itmanyong.github.io/slux/packages/octane)  | [Octane](https://github.com/octanejs/octane)    | `>= 0.16.0`                                |
+| [`@slux/vitarx`](https://github.com/itmanyong/slux/tree/main/packages/vitarx)   | [![npm version](https://img.shields.io/npm/v/@slux/vitarx)](https://www.npmjs.com/package/@slux/vitarx) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/vitarx?label=npmx)](https://npmx.dev/package/@slux/vitarx)     | [在线文档](https://itmanyong.github.io/slux/packages/vitarx)  | [Vitarx](https://github.com/vitarx-lib/core)    | `>= 4.0.0`                                 |
+| [`@slux/actview`](https://github.com/itmanyong/slux/tree/main/packages/actview) | [![npm version](https://img.shields.io/npm/v/@slux/actview)](https://www.npmjs.com/package/@slux/actview) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/actview?label=npmx)](https://npmx.dev/package/@slux/actview) | [在线文档](https://itmanyong.github.io/slux/packages/actview) | [ActView](https://github.com/actview/actview)   | `>= 1.0.0`                                 |
+| [`@slux/viewfly`](https://github.com/itmanyong/slux/tree/main/packages/viewfly) | [![npm version](https://img.shields.io/npm/v/@slux/viewfly)](https://www.npmjs.com/package/@slux/viewfly) [![npmx version](https://npmx.dev/api/registry/badge/version/@slux/viewfly?label=npmx)](https://npmx.dev/package/@slux/viewfly) | [在线文档](https://itmanyong.github.io/slux/packages/viewfly) | [Viewfly](https://github.com/viewfly/viewfly)   | `>= 3.0.0`                                 |
 
 格式差异：**Octane** 的公开入口是 TypeScript 源码，需消费端 Octane 编译器处理且不提供 CJS；**Ripple** 只发布 ESM，另有 `./server` 服务端入口。其余边界见各包文档。
 

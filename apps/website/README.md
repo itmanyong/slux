@@ -1,10 +1,10 @@
 # slux 文档站
 
-本站位于 `apps/website`，由仓库现有的 Rstack `rs doc` 命令运行 Rspress。文档面向使用 slux 的第三方开发者。
+🧭 本站位于 `apps/website`，由仓库现有的 Rstack `rs doc` 命令运行 Rspress。文档面向使用 slux 的第三方开发者。
 
 ## 本地命令
 
-在仓库根目录执行：
+🚀 在仓库根目录执行：
 
 ```sh
 pnpm install
@@ -21,7 +21,7 @@ GitHub Pages 由仓库根目录的 `.github/workflows/docs.yml` 在 `main` 推�
 
 ## 导航与外观
 
-首页范式区在宽屏采用左侧说明与右侧两列卡片；窄屏改为纵向排列。框架卡片保留标志，并用一句话说明对应绑定的使用方式。顶部四张能力卡片使用位置各异的柔和光晕。站点全局滚动条使用透明轨道与细滑块，并随昼夜模式切换颜色。
+🧭 首页范式区在宽屏采用左侧说明与右侧两列卡片；窄屏改为纵向排列。框架卡片保留标志，并用一句话说明对应绑定的使用方式。顶部四张能力卡片使用位置各异的柔和光晕。站点全局滚动条使用透明轨道与细滑块，并随昼夜模式切换颜色。
 
 顶部导航包含搜索、指南、架构（核心、范式、中间件、框架、插件）、示例、更新日志、GitHub 与昼夜模式。“架构”下的分类入口指向各组的“总览”页，`docs/_nav.json` 中的 `activeMatch` 负责对应页面的高亮。指南左侧分为“开始”和“进阶”两组；插件入口与其他包分类共用包文档侧栏，自动导入说明位于 `docs/packages/auto-import.mdx`。示例入口使用独立的分层侧栏。普通文档页标题右侧依次显示阅读时间和复制 Markdown 操作，复制按钮靠最右侧；窄屏时两者移到标题下方。
 
@@ -29,7 +29,7 @@ GitHub Pages 由仓库根目录的 `.github/workflows/docs.yml` 在 `main` 推�
 
 ## 文档线路
 
-五个包分组的“总览”页不显示包文档线路。包内切换到 API、类型、README 或演示线路后，左侧仍保持该包选中。线路滚动到顶部导航下方时会固定显示，宽度由内容决定，窄屏下换行以避免横向滚动条。
+📚 五个包分组的“总览”页不显示包文档线路。包内切换到 API、类型、README 或演示线路后，左侧仍保持该包选中。线路滚动到顶部导航下方时会固定显示，宽度由内容决定，窄屏下换行以避免横向滚动条。
 
 `docs/packages/<包名>/index.mdx` 是面向使用者的短指南；`/packages/<包名>/readme` 由 `rstack.config.ts` 中的 Rspress `addPages` 钩子直接读取 `packages/<包名>/README.md`，不在源码目录复制或生成 Markdown 文件。`theme/index.tsx` 在包页面提供“使用指南 / API 定义 / 类型定义 / README 原文 / 演示示例 / 更新日志”切换。页面滚到线路位置时，同一组入口固定在顶部导航下方。包级“更新日志”在浏览器中加载 GitHub `main` 分支对应包的 `CHANGELOG.md`。
 
@@ -41,6 +41,14 @@ README 原文页读取当前工作区文件，因此本地未提交的 README �
 
 站点已注册阅读时间、Mermaid、Preview 和 Playground 插件。[交互式示例](docs/guide/interactive.mdx) 使用 Preview 和 Playground；[状态范式选择](docs/guide/choose.mdx) 使用 Mermaid。阅读时间显示在普通文档页顶部。
 
+### iframe 加载状态
+
+⏳ 文档演示页和总览内部的 iframe 在首次打开、切换示例时显示半透明模糊加载层，颜色跟随明暗主题。`ExampleFrame` 的 `packageName` 传短包名，例如 `core`；总览页面传 `gallery-example`。
+
+📨 当前 iframe 的 `load` 事件，或来自该 iframe 的 `{ type: "CONTENT_LOADED", payload: { package: "@slux/core" } }` 消息，都能撤销加载层。消息会核对窗口、来源地址和当前包名，也兼容共享外壳使用的 `/core` 格式。切换后的旧 iframe 消息不会结束新页面的加载；主题切换只同步颜色，不重新加载。
+
+🧪 `pnpm --filter @slux/website test` 和总览测试覆盖加载完成、消息校验与示例切换。生成的页面和侧栏应通过 `pnpm docs:build` 更新。
+
 ## 远程更新日志
 
-顶部“更新日志”入口显示仓库 `releases/` 下的版本文件。构建时仅扫描文件名，生成 `docs/releases/_meta.json` 侧栏数据和页面路由；原始 Markdown 正文不纳入站点构建，页面打开后由浏览器从 GitHub `main` 分支获取。生成的侧栏文件已加入 `.gitignore`。新增版本文件后重新构建站点即可更新菜单；GitHub 上对应文件尚未推送或请求失败时，页面会显示原文链接。
+📚 顶部“更新日志”入口显示仓库 `releases/` 下的版本文件。构建时扫描文件名，以去掉 `.md` 后缀的版本号生成 `docs/releases/_meta.json` 侧栏标签和页面路由；原始 Markdown 正文不纳入站点构建，页面打开后由浏览器从 GitHub `main` 分支获取。生成的侧栏文件已加入 `.gitignore`。新增版本文件后重新构建站点即可更新菜单；GitHub 上对应文件尚未推送或请求失败时，页面会显示原文链接。

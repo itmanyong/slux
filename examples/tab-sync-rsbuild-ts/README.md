@@ -1,6 +1,6 @@
 # tab-sync Playground
 
-`examples/tab-sync-rsbuild-ts` 用卡片布局演示 `@slux/tab-sync` 的公开 API。它是一个 `@slux/store` 中间件：挂进 `createStore` 的 `middleware`，用 `BroadcastChannel` 把状态同步到同源的其他页签。每张卡片都可独立重置、查看源码与运行记录。
+🧪 `examples/tab-sync-rsbuild-ts` 用卡片布局演示 `@slux/tab-sync` 的公开 API。它是一个 `@slux/store` 中间件：挂进 `createStore` 的 `middleware`，用 `BroadcastChannel` 把状态同步到同源的其他页签。每张卡片都可独立重置、查看源码与运行记录。
 
 ## 运行
 
@@ -11,11 +11,11 @@ pnpm --filter @slux/example-tab-sync-rsbuild-ts build    # 构建
 pnpm --filter @slux/example-tab-sync-rsbuild-ts test     # 挂载回归测试（jsdom + 真实运行时）
 ```
 
-构建工具：Rsbuild
+🚀 构建工具：Rsbuild
 
 ## 卡片
 
-| 卡片                           | API                            | 分类         |
+| 🧪 卡片                        | API                            | 分类         |
 | ------------------------------ | ------------------------------ | ------------ |
 | broadcast：同页双实例对发      | `broadcast({ channel })`       | 同步通道     |
 | BroadcastMessage：线上消息结构 | `BroadcastMessage<T>`          | 同步通道     |
@@ -25,7 +25,7 @@ pnpm --filter @slux/example-tab-sync-rsbuild-ts test     # 挂载回归测试（
 
 ## 技术要点
 
-`BroadcastChannel` 不会把消息投递给发送者自己，因此**同一页面上挂同一通道的两个实例就是一对真实的同步对端**——demo 用这个特性在单页内模拟两个页签。
+💡 `BroadcastChannel` 不会把消息投递给发送者自己，因此**同一页面上挂同一通道的两个实例就是一对真实的同步对端**——demo 用这个特性在单页内模拟两个页签。
 
 环境缺少 `BroadcastChannel` 时（如 jsdom），中间件的 `init` 不建立连接，demo 会做能力检测并在卡片里提示降级；对应的测试对同步行为做条件断言，只对本地写入做强断言。
 

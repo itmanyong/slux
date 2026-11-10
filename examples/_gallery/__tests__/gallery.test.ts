@@ -199,6 +199,59 @@ describe("统一的浮层结构", () => {
 });
 
 describe("选择交互", () => {
+  it("初次加载和切换示例时显示遮罩，当前 iframe load 才撤下", () => {
+    const { root, api } = setup();
+    const placeholder = one<HTMLElement>(root, ".g-placeholder");
+    const first = one<HTMLIFrameElement>(root, ".g-frame");
+    expect(placeholder.classList.contains("hidden")).toBe(false);
+    first.dispatchEvent(new Event("load"));
+    expect(placeholder.classList.contains("hidden")).toBe(true);
+    api.select("vue-rsbuild-ts");
+    expect(placeholder.classList.contains("hidden")).toBe(false);
+    first.dispatchEvent(new Event("load"));
+    expect(placeholder.classList.contains("hidden")).toBe(false);
+    const current = one<HTMLIFrameElement>(root, ".g-frame");
+    expect(current).not.toBe(first);
+    current.dispatchEvent(new Event("load"));
+    expect(placeholder.classList.contains("hidden")).toBe(true);
+    root.remove();
+  });
+
+  it.each(["@slux/core", "/core"])("当前包 %s 的 ready 消息可提前撤下遮罩", (packageName) => {
+    const { root } = setup();
+    const frame = one<HTMLIFrameElement>(root, ".g-frame");
+    const placeholder = one<HTMLElement>(root, ".g-placeholder");
+    expect(placeholder.classList.contains("hidden")).toBe(false);
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        source: frame.contentWindow,
+        origin: new URL(frame.src).origin,
+        data: { type: "CONTENT_LOADED", payload: { package: packageName } },
+      }),
+    );
+    expect(placeholder.classList.contains("hidden")).toBe(true);
+    root.remove();
+  });
+
+  it("拒绝错误 origin、错误包、非法 payload 及切换前 iframe 的 ready 消息", () => {
+    const { root, api } = setup();
+    const oldWindow = one<HTMLIFrameElement>(root, ".g-frame").contentWindow;
+    api.select("vue-rsbuild-ts");
+    const frame = one<HTMLIFrameElement>(root, ".g-frame");
+    const placeholder = one<HTMLElement>(root, ".g-placeholder");
+    const valid = { type: "CONTENT_LOADED", payload: { package: "/vue" } };
+    for (const event of [
+      { source: oldWindow, origin: new URL(frame.src).origin, data: valid },
+      { source: frame.contentWindow, origin: "https://unrelated.example", data: valid },
+      { source: frame.contentWindow, origin: new URL(frame.src).origin, data: { type: "CONTENT_LOADED", payload: { package: "/core" } } },
+      { source: frame.contentWindow, origin: new URL(frame.src).origin, data: { type: "CONTENT_LOADED", payload: null } },
+    ]) {
+      window.dispatchEvent(new MessageEvent<unknown>("message", event));
+      expect(placeholder.classList.contains("hidden")).toBe(false);
+    }
+    root.remove();
+  });
+
   it("下拉切换示例会更新 iframe、顶栏、新窗口链接与 hash", () => {
     const { root } = setup();
     const dropdown = one<HTMLSelectElement>(root, ".g-select");

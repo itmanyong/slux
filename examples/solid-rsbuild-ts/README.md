@@ -1,6 +1,6 @@
 # solid Playground
 
-`examples/solid-rsbuild-ts` 用卡片布局演示 `@slux/solid` 的公开 API。useSignal 把 slux 信号读成 Solid Accessor，细粒度响应系统直接接管重渲染。每张卡片都可独立重置、查看源码与运行记录。
+🧪 `examples/solid-rsbuild-ts` 用卡片布局演示 `@slux/solid` 的公开 API。useSignal 把 slux 信号读成 Solid Accessor，细粒度响应系统直接接管重渲染。每张卡片都可独立重置、查看源码与运行记录。
 
 ## 运行
 
@@ -11,18 +11,18 @@ pnpm --filter @slux/example-solid-rsbuild-ts build    # 构建
 pnpm --filter @slux/example-solid-rsbuild-ts test     # 挂载回归测试（jsdom + 真实运行时）
 ```
 
-构建工具：Rsbuild + `@rsbuild/plugin-solid`（追加 babel-preset-solid）+ `@rsbuild/plugin-babel`（提供 JSX 编译 loader）
+🚀 构建工具：Rsbuild + `@rsbuild/plugin-solid`（追加 babel-preset-solid）+ `@rsbuild/plugin-babel`（提供 JSX 编译 loader）
 
 ## 卡片
 
-| 卡片                             | API                   | 分类    |
+| 🧪 卡片                          | API                   | 分类    |
 | -------------------------------- | --------------------- | ------- |
 | useSignal：信号驱动的 Solid 组件 | `useSignal(signal)`   | hook    |
 | 订阅 computed，依赖变化自动更新  | `useSignal(computed)` | derived |
 
 ## 技术要点
 
-每张卡片挂载的是真实 `.tsx` Solid 组件，由 babel-preset-solid 编译成无 VDOM 的细粒度更新。
+💡 每张卡片挂载的是真实 `.tsx` Solid 组件，由 babel-preset-solid 编译成无 VDOM 的细粒度更新。
 
 卡片用 `render(() => <Component/>, ctx.container)` 挂载——`render` 返回的 dispose 函数即是清理钩子；组件状态在组件体内创建（如 `signal(0)`），重置卡片即重新挂载。
 

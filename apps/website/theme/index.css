@@ -274,13 +274,55 @@ body {
   color: #fff;
 }
 
+.package-demo-container {
+  position: relative;
+  min-height: min(780px, 80vh);
+  overflow: hidden;
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: 12px;
+  background: var(--rp-c-bg);
+}
+
 .package-demo-frame {
   display: block;
   width: 100%;
   min-height: min(780px, 80vh);
-  border: 1px solid var(--rp-c-divider-light);
-  border-radius: 12px;
-  background: #fff;
+  border: 0;
+  background: var(--rp-c-bg);
+}
+
+.package-demo-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: color-mix(in srgb, var(--rp-c-bg) 72%, transparent);
+  color: var(--rp-c-text-1);
+  backdrop-filter: blur(8px);
+  font-size: 14px;
+}
+
+.package-demo-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--rp-c-divider-light);
+  border-top-color: var(--rp-c-brand);
+  border-radius: 50%;
+  animation: package-demo-spin 800ms linear infinite;
+}
+
+@keyframes package-demo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .package-demo-spinner {
+    animation: none;
+  }
 }
 
 .remote-markdown-status {

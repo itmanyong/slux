@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
@@ -44,29 +44,6 @@ export function collectReleaseHistory(cwd, previousTag, ref = "HEAD") {
   return { commits, changesets };
 }
 
-export function collectPackageChangelogNotes(cwd, version, ref) {
-  const paths = git(cwd, ["ls-tree", "-r", "--name-only", ref, "--", "packages"])
-    .split("\n")
-    .filter((path) => path.endsWith("/CHANGELOG.md"));
-  return [
-    ...new Set(
-      paths.flatMap((path) => {
-        const section = git(cwd, ["show", `${ref}:${path}`])
-          .split(/^## /m)
-          .find((part) => part.startsWith(`${version}\n`));
-        if (!section) return [];
-        const body = section
-          .slice(version.length)
-          .replace(/^### (?:Major|Minor|Patch) Changes\s*$/gm, "")
-          .replace(/^- Updated dependencies[^\n]*(?:\n[ \t]+[^\n]*)*/gm, "")
-          .replace(/^- [a-f0-9]{7,40}:\s*/gm, "- ")
-          .trim();
-        return body ? [body] : [];
-      }),
-    ),
-  ];
-}
-
 export function writeReleaseNotes(cwd, version, changesets, options) {
   const directory = resolve(cwd, "releases");
   mkdirSync(directory, { recursive: true });
@@ -99,7 +76,8 @@ function main() {
     .filter((tag) => tag !== `v${values.version}` && tag !== `release/v${values.version}`);
   const previousTag = values.from ?? selectLatestReleaseTag(tags);
   const history = collectReleaseHistory(root, previousTag, values.to);
-  if (!history.changesets.length) history.changesets = collectPackageChangelogNotes(root, values.version, values.to);
+  const sourcePath = resolve(root, "releases/sources", `v${values.version}.md`);
+  if (existsSync(sourcePath)) history.changesets = [readFileSync(sourcePath, "utf8")];
   const tag =
     values.tag || ([`v${values.version}`, `release/v${values.version}`].includes(values.to) ? values.to : `release/v${values.version}`);
   writeReleaseNotes(root, values.version, history.changesets, { ...history, previousTag, tag });

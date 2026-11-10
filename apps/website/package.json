@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "rs test",
     "docs:dev": "pnpm docs:examples && rs doc",
     "docs:build": "pnpm docs:examples && rs doc build",
     "docs:examples": "pnpm --dir ../.. exec turbo run build --filter=@slux/example-* --filter=@slux/gallery-example && node ./scripts/copy-examples.mjs && node ./scripts/copy-examples.test.mjs",
@@ -14,6 +15,7 @@
     "@rspress/plugin-preview": "2.1.1",
     "@slux/core": "workspace:*",
     "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "limu": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

@@ -7,6 +7,12 @@ export const EMBED_FLAG = "1";
 export const SYNC_MESSAGE = "THEME_CHANGED";
 export const REQUEST_MESSAGE = "slux-example-theme-request";
 export const THEME_CHANGE_EVENT = "slux-theme-change";
+/** 子页面（示例）加载完成后向父页面（总览）通告；payload 携带示例包名。 */
+export const CONTENT_LOADED_MESSAGE = "CONTENT_LOADED";
+export interface ContentLoadedPayload {
+  /** 示例包名，如 @slux/react（走 createExamplePage 时取 branding.pkg）。 */
+  package: string;
+}
 /** 同源多标签页同步用的 BroadcastChannel 名称。 */
 export const THEME_CHANNEL = "slux-theme-sync";
 
@@ -102,10 +108,24 @@ export function setTheme(theme: Theme, notifyParent = true): void {
   broadcastTheme(theme);
 }
 
-export function createThemeBridge(): () => void {
+export function createThemeBridge(packageName?: string): () => void {
   const embedded = isEmbedded();
   if (embedded) document.documentElement.dataset.embed = EMBED_FLAG;
   applyTheme(readUrlTheme() ?? readStored() ?? systemTheme());
+
+  // 注册监听即代表页面加载完成：延迟 1024*0.5ms 后向父页面通告 CONTENT_LOADED，
+  // 让总览（嵌入方）确认示例内容已就绪。仅嵌入态有意义，独立运行不发送。
+  // embedded 同时覆盖「真实处于 iframe 内」与「显式 ?embed=1」两种情形。
+  let loadedTimer: ReturnType<typeof setTimeout> | null = null;
+  if (embedded) {
+    loadedTimer = setTimeout(() => {
+      loadedTimer = null;
+      window.parent.postMessage(
+        { type: CONTENT_LOADED_MESSAGE, payload: { package: packageName ?? "" } } satisfies { type: string; payload: ContentLoadedPayload },
+        "*",
+      );
+    }, 1024 * 0.5);
+  }
 
   const onMessage = (event: MessageEvent): void => {
     if (event.source !== window.parent) return;
@@ -132,15 +152,19 @@ export function createThemeBridge(): () => void {
   if (channel) channel.addEventListener("message", onChannel);
 
   return () => {
+    if (loadedTimer !== null) {
+      clearTimeout(loadedTimer);
+      loadedTimer = null;
+    }
     window.removeEventListener("message", onMessage);
     if (channel) channel.removeEventListener("message", onChannel);
   };
 }
 
 let disposeBridge: (() => void) | null = null;
-export const initTheme = (): void => {
+export const initTheme = (packageName?: string): void => {
   if (disposeBridge) return;
-  disposeBridge = createThemeBridge();
+  disposeBridge = createThemeBridge(packageName);
 };
 
 export const toggleTheme = (): Theme => {

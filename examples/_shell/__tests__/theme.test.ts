@@ -1,5 +1,6 @@
 import { describe, expect, it } from "rstack/test";
 import {
+  CONTENT_LOADED_MESSAGE,
   REQUEST_MESSAGE,
   SYNC_MESSAGE,
   THEME_CHANGE_EVENT,
@@ -145,6 +146,32 @@ describe("iframe 主题桥 · 上下层消息", () => {
       value: original,
     });
     expect(sent.some((data) => typeof data === "object" && data !== null && (data as { type?: unknown }).type === REQUEST_MESSAGE)).toBe(true);
+    teardown();
+  });
+
+  it("注册监听（页面加载完成）后延迟约 512ms 向父页通告 CONTENT_LOADED 与包名", async () => {
+    dispose?.();
+    window.history.replaceState(null, "", "/?embed=1");
+    document.documentElement.removeAttribute("data-theme");
+    document.documentElement.removeAttribute("data-embed");
+    const parent = window.parent;
+    const original = parent.postMessage;
+    const sent: unknown[] = [];
+    Object.defineProperty(parent, "postMessage", {
+      configurable: true,
+      value: (data: unknown) => sent.push(data),
+    });
+    dispose = createThemeBridge("test-pkg");
+    // 注册即返回，此时不应立即发送 CONTENT_LOADED。
+    expect(sent.some((data) => typeof data === "object" && data !== null && (data as { type?: unknown }).type === CONTENT_LOADED_MESSAGE)).toBe(
+      false,
+    );
+    await new Promise((resolve) => setTimeout(resolve, 1024 * 0.5 + 80));
+    const loaded = sent.find(
+      (data) => typeof data === "object" && data !== null && (data as { type?: unknown }).type === CONTENT_LOADED_MESSAGE,
+    );
+    expect(loaded).toEqual({ type: CONTENT_LOADED_MESSAGE, payload: { package: "test-pkg" } });
+    Object.defineProperty(parent, "postMessage", { configurable: true, value: original });
     teardown();
   });
 });

@@ -3,7 +3,6 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { createInterface } from "node:readline/promises";
 import { parseChangesetPackages, selectChangedPackages, selectLatestReleaseTag } from "./release-lib.mjs";
-import { collectReleaseHistory, writeReleaseNotes } from "./release-notes.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const help = `用法：pnpm release\n\n请先自行撰写并提交 Changeset。脚本确认变更日志后，升级统一版本、生成分类发行说明和根 CHANGELOG、生成自动导入 API 清单、同步包导航、验证、提交并推送发布标签。GitHub Actions 会直接发布 npm 包、公开 GitHub Release 并上传版本包和校验清单。\n`;
@@ -68,7 +67,7 @@ async function main() {
     if (!pendingChangesets.length || !pendingPackages.length) throw new Error("没有有效的待发布 Changeset，请先运行 pnpm changeset 并提交");
 
     run("pnpm", ["exec", "changeset", "status"]);
-    run("pnpm", ["exec", "changeset", "version"]);
+    run("pnpm", ["version:packages"]);
     run("pnpm", ["install", "--lockfile-only"]);
     const version = JSON.parse(readFileSync(resolve(root, "packages/core/package.json"), "utf8")).version;
     const versions = new Set(
@@ -79,8 +78,6 @@ async function main() {
 
     const tag = `release/v${version}`;
     if (output("git", ["tag", "--list", tag])) throw new Error(`${tag} 标签已存在`);
-    const { commits } = collectReleaseHistory(root, previousTag);
-    writeReleaseNotes(root, version, pendingChangesets, { commits, previousTag, tag });
     run("pnpm", ["generate:apis"]);
     run("pnpm", ["sync:package-navigation"]);
     run("pnpm", ["test:release"]);
