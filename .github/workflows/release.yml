@@ -82,17 +82,19 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: release-tarballs
-          path: release-tarballs
+          path: ${{ runner.temp }}/slux-release-tarballs
       - uses: actions/setup-node@v4
         with:
           node-version: 24
       - name: Install npm with trusted publishing
+        working-directory: ${{ runner.temp }}
         run: npm install -g npm@11.20.0
       - name: Publish package through trusted publishing
+        working-directory: ${{ runner.temp }}
         env:
           PACKAGE: ${{ matrix.package }}
           VERSION: ${{ needs.prepare.outputs.version }}
-        run: node scripts/release-publish.mjs release-tarballs "@slux/${PACKAGE}" "$VERSION"
+        run: node "$GITHUB_WORKSPACE/scripts/release-publish.mjs" "$RUNNER_TEMP/slux-release-tarballs" "@slux/${PACKAGE}" "$VERSION"
 
   release:
     needs: [prepare, publish]

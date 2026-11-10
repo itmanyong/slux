@@ -46,6 +46,7 @@ export function RemoteMarkdown({ path }: { path: string }) {
   return (
     <div className="remote-markdown">
       <Markdown
+        skipHtml
         remarkPlugins={[remarkGfm]}
         components={{
           a: ({ href, children }) => {

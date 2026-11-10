@@ -43,9 +43,13 @@ pnpm release
 
 标签触发的工作流会验证并准备全部 25 个包。尚未发布的版本由 `pnpm pack` 打包，每个包独立执行 `npm publish --access public --tag latest --provenance`。已发布版本从 npm 下载原始 tarball 并核对 registry 中的完整性摘要，发布作业再次确认字节一致后跳过重复发布。查询失败或摘要不一致会阻断发布，不会当作包不存在。
 
+npm 安装和发布步骤从仓库外的 `${{ runner.temp }}` 运行，产物也下载到这个临时目录下；脚本通过 `$GITHUB_WORKSPACE` 的绝对路径调用。仓库根目录的 `devEngines.packageManager` 要求 pnpm，在根目录执行 `npm publish` 即使传入 tarball 绝对路径也会触发 `EBADDEVENGINES`。本地排查可先打包，再在独立临时目录执行 `npm publish <tarball绝对路径> --dry-run`，确认命令可运行后再由工作流实际发布。
+
 所有包发布成功后，工作流创建或更新 GitHub Release，上传 25 个 `.tgz`、`SHA256SUMS` 和 `release-manifest.json`，然后公开 Release。清单记录包名、版本、文件名、字节数、SHA-256 和 SHA-512 integrity；下载后可用 `sha256sum --check SHA256SUMS` 核验文件。GitHub 自带的 Source code 附件不替代 npm 包附件。
 
 失败后可使用 **Re-run failed jobs**，也可手动运行 `Publish packages` 并指定同一个 `release/vX.Y.Z`。重复运行会复用已发布 npm 包并更新同名附件，不改写 Git 标签，也不重复升版。25 个包是独立的矩阵作业，其中一个失败时，其他包可能已经公开；GitHub Release 等所有发布作业成功才会公开。跳过已存在版本时不会修改 npm dist-tag。
+
+如果失败来自工作流本身，需要先把修复提交到 `main`。然后在 Actions 的 **Run workflow** 中选择 `main`，将 `tag` 输入设为原发布标签，例如 `release/v0.2.0`；也可运行 `gh workflow run release.yml --ref main -f tag=release/v0.2.0`。这会使用 `main` 上的新工作流，但继续检出原标签的源码和版本。直接重跑原失败记录仍会使用旧工作流，不能获得修复。不得为了重试而移动、删除或重建已经推送的标签；如果需要修改包源码，则应准备新版本。
 
 ## 历史版本补齐
 
