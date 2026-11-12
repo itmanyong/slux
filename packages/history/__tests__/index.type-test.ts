@@ -3,7 +3,9 @@ import type { Middleware } from "@slux/store";
 import { history, type HistoryMiddleware } from "../src/index.js";
 
 export function checkTypes(): void {
-  const h: HistoryMiddleware<{ count: number }> = history<{ count: number }>({ maxDepth: 5 });
+  const h: HistoryMiddleware<{ count: number }> = history<{ count: number }>({
+    maxDepth: 5,
+  });
   const middleware: Middleware<{ count: number }> = h;
   const available: ReadonlySignal<boolean> = h.canUndo;
   // @ts-expect-error 历史可用状态不能由外部写入。

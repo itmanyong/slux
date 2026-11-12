@@ -14,11 +14,17 @@ describe("telemetry", () => {
   it("初始化报告状态与 ISO 时间，更新报告提交前后状态和 partial", () => {
     const changes: StateChangeMetadata<State>[] = [];
     const initialized: unknown[] = [];
-    const t = telemetry<State>({ onInit: (state, meta) => initialized.push(state, meta), onStateChange: (meta) => changes.push(meta) });
+    const t = telemetry<State>({
+      onInit: (state, meta) => initialized.push(state, meta),
+      onStateChange: (meta) => changes.push(meta),
+    });
     const store = makeStore([t]);
     store.setState((state) => ({ count: state.count + 1 }));
     expect(initialized[0]).toBe(store.getInitialState());
-    expect(initialized[1]).toMatchObject({ name: "telemetry", timestamp: expect.any(String) });
+    expect(initialized[1]).toMatchObject({
+      name: "telemetry",
+      timestamp: expect.any(String),
+    });
     expect(changes[0]).toMatchObject({
       name: "telemetry",
       prevState: { count: 0, label: "a" },
@@ -50,7 +56,9 @@ describe("telemetry", () => {
   it("订阅计数为累计次数，包含暂停期间与已取消订阅", () => {
     const subscriptions: SubscriptionMetadata[] = [];
     const updates: number[] = [];
-    const t = telemetry<State>({ onSubscribe: (meta) => subscriptions.push(meta) });
+    const t = telemetry<State>({
+      onSubscribe: (meta) => subscriptions.push(meta),
+    });
     const store = makeStore([t]);
     const off = store.subscribe((state) => updates.push(state.count));
     store.setState({ count: 1 });
@@ -146,7 +154,10 @@ describe("telemetry", () => {
       },
     ]);
     store.setState({ count: 1 });
-    expect(changes[0]).toMatchObject({ nextState: { count: 8 }, durationMs: 2.5 });
+    expect(changes[0]).toMatchObject({
+      nextState: { count: 8 },
+      durationMs: 2.5,
+    });
   });
 
   it("没有 performance 时回退到 Date.now", () => {
@@ -173,7 +184,10 @@ describe("telemetry", () => {
     const changes: StateChangeMetadata<State>[] = [];
     const errors: ErrorContext<State>[] = [];
     const store = makeStore([
-      telemetry<State>({ onStateChange: (meta) => changes.push(meta), onError: (context) => errors.push(context) }),
+      telemetry<State>({
+        onStateChange: (meta) => changes.push(meta),
+        onError: (context) => errors.push(context),
+      }),
       {
         name: "failure",
         onSet: () => {

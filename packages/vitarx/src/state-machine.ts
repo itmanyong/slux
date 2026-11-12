@@ -1,7 +1,20 @@
+/**
+ * @file 把 @slux/state-machine 的 StateMachine 桥接为 vitarx 侧的快照 ShallowRef 只读引用：快照读取与变更订阅委托给 useSignal，转移逻辑由 @slux/state-machine 承担。
+ */
 import { useSignal } from "./use-signal.js";
 import type { MachineSnapshot, StateMachine } from "@slux/state-machine";
 import type { ShallowRef } from "vitarx";
 
+/**
+ * 把状态机当前快照暴露为 vitarx 的只读 ShallowRef，状态转移后经订阅刷新；本 hook 不派发事件，读取与驱动转移解耦。
+ * @typeParam Context 状态机上下文数据类型
+ * @typeParam Event 事件类型，须带字符串 type 字段作为事件判别依据
+ * @typeParam State 状态名类型，取值为字符串联合
+ * @param machine StateMachine 实例
+ * @returns Readonly<ShallowRef<MachineSnapshot<Context, State>>> 只读引用，随作用域释放失效
+ * @remarks 事件派发与转移归约由状态机自身负责，转移后的快照刷新经 useSignal 订阅链路到达该引用。
+ * @see useSignal 订阅与刷新链路的实现处；@slux/state-machine 的 StateMachine、MachineSnapshot
+ */
 export function useMachine<Context, Event extends { type: string }, State extends string>(
   machine: StateMachine<Context, Event, State>,
 ): Readonly<ShallowRef<MachineSnapshot<Context, State>>> {

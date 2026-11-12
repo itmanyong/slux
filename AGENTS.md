@@ -12,14 +12,4 @@
 6. 外部数据只在入口校验一次；内部传递已确定类型的值，不重复做防御性检查。
 7. 不提前抽只用一次的函数；仅在会复用、封装复杂逻辑或代表可命名概念时抽取。主函数只写正常流程，校验和细节放到小函数。
 8. 注释只写不明显的约束和反直觉行为；自动生成文件不手改，改源头后重新生成；测试真实实现，不抄业务逻辑进测试，尽量少 mock。
-9. 改动内容要同步更新相关联的文档、示例、测试等,并在完成后罗列改动内容、关联改动,相关改动最多自动记录到git未经允许下禁止直接提交到仓库或发布。
-
-## 技术文档
-
-- Rspress Overview: https://rspress.rs/llms.txt
-- Rspress Full: https://rspress.rs/llms-full.txt
-- Rstack Overview: https://rstack.rs/zh/llms.txt
-- Rstack Full: https://rstack.rs/zh/llms-full.txt
-- Rslib: https://rslib.rs/llms.txt
-- Rsbuild: https://rsbuild.rs/llms.txt
-- Rspack: https://rspack.rs/llms.txt
+9. 改动内容要同步更新相关联的文档、示例、测试等,并在完成后罗列改动内容、关联改动,相关改动允许自动记录到git未经允许下禁止直接提交到仓库或发布。

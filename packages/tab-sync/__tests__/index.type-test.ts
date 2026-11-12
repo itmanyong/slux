@@ -5,9 +5,18 @@ interface State {
   count: number;
   label: string;
 }
-const resolve: ConflictResolver<State> = (incoming, current) => ({ count: incoming.count ?? current.count });
-const middleware: Middleware<State> = broadcast<State>({ channel: "typecheck", conflictResolution: resolve });
-const message: BroadcastMessage<State> = { senderId: "tab", timestamp: 1, state: { count: 2 } };
+const resolve: ConflictResolver<State> = (incoming, current) => ({
+  count: incoming.count ?? current.count,
+});
+const middleware: Middleware<State> = broadcast<State>({
+  channel: "typecheck",
+  conflictResolution: resolve,
+});
+const message: BroadcastMessage<State> = {
+  senderId: "tab",
+  timestamp: 1,
+  state: { count: 2 },
+};
 void middleware;
 void message;
 // @ts-expect-error 状态字段类型应随泛型约束。

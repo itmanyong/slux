@@ -170,8 +170,14 @@ describe("iframe 主题桥 · 上下层消息", () => {
     const loaded = sent.find(
       (data) => typeof data === "object" && data !== null && (data as { type?: unknown }).type === CONTENT_LOADED_MESSAGE,
     );
-    expect(loaded).toEqual({ type: CONTENT_LOADED_MESSAGE, payload: { package: "test-pkg" } });
-    Object.defineProperty(parent, "postMessage", { configurable: true, value: original });
+    expect(loaded).toEqual({
+      type: CONTENT_LOADED_MESSAGE,
+      payload: { package: "test-pkg" },
+    });
+    Object.defineProperty(parent, "postMessage", {
+      configurable: true,
+      value: original,
+    });
     teardown();
   });
 });

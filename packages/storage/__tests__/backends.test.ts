@@ -35,7 +35,13 @@ describe("内存和浏览器后端", () => {
   it("cookie 编码、属性和带 domain 的删除", async () => {
     const dom = new JSDOM("", { url: "https://sub.example.com/app/" });
     rstest.stubGlobal("document", dom.window.document);
-    const storage = cookieStorage({ path: "/app", domain: "example.com", secure: true, sameSite: "lax", maxAge: 300 });
+    const storage = cookieStorage({
+      path: "/app",
+      domain: "example.com",
+      secure: true,
+      sameSite: "lax",
+      maxAge: 300,
+    });
     await storage.setItem("偏好", "a=b;中文");
     expect(storage.getItem("偏好")).toBe("a=b;中文");
     const cookies = dom.cookieJar.getCookiesSync("https://sub.example.com/app/");
@@ -61,7 +67,11 @@ describe("IndexedDB 后端", () => {
     const factory = new IDBFactory();
     rstest.stubGlobal("indexedDB", factory);
     const open = rstest.spyOn(factory, "open");
-    const storage = indexedDBStorage({ dbName: "test", storeName: "state", dbVersion: 2 });
+    const storage = indexedDBStorage({
+      dbName: "test",
+      storeName: "state",
+      dbVersion: 2,
+    });
     expect(open).not.toHaveBeenCalled();
     await storage.setItem("key", "first");
     expect(await storage.getItem("key")).toBe("first");

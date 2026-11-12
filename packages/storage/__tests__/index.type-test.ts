@@ -21,19 +21,30 @@ export function checkTypes(api: MiddlewareAPI<State>, set: SetFn<State>, listene
   const middleware: PersistMiddleware<State> = persist<State>({
     key: "state",
     partialize: (state) => ({ count: state.count }),
-    migrate: async (state, version) => ({ count: (state.count ?? 0) + version }),
+    migrate: async (state, version) => ({
+      count: (state.count ?? 0) + version,
+    }),
   });
   const compatible: Middleware<State> = middleware;
-  const store = createStore(() => ({ count: 0, label: "test" }), { middleware: [compatible] });
+  const store = createStore(() => ({ count: 0, label: "test" }), {
+    middleware: [compatible],
+  });
   const ready: Promise<void> = middleware.rehydrate();
   const clear: Promise<void> = middleware.clearStorage();
   const unsub: () => void = middleware.onHydrate((state) => {
     const count: number = state.count;
     void count;
   });
-  const envelope: PersistEnvelope<Partial<State>> = { state: { count: 2 }, version: 0 };
+  const envelope: PersistEnvelope<Partial<State>> = {
+    state: { count: 2 },
+    version: 0,
+  };
   const storage: StorageAdapter = memoryStorage();
-  const options: PersistOptions<State> = { key: "state", storage, serialize: (value) => JSON.stringify(value) };
+  const options: PersistOptions<State> = {
+    key: "state",
+    storage,
+    serialize: (value) => JSON.stringify(value),
+  };
   void [persistApi, persistSet, persistListener, store, ready, clear, unsub, envelope, options];
   // @ts-expect-error partialize 必须返回状态的有效字段类型。
   persist<State>({ key: "state", partialize: () => ({ count: "wrong" }) });

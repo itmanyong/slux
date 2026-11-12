@@ -21,7 +21,9 @@ describe("五个中间件组合", () => {
     expect(p.hasHydrated()).toBe(true);
     h.undo();
     expect(store.getState().count).toBe(0);
-    expect(JSON.parse(storage.getItem("counter") as string).state).toEqual({ count: 0 });
+    expect(JSON.parse(storage.getItem("counter") as string).state).toEqual({
+      count: 0,
+    });
     expect(changes.map((change) => change.nextState.count)).toEqual([5, 0]);
     store.destroy();
   });
@@ -66,7 +68,9 @@ describe("五个中间件组合", () => {
     try {
       first.getState().increment();
       await rs.waitFor(() => expect(second.getState().count).toBe(1));
-      expect(JSON.parse(storage.getItem("second") as string).state).toEqual({ count: 1 });
+      expect(JSON.parse(storage.getItem("second") as string).state).toEqual({
+        count: 1,
+      });
       h.undo();
       await rs.waitFor(() => expect(second.getState().count).toBe(0));
       h.redo();

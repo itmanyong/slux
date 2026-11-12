@@ -1,3 +1,6 @@
+/**
+ * @file devtools 包的公共导出入口，汇总各模块对外符号。
+ */
 export { devtools } from "./devtools.js";
 export { logger } from "./logger.js";
 export { inspect, clearInspectors } from "./inspect.js";

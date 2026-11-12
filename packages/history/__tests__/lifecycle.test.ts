@@ -62,7 +62,9 @@ describe("history 与 Store 生命周期", () => {
         next(partial);
       },
     };
-    const store = createStore(() => ({ count: 0 }), { middleware: [h, middleware] });
+    const store = createStore(() => ({ count: 0 }), {
+      middleware: [h, middleware],
+    });
     store.setState({ count: 1 });
     h.undo();
     fail = true;
@@ -89,7 +91,9 @@ describe("history 与 Store 生命周期", () => {
   });
 
   it("maxDepth 为零不记录历史且动作函数保持可用", () => {
-    const h = history<{ count: number; increment: () => void }>({ maxDepth: 0 });
+    const h = history<{ count: number; increment: () => void }>({
+      maxDepth: 0,
+    });
     const store = createStore((set) => ({ count: 0, increment: () => set({ count: 1 }) }), { middleware: [h] });
     store.getState().increment();
     h.undo();

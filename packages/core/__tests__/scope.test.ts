@@ -1,7 +1,7 @@
 import { describe, expect, it } from "rstack/test";
-import { computed } from "../../src/reactivity/computed.js";
-import { signal } from "../../src/reactivity/signal.js";
-import { createScope, runInScope, serializeScope, getCurrentScope } from "../../src/scope/scope.js";
+import { computed } from "../src/computed.js";
+import { signal } from "../src/signal.js";
+import { createScope, runInScope, serializeScope, getCurrentScope } from "../src/scope.js";
 
 describe("scope", () => {
   it("隔离不同作用域并回退到全局值", () => {

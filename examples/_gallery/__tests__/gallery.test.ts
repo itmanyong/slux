@@ -242,9 +242,21 @@ describe("选择交互", () => {
     const valid = { type: "CONTENT_LOADED", payload: { package: "/vue" } };
     for (const event of [
       { source: oldWindow, origin: new URL(frame.src).origin, data: valid },
-      { source: frame.contentWindow, origin: "https://unrelated.example", data: valid },
-      { source: frame.contentWindow, origin: new URL(frame.src).origin, data: { type: "CONTENT_LOADED", payload: { package: "/core" } } },
-      { source: frame.contentWindow, origin: new URL(frame.src).origin, data: { type: "CONTENT_LOADED", payload: null } },
+      {
+        source: frame.contentWindow,
+        origin: "https://unrelated.example",
+        data: valid,
+      },
+      {
+        source: frame.contentWindow,
+        origin: new URL(frame.src).origin,
+        data: { type: "CONTENT_LOADED", payload: { package: "/core" } },
+      },
+      {
+        source: frame.contentWindow,
+        origin: new URL(frame.src).origin,
+        data: { type: "CONTENT_LOADED", payload: null },
+      },
     ]) {
       window.dispatchEvent(new MessageEvent<unknown>("message", event));
       expect(placeholder.classList.contains("hidden")).toBe(false);

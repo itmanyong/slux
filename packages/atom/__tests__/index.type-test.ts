@@ -1,5 +1,5 @@
 import type { Subscribable } from "@slux/core";
-import { atom, atomFamily, createAtomScope, derived, writableAtom } from "../src/index.js";
+import { atom, atomFactory, createAtomScope, derived, writableAtom } from "../src/index.js";
 import type { AnyReadableAtom, Atom, AtomGetter, AtomScope, AtomSetter, ReadonlyAtom, WritableAtom } from "../src/index.js";
 
 // 仅由 typecheck 编译，错误用例不会在运行时执行。
@@ -23,7 +23,7 @@ export function checkTypes(): void {
   const result: boolean = writable.write(2, "ready");
   const action = writableAtom(null, (_get, set) => set(count, 1));
   const nullValue: null = action.get();
-  const family = atomFamily((key: string) => atom({ key }));
+  const family = atomFactory((key: string) => atom({ key }));
   const instance: Atom<{ key: string }> = family("a");
   const removed: boolean = family.remove("a");
   const getter: AtomGetter = (source) => source.get();

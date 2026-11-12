@@ -10,7 +10,7 @@ import {
   startBatch,
   track,
   type Consumer,
-} from "../../src/runtime/graph.js";
+} from "../src/graph.js";
 
 describe("runtime/graph", () => {
   it("重新收集时去重并移除旧依赖，释放后不再通知", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "rstack/test";
-import { signal } from "../../src/reactivity/signal.js";
-import { effect } from "../../src/reactivity/effect.js";
+import { signal } from "../src/signal.js";
+import { effect } from "../src/effect.js";
 
 describe("reactivity/effect", () => {
   it("首次和普通写入同步执行，释放幂等且执行清理", () => {

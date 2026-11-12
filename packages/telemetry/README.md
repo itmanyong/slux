@@ -41,7 +41,9 @@ const metrics = telemetry<State>({
   onError: (context) => console.error(context.source, context.error),
 });
 
-const store = createStore<State>(() => ({ count: 0 }), { middleware: [metrics] });
+const store = createStore<State>(() => ({ count: 0 }), {
+  middleware: [metrics],
+});
 
 store.setState({ count: 1 });
 metrics.setEnabled(false); // 暂停上报，状态更新照常

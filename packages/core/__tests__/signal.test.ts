@@ -1,7 +1,7 @@
 import { describe, expect, it } from "rstack/test";
-import { signal } from "../../src/reactivity/signal.js";
-import { effect } from "../../src/reactivity/effect.js";
-import { batch } from "../../src/reactivity/batch.js";
+import { signal } from "../src/signal.js";
+import { effect } from "../src/effect.js";
+import { batch } from "../src/batch.js";
 
 describe("reactivity/signal", () => {
   it("同步写入并在订阅后续变化时通知", () => {

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "rstack/test";
-import { signal } from "../../src/reactivity/signal.js";
-import { effect } from "../../src/reactivity/effect.js";
-import { batch } from "../../src/reactivity/batch.js";
-import { createNotifier } from "../../src/runtime/notification.js";
+import { signal } from "../src/signal.js";
+import { effect } from "../src/effect.js";
+import { batch } from "../src/batch.js";
+import { createNotifier } from "../src/notification.js";
 
 describe("runtime/notification", () => {
   it("通知合并后读取最终值，取消订阅会阻止待执行回调", () => {

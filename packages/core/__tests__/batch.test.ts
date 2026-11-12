@@ -1,7 +1,7 @@
 import { describe, expect, it } from "rstack/test";
-import { signal } from "../../src/reactivity/signal.js";
-import { effect } from "../../src/reactivity/effect.js";
-import { batch } from "../../src/reactivity/batch.js";
+import { signal } from "../src/signal.js";
+import { effect } from "../src/effect.js";
+import { batch } from "../src/batch.js";
 
 describe("reactivity/batch", () => {
   it("批处理嵌套合并通知，内部读取立即可见", () => {

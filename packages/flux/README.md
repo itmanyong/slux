@@ -34,14 +34,14 @@ pnpm add @slux/flux
 
 ```ts
 import { batch, computed } from "@slux/core";
-import { createFluxStore, type FluxReducer } from "@slux/flux";
+import { createFlux, type FluxReducer } from "@slux/flux";
 
 type State = { count: number };
 type Action = { type: "add"; amount: number } | { type: "reset" };
 
 const reducer: FluxReducer<State, Action> = (state, action) => (action.type === "add" ? { count: state.count + action.amount } : { count: 0 });
 
-const store = createFluxStore(reducer, { count: 0 });
+const store = createFlux(reducer, { count: 0 });
 const doubled = computed(() => store.get().count * 2);
 const stop = store.subscribe((state) => console.log("count:", state.count));
 
@@ -57,7 +57,7 @@ store.destroy();
 
 ## 核心 API
 
-`createFluxStore<State, Action extends FluxAction>(reducer, initialState, options?): FluxStore<State, Action>`
+`createFlux<State, Action extends FluxAction>(reducer, initialState, options?): FluxStore<State, Action>`
 
 🧩 `FluxAction` 即 `{ readonly type: string }`。`reducer` 是 `(state, action) => State`，`initialState` 是初始状态，`options.middleware` 是可选的只读中间件数组。返回值满足 `Subscribable<State>`，可放进 core 的依赖图。
 
@@ -86,13 +86,13 @@ store.destroy();
 `FluxMiddleware<State, Action>` 的形式是 `api => next => action => Action`。
 
 ```ts
-import { createFluxStore, type FluxMiddleware } from "@slux/flux";
+import { createFlux, type FluxMiddleware } from "@slux/flux";
 
 type Action = { type: "add"; amount: number };
 const doublePositive: FluxMiddleware<number, Action> = () => (next) => (action) =>
   action.amount <= 0 ? action : next({ ...action, amount: action.amount * 2 });
 
-const store = createFluxStore((state: number, action: Action) => state + action.amount, 0, { middleware: [doublePositive] });
+const store = createFlux((state: number, action: Action) => state + action.amount, 0, { middleware: [doublePositive] });
 store.dispatch({ type: "add", amount: 2 }); // 4
 store.dispatch({ type: "add", amount: -1 }); // 被阻断，仍为 4
 ```
@@ -123,7 +123,7 @@ store.dispatch({ type: "add", amount: -1 }); // 被阻断，仍为 4
 
 ## 自动导入
 
-🔌 `createAutoImportApis(prefix?)` 返回 `unplugin-auto-import` 的 `ImportsMap`。登记清单以 `src/auto-import-api.ts` 的 `allImportApis` 为准，当前只有 `createFluxStore`，来源名为 `@slux/flux`（`createAutoImportApis` 本身不登记）。
+🔌 `createAutoImportApis(prefix?)` 返回 `unplugin-auto-import` 的 `ImportsMap`。登记清单以 `src/auto-import-api.ts` 的 `allImportApis` 为准，当前只有 `createFlux`，来源名为 `@slux/flux`（`createAutoImportApis` 本身不登记）。
 
 ```ts
 import AutoImport from "unplugin-auto-import/vite";
@@ -140,15 +140,15 @@ export default {
 
 💡 以 `src/index.ts` 的 `export type` 为准，共 7 个：
 
-| 类型                               | 用途                                                                                                           |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `FluxAction`                       | `{ readonly type: string }`，action 的基础约束                                                                 |
-| `FluxReducer<State, Action>`       | `(state, action) => State`                                                                                     |
-| `FluxDispatch<Action>`             | `(action: Action) => Action`                                                                                   |
-| `FluxMiddlewareAPI<State, Action>` | 中间件可见的 `{ getState(): State; dispatch: FluxDispatch<Action> }`                                           |
-| `FluxMiddleware<State, Action>`    | `api => next => dispatch` 的中间件定义                                                                         |
-| `FluxStore<State, Action>`         | `createFluxStore` 返回类型：`Subscribable<State>` 加上 `getState` / `getInitialState` / `dispatch` / `destroy` |
-| `FluxStoreOptions<State, Action>`  | `{ readonly middleware?: readonly FluxMiddleware<State, Action>[] }`                                           |
+| 类型                               | 用途                                                                                                      |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `FluxAction`                       | `{ readonly type: string }`，action 的基础约束                                                            |
+| `FluxReducer<State, Action>`       | `(state, action) => State`                                                                                |
+| `FluxDispatch<Action>`             | `(action: Action) => Action`                                                                              |
+| `FluxMiddlewareAPI<State, Action>` | 中间件可见的 `{ getState(): State; dispatch: FluxDispatch<Action> }`                                      |
+| `FluxMiddleware<State, Action>`    | `api => next => dispatch` 的中间件定义                                                                    |
+| `FluxStore<State, Action>`         | `createFlux` 返回类型：`Subscribable<State>` 加上 `getState` / `getInitialState` / `dispatch` / `destroy` |
+| `FluxStoreOptions<State, Action>`  | `{ readonly middleware?: readonly FluxMiddleware<State, Action>[] }`                                      |
 
 ## 不适用的场景 / 与其他包分工
 

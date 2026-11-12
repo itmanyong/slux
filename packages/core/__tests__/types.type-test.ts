@@ -1,5 +1,5 @@
-import { batch, computed, createScope, effect, runInScope, signal } from "../../src/index.js";
-import type { ReadonlySignal, Signal, Subscribable } from "../../src/types/index.js";
+import { batch, computed, createScope, effect, runInScope, signal } from "../src/index.js";
+import type { ReadonlySignal, Signal, Subscribable } from "../src/types.js";
 
 // 仅由 typecheck 编译，错误用例不会在运行时执行。
 export function checkTypes(): void {

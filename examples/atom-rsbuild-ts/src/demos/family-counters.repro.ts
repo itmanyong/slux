@@ -1,6 +1,6 @@
-import { atom, atomFamily } from "@slux/atom";
+import { atom, atomFactory } from "@slux/atom";
 
-const counts = atomFamily((_id: string) => atom(0));
+const counts = atomFactory((_id: string) => atom(0));
 
 console.log(counts("a") === counts("a")); // 同参数复用 → 预期输出: true
 counts("a").update((value) => value + 1);

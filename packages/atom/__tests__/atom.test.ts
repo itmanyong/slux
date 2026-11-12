@@ -1,6 +1,6 @@
 import { describe, expect, it } from "rstack/test";
 import { batch, computed, effect, signal } from "@slux/core";
-import { atom, atomFamily, createAtomScope, derived, writableAtom } from "../src/index.js";
+import { atom, atomFactory, createAtomScope, derived, writableAtom } from "../src/index.js";
 
 describe("atom", () => {
   it("读取、替换与函数更新，订阅不立即触发", () => {
@@ -374,9 +374,9 @@ describe("createAtomScope", () => {
   });
 });
 
-describe("atomFamily", () => {
+describe("atomFactory", () => {
   it("同参数复用，不同参数独立，remove 只移除缓存", () => {
-    const family = atomFamily((id: string) => atom({ id, count: 0 }));
+    const family = atomFactory((id: string) => atom({ id, count: 0 }));
     const first = family("a");
     expect(family("a")).toBe(first);
     expect(family("b")).not.toBe(first);
@@ -388,7 +388,7 @@ describe("atomFamily", () => {
   });
 
   it("参数按 SameValueZero 比较，对象按引用比较", () => {
-    const family = atomFamily((key: unknown) => atom(key));
+    const family = atomFactory((key: unknown) => atom(key));
     expect(family(NaN)).toBe(family(NaN));
     expect(family(0)).toBe(family(-0));
     const key = {};
@@ -398,7 +398,7 @@ describe("atomFamily", () => {
 
   it("缓存 undefined 结果，工厂失败后允许重试", () => {
     let calls = 0;
-    const family = atomFamily((key: string) => {
+    const family = atomFactory((key: string) => {
       calls++;
       if (key === "fail") throw new Error("failed");
       return undefined;
@@ -412,8 +412,8 @@ describe("atomFamily", () => {
   });
 
   it("工厂支持派生 atom", () => {
-    const counts = atomFamily((id: number) => atom(id));
-    const doubles = atomFamily((id: number) => derived((get) => get(counts(id)) * 2));
+    const counts = atomFactory((id: number) => atom(id));
+    const doubles = atomFactory((id: number) => derived((get) => get(counts(id)) * 2));
     expect(doubles(2).get()).toBe(4);
     counts(2).set(3);
     expect(doubles(2).get()).toBe(6);

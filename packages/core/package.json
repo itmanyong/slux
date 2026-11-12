@@ -67,7 +67,7 @@
     "@slux/shared": "workspace:*"
   },
   "peerDependencies": {
-    "limu": "^4.2.1"
+    "limu": ">=4.2.1"
   },
   "devDependencies": {
     "limu": "catalog:",

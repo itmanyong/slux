@@ -1,8 +1,8 @@
 import type { ExampleDemo } from "@slux/shell-example";
-import { atom, atomFamily } from "@slux/atom";
+import { atom, atomFactory } from "@slux/atom";
 
 export const create: NonNullable<ExampleDemo["create"]> = (context) => {
-  const counts = atomFamily((_id: string) => atom(0));
+  const counts = atomFactory((_id: string) => atom(0));
   const ids: string[] = [];
   const stops = new Map<string, () => void>();
   const listeners = new Set<() => void>();

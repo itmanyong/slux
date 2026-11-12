@@ -121,7 +121,10 @@ export function createThemeBridge(packageName?: string): () => void {
     loadedTimer = setTimeout(() => {
       loadedTimer = null;
       window.parent.postMessage(
-        { type: CONTENT_LOADED_MESSAGE, payload: { package: packageName ?? "" } } satisfies { type: string; payload: ContentLoadedPayload },
+        {
+          type: CONTENT_LOADED_MESSAGE,
+          payload: { package: packageName ?? "" },
+        } satisfies { type: string; payload: ContentLoadedPayload },
         "*",
       );
     }, 1024 * 0.5);

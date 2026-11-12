@@ -21,7 +21,7 @@ pnpm --filter @slux/example-atom-rsbuild-ts test     # 交互回归测试（rste
 | derived：动态依赖分支       | `derived(read)`             | derived  |
 | writableAtom：读写换算      | `writableAtom(read, write)` | writable |
 | writableAtom：只写 action   | `writableAtom(null, write)` | writable |
-| atomFamily：按 id 缓存      | `atomFamily(factory)`       | family   |
+| atomFactory：按 id 缓存     | `atomFactory(factory)`      | family   |
 | createAtomScope：请求级隔离 | `createAtomScope()`         | scope    |
 
 ## 结构

@@ -39,7 +39,7 @@ const groups = [
     id: "family",
     name: "family",
     title: "参数化工厂",
-    summary: "atomFamily 按参数缓存同类 atom，remove 只删缓存、下次访问重建。",
+    summary: "atomFactory 按参数缓存同类 atom，remove 只删缓存、下次访问重建。",
   },
   {
     id: "scope",
@@ -113,8 +113,8 @@ export const demos: ExampleDemo[] = [
   {
     id: "family-counters",
     group: "family",
-    title: "atomFamily：按 id 缓存",
-    apiLabel: "atomFamily(factory)",
+    title: "atomFactory：按 id 缓存",
+    apiLabel: "atomFactory(factory)",
     summary: "同参数复用同一 atom，remove 仅移除缓存、下次访问重建。",
     repro: reproFamilyCounters,
     reproPath: "src/demos/family-counters.repro.ts",

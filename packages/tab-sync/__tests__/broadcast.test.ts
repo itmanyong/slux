@@ -100,7 +100,11 @@ describe("broadcast", () => {
   });
 
   it("自定义冲突策略接收本地状态并应用返回值", () => {
-    const store = makeStore({ conflictResolution: (incoming, current) => ({ count: Math.max(incoming.count ?? 0, current.count) }) });
+    const store = makeStore({
+      conflictResolution: (incoming, current) => ({
+        count: Math.max(incoming.count ?? 0, current.count),
+      }),
+    });
     store.setState({ count: 10 });
     receive({ senderId: "remote", timestamp: 1, state: { count: 4 } });
     expect(store.get().count).toBe(10);
@@ -111,7 +115,11 @@ describe("broadcast", () => {
   it("忽略自身消息和不合法的外部消息", () => {
     const store = makeStore();
     store.setState({ count: 1 });
-    const own = sent[0] as { senderId: string; timestamp: number; state: object };
+    const own = sent[0] as {
+      senderId: string;
+      timestamp: number;
+      state: object;
+    };
     receive({ ...own, state: { count: 9 } });
     for (const data of [
       null,

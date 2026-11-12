@@ -47,7 +47,9 @@ const machine = createMachine<Context, Event, State>({
       on: {
         ADD: {
           guard: (_context, event) => event.amount > 0,
-          actions: (context, event) => ({ count: context.count + event.amount }),
+          actions: (context, event) => ({
+            count: context.count + event.amount,
+          }),
         },
         FINISH: "done",
       },
@@ -105,7 +107,9 @@ const machine = createMachine<number, { type: "NEXT" }, "active" | "done">({
   context: 0,
   states: {
     active: {
-      on: { NEXT: [{ guard: (count) => count >= 2, target: "done" }, { actions: (count) => count + 1 }] },
+      on: {
+        NEXT: [{ guard: (count) => count >= 2, target: "done" }, { actions: (count) => count + 1 }],
+      },
     },
     done: {},
   },

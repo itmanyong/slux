@@ -21,7 +21,10 @@ export default defineConfig({
       // @slux/ripple 的 dist 由 Node 直接加载，它内部 import "ripple" 会拿到服务端运行时；
       // 测试跑源码，绑定层就与上面的客户端运行时共用同一份 ripple。
       { find: /^@slux\/ripple$/, replacement: src("index.ts") },
-      { find: /^@slux\/ripple\/(atom|store|proxy)$/, replacement: src("$1.ts") },
+      {
+        find: /^@slux\/ripple\/(atom|store|proxy)$/,
+        replacement: src("$1.ts"),
+      },
     ],
   },
 });

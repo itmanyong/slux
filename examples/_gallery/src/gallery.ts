@@ -263,7 +263,10 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
   /** 向其他同源标签页广播当前主题（只比对 type）。 */
   function broadcastTheme(): void {
     if (!themeChannel) return;
-    themeChannel.postMessage({ type: SYNC_MESSAGE, payload: { theme: themeName() } });
+    themeChannel.postMessage({
+      type: SYNC_MESSAGE,
+      payload: { theme: themeName() },
+    });
   }
 
   themeBtn.addEventListener("click", () => applyTheme(!dark, { local: true }));
@@ -274,7 +277,10 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
     if (event.source !== frame.contentWindow && (window.parent === window || event.source !== window.parent)) return;
     const data: unknown = event.data;
     if (typeof data !== "object" || data === null) return;
-    const message = data as { type?: unknown; payload?: { theme?: unknown; package?: unknown } };
+    const message = data as {
+      type?: unknown;
+      payload?: { theme?: unknown; package?: unknown };
+    };
     if (message.type === CONTENT_LOADED_MESSAGE) {
       if (
         current &&
@@ -309,7 +315,10 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
     const theme = message.payload?.theme;
     if (theme !== "light" && theme !== "dark") return;
     // 远程标签页变更：应用并对齐地址栏，但不再广播，避免回环。
-    applyTheme(theme === "dark", { persist: true, writeUrl: window.parent === window });
+    applyTheme(theme === "dark", {
+      persist: true,
+      writeUrl: window.parent === window,
+    });
   };
   if (themeChannel) themeChannel.addEventListener("message", onThemeChannel);
 
@@ -489,7 +498,13 @@ export function createGallery(root: HTMLElement, manifest: Manifest): { select: 
   if (initialDir) select(initialDir, false);
 
   if (window.parent !== window) {
-    window.parent.postMessage({ type: CONTENT_LOADED_MESSAGE, payload: { package: "@slux/gallery-example" } }, "*");
+    window.parent.postMessage(
+      {
+        type: CONTENT_LOADED_MESSAGE,
+        payload: { package: "@slux/gallery-example" },
+      },
+      "*",
+    );
   }
 
   return { select };

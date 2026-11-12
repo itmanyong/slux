@@ -1,7 +1,7 @@
 import { describe, expect, it } from "rstack/test";
-import { signal } from "../../src/reactivity/signal.js";
-import { computed } from "../../src/reactivity/computed.js";
-import { effect } from "../../src/reactivity/effect.js";
+import { signal } from "../src/signal.js";
+import { computed } from "../src/computed.js";
+import { effect } from "../src/effect.js";
 
 describe("reactivity/computed", () => {
   it("延迟计算且重复读取使用缓存", () => {

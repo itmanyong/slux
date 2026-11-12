@@ -1,6 +1,6 @@
 # @slux/atom
 
-⚛️ 基于 `@slux/core` 的原子状态范式：用小型 atom 组合状态、`derived` 表达派生、`writableAtom` 自定义写入、`atomFamily` 参数化缓存、`createAtomScope` 隔离取值。
+⚛️ 基于 `@slux/core` 的原子状态范式：用小型 atom 组合状态、`derived` 表达派生、`writableAtom` 自定义写入、`atomFactory` 参数化缓存、`createAtomScope` 隔离取值。
 
 [![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white&color=green)](https://github.com/itmanyong/slux/tree/main/packages/atom) [![NPM](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white&color=orange)](https://www.npmjs.com/package/@slux/atom) [![文档](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3-0F766E?style=for-the-badge&color=blue)](https://itmanyong.github.io/slux/packages/atom/)
 
@@ -23,7 +23,7 @@ atom 对象本身只是「配置描述 + 默认作用域的代理」：真正的
 | 一组小型、彼此独立的读写状态         | 适合     | `atom(initialValue)` 是最小的可写单元                  |
 | 由多个状态算出的派生值               | 适合     | `derived(read)` 惰性、缓存、动态依赖追踪               |
 | 写入需要转换、联动或返回自定义结果   | 适合     | `writableAtom(read, write)` 保留参数与返回值类型       |
-| 按参数复用同类 atom（如按 id）       | 适合     | `atomFamily(factory)` 提供 `Map` 缓存与 `remove`       |
+| 按参数复用同类 atom（如按 id）       | 适合     | `atomFactory(factory)` 提供 `Map` 缓存与 `remove`      |
 | 每个请求 / 测试要独立的值            | 适合     | `createAtomScope()` 让同一 atom 在不同作用域取值独立   |
 | 需要草稿式局部修改、不可变结构共享   | 不适合   | atom 的 `set` 是整体替换；用 core `signal.set(recipe)` |
 | 需要把关联字段与 action 放进同一对象 | 不适合   | 用 `@slux/store`                                       |
@@ -68,14 +68,14 @@ stop();
 
 ## 核心 API
 
-| 🧩 导出                | 签名                                                                                   | 返回               |
-| ---------------------- | -------------------------------------------------------------------------------------- | ------------------ |
-| `atom`                 | `atom<T>(initialValue: T): Atom<T>`                                                    | 基础可写 atom      |
-| `derived`              | `derived<T>(read: (get: AtomGetter) => T): ReadonlyAtom<T>`                            | 只读派生 atom      |
-| `writableAtom`         | `writableAtom(read, write)`（两个重载，见下）                                          | 自定义写入 atom    |
-| `atomFamily`           | `atomFamily<Param, Result>(factory): ((param) => Result) & { remove(param): boolean }` | 带缓存的参数化工厂 |
-| `createAtomScope`      | `createAtomScope(): AtomScope`                                                         | 独立作用域         |
-| `createAutoImportApis` | `createAutoImportApis(prefix?: string): ImportsMap`                                    | 自动导入配置       |
+| 🧩 导出                | 签名                                                                                    | 返回               |
+| ---------------------- | --------------------------------------------------------------------------------------- | ------------------ |
+| `atom`                 | `atom<T>(initialValue: T): Atom<T>`                                                     | 基础可写 atom      |
+| `derived`              | `derived<T>(read: (get: AtomGetter) => T): ReadonlyAtom<T>`                             | 只读派生 atom      |
+| `writableAtom`         | `writableAtom(read, write)`（两个重载，见下）                                           | 自定义写入 atom    |
+| `atomFactory`          | `atomFactory<Param, Result>(factory): ((param) => Result) & { remove(param): boolean }` | 带缓存的参数化工厂 |
+| `createAtomScope`      | `createAtomScope(): AtomScope`                                                          | 独立作用域         |
+| `createAutoImportApis` | `createAutoImportApis(prefix?: string): ImportsMap`                                     | 自动导入配置       |
 
 ### `atom(initialValue)` → `Atom<T>`
 
@@ -166,13 +166,13 @@ reset.get(); // null，类型也推导为 null
 
 整个同步 `write` 被包在 core 的 `batch` 中：内部可多次 `set`、可嵌套调用其他 `write`，写入过程中能立即读到新值，订阅只收到最终值。
 
-### `atomFamily(factory)` → 带缓存的工厂
+### `atomFactory(factory)` → 带缓存的工厂
 
 ```ts
-import { atom, atomFamily, derived } from "@slux/atom";
+import { atom, atomFactory, derived } from "@slux/atom";
 
-const counts = atomFamily((id: string) => atom({ id, count: 0 }));
-const doubled = atomFamily((id: string) => derived((get) => get(counts(id)).count * 2));
+const counts = atomFactory((id: string) => atom({ id, count: 0 }));
+const doubled = atomFactory((id: string) => derived((get) => get(counts(id)).count * 2));
 
 counts("first") === counts("first"); // true，同参数复用
 doubled("first").get(); // 0
@@ -236,7 +236,7 @@ export default {
 🔌 `createAutoImportApis(prefix?)` 基于 `@slux/shared` 的 `generateBatchAutoImports` 生成 `ImportsMap`，来源名为 `@slux/atom`。`src/auto-import-api.ts` 的登记清单（`allImportApis`）为：
 
 ```ts
-const allImportApis: string[] = ["atom", "atomFamily", "createAtomScope", "derived", "writableAtom"];
+const allImportApis: string[] = ["atom", "atomFactory", "createAtomScope", "derived", "writableAtom"];
 ```
 
 默认无前缀；传入前缀可生成别名，如 `createAutoImportApis("u")` → `uAtom`、`uDerived` 等，大小写规则由 `@slux/shared` 的 `createAutoImports` 决定。清单与入口运行时导出数不一致：`createAutoImportApis` 自身不登记为可自动导入的标识符。

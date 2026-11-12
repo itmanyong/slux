@@ -24,7 +24,10 @@ function setup(storage: StorageAdapter, options: Partial<Parameters<typeof persi
 describe("异步生命周期和真实 Store 集成", () => {
   it("异步 hydration 通知 core 派生值", async () => {
     const read = deferred<string | null>();
-    const { mw, store } = setup({ ...memoryStorage(), getItem: () => read.promise });
+    const { mw, store } = setup({
+      ...memoryStorage(),
+      getItem: () => read.promise,
+    });
     const double = computed(() => store.get().count * 2);
     expect(double.get()).toBe(0);
     const done = mw.rehydrate();
@@ -38,7 +41,11 @@ describe("异步生命周期和真实 Store 集成", () => {
     const storage = memoryStorage();
     await storage.setItem("state", saved(1, 0));
     const read = rstest.spyOn(storage, "getItem");
-    const { mw, store } = setup(storage, { skipHydration: true, version: 1, migrate: () => migration.promise });
+    const { mw, store } = setup(storage, {
+      skipHydration: true,
+      version: 1,
+      migrate: () => migration.promise,
+    });
     const first = mw.rehydrate();
     const second = mw.rehydrate();
     expect(first).toBe(second);
@@ -118,7 +125,11 @@ describe("异步生命周期和真实 Store 集成", () => {
     const first = deferred<void>();
     const writes = rstest.fn(() => first.promise);
     const remove = rstest.fn();
-    const { mw, store } = setup({ getItem: () => null, setItem: writes, removeItem: remove });
+    const { mw, store } = setup({
+      getItem: () => null,
+      setItem: writes,
+      removeItem: remove,
+    });
     store.setState({ count: 1 });
     store.setState({ count: 2 });
     const pending = mw.clearStorage();
@@ -152,7 +163,11 @@ describe("异步生命周期和真实 Store 集成", () => {
     const { store, mw } = setup(data, { onError: error });
     expect(store.getState().count).toBe(0);
     expect(mw.hasHydrated()).toBe(true);
-    expect(error).toHaveBeenCalledWith(expect.objectContaining({ code: PERSIST_ERROR_CODE.DeserializationFailed }));
+    expect(error).toHaveBeenCalledWith(
+      expect.objectContaining({
+        code: PERSIST_ERROR_CODE.DeserializationFailed,
+      }),
+    );
   });
 
   it("partialize 和错误观察器抛错不影响内存更新", () => {
