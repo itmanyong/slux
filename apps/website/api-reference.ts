@@ -135,6 +135,16 @@ function fallbackDescription(packageName: string, subpath: string, apiName: stri
   return descriptions[`${packageName}:${apiName}`] ?? `公开${kind}，详见下方类型签名与源码。`;
 }
 
+// JSDoc 文本会原样写入 MDX 正文与表格：反引号代码段之外的 < 与 {} 会被当作 JSX 或表达式解析，须转义。
+function escapeMdxText(text: string): string {
+  return text
+    .split(/(`[^`]*`)/)
+    .map((part, index) =>
+      index % 2 ? part : part.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll("{", "&#123;").replaceAll("}", "&#125;"),
+    )
+    .join("");
+}
+
 async function exampleSources(name: string) {
   const examplesRoot = resolve(repoRoot, "examples");
   const entry = (await readdir(examplesRoot, { withFileTypes: true })).find((item) => item.isDirectory() && item.name.startsWith(`${name}-`));
@@ -207,13 +217,11 @@ export async function renderApiPages(packageNames: string[], packagesRoot: strin
           const importPath = `@slux/${name}${subpath ? `/${subpath}` : ""}`;
           const kind = category(symbol, declaration, checker);
           const documentation = ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim();
-          const description = (
-            documentation ||
-            readmeDescription(readme, exported.name) ||
-            fallbackDescription(name, subpath, exported.name, kind)
-          )
-            .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-            .replaceAll(/\s+/g, " ");
+          const description = escapeMdxText(
+            (documentation || readmeDescription(readme, exported.name) || fallbackDescription(name, subpath, exported.name, kind))
+              .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+              .replaceAll(/\s+/g, " "),
+          );
           const sourcePath = relative(repoRoot, declaration.getSourceFile().fileName).replaceAll("\\", "/");
           const source = sourcePath.startsWith("..") ? `packages/${name}/src/index.ts` : sourcePath;
           const typeOnly = !(symbol.flags & ts.SymbolFlags.Value);

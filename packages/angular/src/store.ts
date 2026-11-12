@@ -8,7 +8,7 @@ import { toAngularSignal } from "./bridge.js";
 import type { ToAngularSignalOptions } from "./bridge.js";
 
 /**
- * store 注入的可选转换配置类型，等价于 ToAngularSignalOptions<T>。
+ * store 注入的可选转换配置类型，等价于 `ToAngularSignalOptions<T>`。
  * 单独命名是为了让 injectStore 的签名表达「这是本适配层的选项」而非直接暴露 bridge 的类型。
  * @typeParam T 转换后 Signal 的值类型；无 selector 时为 State，有 selector 时为 Selection
  * @see ToAngularSignalOptions 底层的选项类型
