@@ -1,3 +1,13 @@
+## 0.3.0
+
+### Refactor 🔨
+
+- refactor(react): 将 `hooks/use-signal.ts`、`scope/scope-context.ts`、`types/index.ts` 扁平化为 `src` 顶层文件。
+
+### Other Changes 🔧
+
+- chore(react): 同步 8 项本包内部依赖范围。
+
 ## 0.2.5
 
 ### Other Changes 🔧

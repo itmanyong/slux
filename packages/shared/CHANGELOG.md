@@ -1,3 +1,9 @@
+## 0.3.0
+
+### Other Changes 🔧
+
+- chore(shared): 跟随统一版本升级至 0.3.0。
+
 ## 0.2.5
 
 ### Other Changes 🔧

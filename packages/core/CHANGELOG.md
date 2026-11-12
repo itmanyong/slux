@@ -1,3 +1,14 @@
+## 0.3.0
+
+### Refactor 🔨
+
+- refactor(core): 扁平化源码目录，`reactivity/*`、`runtime/*`、`scope/scope.ts`、`types/index.ts` 合并为 `src` 顶层文件，测试目录同步扁平化。
+
+### Other Changes 🔧
+
+- chore(core): 放宽 `limu` peer 依赖范围为 `>=4.2.1`。
+- chore(core): 更新本包内部依赖：@slux/shared（0.2.5 → 0.3.0）。
+
 ## 0.2.5
 
 ### Other Changes 🔧

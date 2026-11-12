@@ -1,6 +1,6 @@
 {
   "name": "@slux/proxy",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "基于 @slux/core 的可变对象响应式范式",
   "sideEffects": false,
   "keywords": [

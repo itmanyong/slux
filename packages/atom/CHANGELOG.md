@@ -1,3 +1,17 @@
+## 0.3.0
+
+### New Features 🎉
+
+- feat(atom): `atomFamily` 更名为 `atomFactory`，参数化缓存语义不变（`Map` 缓存 + `remove`）；同步更新类型导出、README、单元测试与 atom 示例，调用方需改用新名称。
+
+### Document 📖
+
+- docs(atom): 同步 README 与示例中的 `atomFactory` 命名及文案。
+
+### Other Changes 🔧
+
+- chore(atom): 更新本包内部依赖：@slux/core（0.2.5 → 0.3.0）、@slux/shared（0.2.5 → 0.3.0）。
+
 ## 0.2.5
 
 ### Other Changes 🔧

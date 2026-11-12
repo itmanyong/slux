@@ -1,3 +1,13 @@
+## 0.3.0
+
+### Refactor 🔨
+
+- refactor(rxjs): 将 Observable 适配实现并入 `src/observable.ts`，入口改为重导出 `toObservable`、`fromObservable` 与相关类型。
+
+### Other Changes 🔧
+
+- chore(rxjs): 更新本包内部依赖：@slux/core（0.2.5 → 0.3.0）、@slux/shared（0.2.5 → 0.3.0）。
+
 ## 0.2.5
 
 ### Other Changes 🔧

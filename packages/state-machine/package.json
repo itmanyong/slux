@@ -1,6 +1,6 @@
 {
   "name": "@slux/state-machine",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "基于 @slux/core 的轻量平面有限状态机",
   "sideEffects": false,
   "keywords": [

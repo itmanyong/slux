@@ -1,3 +1,9 @@
+## 0.3.0
+
+### Other Changes 🔧
+
+- chore(tab-sync): 跟随统一版本升级至 0.3.0；更新本包内部依赖：@slux/store（0.2.5 → 0.3.0）、@slux/shared（0.2.5 → 0.3.0）。
+
 ## 0.2.5
 
 ### Other Changes 🔧

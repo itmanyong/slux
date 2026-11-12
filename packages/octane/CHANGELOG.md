@@ -1,3 +1,9 @@
+## 0.3.0
+
+### Other Changes 🔧
+
+- chore(octane): 跟随统一版本升级至 0.3.0；同步 8 项本包内部依赖范围。
+
 ## 0.2.5
 
 ### Other Changes 🔧
